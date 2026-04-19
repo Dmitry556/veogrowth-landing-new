@@ -30,6 +30,123 @@
 <meta name="robots" content="index,follow,max-image-preview:large" />
 <meta name="author" content="Dmitry, veogrowth" />
 
+<!-- Google Search Console verification — replace the content value with the token from Search Console → Settings → Ownership verification → HTML tag -->
+<meta name="google-site-verification" content="REPLACE_WITH_SEARCH_CONSOLE_TOKEN" />
+
+<!-- Structured data: Organization + WebSite + Service + FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://veogrowth.com/#organization",
+      "name": "veogrowth",
+      "alternateName": "Veogrowth",
+      "url": "https://veogrowth.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://veogrowth.com/og-cover.png",
+        "width": 1200,
+        "height": 630
+      },
+      "description": "Managed outbound operations for B2B sales leaders. A system that puts net-new meetings with companies your reps aren't working yet onto their calendars.",
+      "email": "dmitry@veogrowth.com",
+      "founder": {
+        "@type": "Person",
+        "name": "Dmitry",
+        "jobTitle": "Operator"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "sales",
+        "email": "dmitry@veogrowth.com",
+        "url": "https://calendly.com/veogrowth/discovery",
+        "availableLanguage": ["English"]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://veogrowth.com/#website",
+      "url": "https://veogrowth.com/",
+      "name": "veogrowth — outbound operations",
+      "description": "Net-new pipeline as a managed system. Five agents, one operator, first qualified meeting in 14 days.",
+      "publisher": { "@id": "https://veogrowth.com/#organization" },
+      "inLanguage": "en"
+    },
+    {
+      "@type": "Service",
+      "@id": "https://veogrowth.com/#service",
+      "name": "Outbound operations, operated end-to-end",
+      "serviceType": "Managed outbound operations",
+      "provider": { "@id": "https://veogrowth.com/#organization" },
+      "areaServed": "Worldwide",
+      "audience": {
+        "@type": "BusinessAudience",
+        "name": "B2B sales leaders at 40–90 person companies with 2–7 sales reps"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "3000",
+        "priceCurrency": "USD",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "price": "3000",
+          "priceCurrency": "USD",
+          "unitText": "MONTH"
+        }
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://veogrowth.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is this a platform or an agency?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Neither. It's a managed system, operated end-to-end. You see what it produces every week, and everything it generates lives with your team. Agency means trusting humans you can't see. Platform means doing the work yourself. This is the middle."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens if I cancel?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You keep the account library, the research briefs, the signal history, and the branded domains set up in your name. No data hostage-taking."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this a wrapper on existing tools?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Data providers are used where they beat building from scratch. Everything downstream — qualification, research, writing, signal monitoring, briefs, operator judgment — is built in-house."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why not use an AI SDR tool for less?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You probably have. The pattern is consistent: thousands of sends, almost no replies, eventually cancelled. The tech works. Nobody's operating it. That's what this system does differently."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I defend this to my CEO or board?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "$3,000 per month, billed monthly. Three-month commitment that voids if the first qualified meeting doesn't land in 14 days. Month one refunds in full if it doesn't. Cancel anytime after month three with 30 days notice. Downside is one month of spend if the 14-day mark is missed. Upside is net-new pipeline you didn't have before."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
