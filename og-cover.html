@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>og-cover.png stage — 1200×630</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#0C0A08;
+    --paper:#EFE8DA;
+    --paper-soft:#D8C8A6;
+    --muted:#CBC2B0;
+    --signal:#E8490B;
+    --amber:#E8B63A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#3D3731;min-height:100vh;font-family:"JetBrains Mono",monospace;color:#CBC2B0;padding:40px 24px 64px}
+
+  .stage{max-width:1200px;margin:0 auto}
+  .helper{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#8A8072;margin-bottom:14px;display:flex;justify-content:space-between;align-items:baseline}
+  .helper .dim{color:var(--signal)}
+
+  .cover{
+    width:1200px;height:630px;
+    background:var(--ink);
+    position:relative;overflow:hidden;
+    color:var(--paper);font-family:"Fraunces",serif;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.6)
+  }
+
+  .cover::before{
+    content:"";position:absolute;inset:0;
+    background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.94 0 0 0 0 0.9 0 0 0 0 0.82 0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    mix-blend-mode:screen;pointer-events:none
+  }
+  .cover::after{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(ellipse at 85% 50%, rgba(232,73,11,.22), transparent 55%);
+    pointer-events:none
+  }
+
+  /* Top-left wordmark */
+  .mark{position:absolute;top:54px;left:68px;display:flex;align-items:center;gap:12px;font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 50;font-weight:500;font-size:28px;letter-spacing:-.02em;color:#BFB29B;z-index:3}
+  .mark em{font-style:italic;font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1;color:var(--signal);margin:0 -1px}
+
+  /* Main content — right-anchored */
+  .content{position:absolute;left:68px;right:68px;top:50%;transform:translateY(-48%);z-index:3}
+
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace;font-size:14px;font-weight:400;letter-spacing:.34em;text-transform:uppercase;
+    color:var(--signal);margin-bottom:26px;display:flex;align-items:center;gap:14px
+  }
+  .eyebrow::before{content:"";width:40px;height:1px;background:var(--signal)}
+
+  h1{
+    font-family:"Fraunces",serif;
+    font-variation-settings:"opsz" 144,"SOFT" 60,"WONK" 1;
+    font-weight:400;font-size:104px;line-height:.95;letter-spacing:-.028em;color:#D8C8A6
+  }
+  h1 em{
+    font-style:italic;font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1;color:var(--signal)
+  }
+  h1 .period{display:inline-block;width:14px;height:14px;background:var(--signal);margin-left:6px;transform:translateY(-8px)}
+
+  .subline{
+    margin-top:26px;
+    font-family:"JetBrains Mono",monospace;font-size:17px;font-weight:400;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
+    max-width:820px
+  }
+
+  /* Bottom-right stamp */
+  .stamp{
+    position:absolute;bottom:54px;right:68px;
+    font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:rgba(239,232,218,.55);
+    display:flex;align-items:center;gap:10px;z-index:3
+  }
+  .stamp .dot{width:7px;height:7px;border-radius:50%;background:var(--signal);box-shadow:0 0 12px rgba(232,73,11,.6)}
+
+  /* Helper panel */
+  .panel{max-width:1200px;margin:44px auto 0;padding:28px 32px;background:#141210;border:.5px solid #2A241D;color:#B4A896;font-size:13.5px;line-height:1.6}
+  .panel h3{font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 60,"WONK" 1;font-weight:500;font-size:20px;color:var(--paper);margin-bottom:12px}
+  .panel h3 em{color:var(--signal);font-style:italic}
+  .panel ol{padding-left:20px;display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+  .panel code{background:#2A241D;color:var(--amber);padding:2px 7px;border-radius:3px;font-family:"JetBrains Mono",monospace;font-size:12.5px}
+  .panel .kbd{display:inline-block;background:#2A241D;color:var(--paper);padding:2px 8px;border-radius:3px;font-family:"JetBrains Mono",monospace;font-size:12px;border:.5px solid #3D3731}
+  .panel p{margin-top:10px;color:#8A8072;font-size:12.5px}
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="helper">
+    <span>Open Graph cover · veogrowth</span>
+    <span class="dim">1200 × 630 px</span>
+  </div>
+
+  <div class="cover" id="cover">
+    <div class="mark" aria-hidden="true">
+      <svg width="54" height="30" viewBox="0 0 220 120">
+        <path d="M40 60 L70 30 L100 60 L70 90 Z" fill="#C83A0E"/>
+        <path d="M100 60 L120 60" stroke="#E8490B" stroke-width="4" stroke-dasharray="4 5" opacity=".85" stroke-linecap="round"/>
+        <path d="M120 60 L150 30 L180 60 L150 90 Z" fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="miter"/>
+      </svg>
+      <span>v<em>eo</em>growth</span>
+    </div>
+
+    <div class="content">
+      <div class="eyebrow">outbound operations</div>
+      <h1>
+        Net-new pipeline,<br>
+        <em>operated</em> end-to-end<span class="period"></span>
+      </h1>
+      <div class="subline">A managed system. Five agents. One operator.</div>
+    </div>
+
+    <div class="stamp">
+      <span class="dot"></span>
+      <span>veogrowth.com</span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Capture <em>this</em> as og-cover.png</h3>
+    <ol>
+      <li>DevTools <span class="kbd">⌘⌥I</span> → right-click the dark <code>#cover</code> element → <code>Capture node screenshot</code>. Saves at exactly 1200×630.</li>
+      <li>Rename to <code>og-cover.png</code> and drop it in the repo root next to <code>index.html</code>.</li>
+      <li>Push. Slack/LinkedIn/iMessage link previews pick it up automatically (the site's OG meta already references <code>/og-cover.png</code>).</li>
+    </ol>
+    <p>Alternative: <span class="kbd">⌘⇧4</span>, drag precisely across the dark frame above. Dimensions: 1200 × 630.</p>
+  </div>
+</div>
+
+</body>
+</html>
