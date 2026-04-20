@@ -570,15 +570,30 @@
     border:.5px solid var(--rule);border-top:0;border-radius:0 0 12px 12px;
     position:relative;
   }
+  /* Inactive panels: visually hidden but kept in DOM so Ctrl+A / LLM scrapers pick them up.
+     Active panel renders normally with fade-in. */
   .demo-panel{
-    display:none;
-    padding:44px 48px;
+    position:absolute;
+    width:1px;height:1px;
+    padding:0;margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:normal;
+    border:0;
+    opacity:0;
+    pointer-events:none;
   }
-  @media (max-width:720px){.demo-panel{padding:28px 22px}}
   .demo-panel.active{
-    display:block;
+    position:static;
+    width:auto;height:auto;
+    padding:44px 48px;margin:0;
+    overflow:visible;
+    clip:auto;
+    opacity:1;
+    pointer-events:auto;
     animation:demoFade .45s cubic-bezier(.4,0,.2,1);
   }
+  @media (max-width:720px){.demo-panel.active{padding:28px 22px}}
   @keyframes demoFade{
     from{opacity:0;transform:translateY(8px)}
     to{opacity:1;transform:none}
@@ -1367,7 +1382,7 @@
       </div>
 
       <!-- ─── PANEL 2 · RESEARCH ─── -->
-      <div class="demo-panel" id="panel-2" role="tabpanel" aria-labelledby="tab-2" hidden>
+      <div class="demo-panel" id="panel-2" role="tabpanel" aria-labelledby="tab-2">
       <article class="demo-block">
         <div class="demo-top">
           <div class="demo-badge"><span class="n">02</span><span class="stage">Research</span></div>
@@ -1412,7 +1427,7 @@
       </div>
 
       <!-- ─── PANEL 3 · SIGNAL ─── -->
-      <div class="demo-panel" id="panel-3" role="tabpanel" aria-labelledby="tab-3" hidden>
+      <div class="demo-panel" id="panel-3" role="tabpanel" aria-labelledby="tab-3">
       <article class="demo-block alert">
         <div class="demo-top">
           <div class="demo-badge"><span class="n">03</span><span class="stage">Signal</span></div>
@@ -1446,7 +1461,7 @@
       </div>
 
       <!-- ─── PANEL 4 · OUTREACH ─── -->
-      <div class="demo-panel" id="panel-4" role="tabpanel" aria-labelledby="tab-4" hidden>
+      <div class="demo-panel" id="panel-4" role="tabpanel" aria-labelledby="tab-4">
       <article class="demo-block">
         <div class="demo-top">
           <div class="demo-badge"><span class="n">04</span><span class="stage">Outreach</span></div>
@@ -1486,7 +1501,7 @@
       </div>
 
       <!-- ─── PANEL 5 · MEETING BRIEF ─── -->
-      <div class="demo-panel" id="panel-5" role="tabpanel" aria-labelledby="tab-5" hidden>
+      <div class="demo-panel" id="panel-5" role="tabpanel" aria-labelledby="tab-5">
       <article class="demo-block">
         <div class="demo-top">
           <div class="demo-badge"><span class="n">05</span><span class="stage">Meeting</span></div>
@@ -1595,7 +1610,7 @@
         <div>
           <div class="idx">04</div>
           <h3>One-to-one <em>outbound</em></h3>
-          <p>Written per account and decision makers within the account, sent continuously. Typical client: <strong>3,000–5,000</strong> one-to-one sends per month.</p>
+          <p>Written per account and decision makers within the account, sent continuously. Volume scales to your market — typical mid-TAM client sees <strong>3,000–5,000 one-to-one sends per month</strong>; narrower markets get proportionally fewer sends, same depth per account.</p>
         </div>
       </article>
 
@@ -1670,7 +1685,7 @@
 
     <div class="operator-single reveal">
       <p class="op-lead">
-        The orchestration, qualification logic, research pipeline, writing engine, signal monitoring, and brief generator are built from scratch, not assembled from other people's tools. Data providers are used where they beat building from scratch. Everything else is built in-house, not wrapped around someone else's API.
+        The orchestration, qualification logic, research pipeline, writing engine, signal monitoring, and brief generator are built from scratch, not assembled from other people's tools. Data providers are used where they beat building from scratch. Everything else is built in-house, not wrapped around someone else's API. <strong>This is not an AI SDR product — it's a managed system, with a human operating every judgment call the agents escalate.</strong>
       </p>
       <p class="op-lead" style="margin-top:16px">
         The system runs continuously — it doesn't stop if I'm on a plane or asleep. Capacity is tight by design: <strong>2 new clients per quarter</strong>, so no one's account ends up on a backburner.
@@ -1890,7 +1905,6 @@
       panels.forEach((p, i) => {
         const isActive = i === idx;
         p.classList.toggle('active', isActive);
-        if (isActive) { p.removeAttribute('hidden'); } else { p.setAttribute('hidden', ''); }
       });
     };
 
