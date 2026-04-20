@@ -514,7 +514,8 @@
   .demo-head .label::before{content:"";width:26px;height:.5px;background:var(--ink)}
   .demo-head h2{margin:18px 0 0;font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 60,"WONK" 1;font-weight:400;font-size:clamp(36px,4.2vw,60px);line-height:1;letter-spacing:-.025em}
   .demo-head h2 em{font-style:italic;font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1;color:var(--signal)}
-  .demo-head .subhead{margin-top:18px;font-size:17px;line-height:1.55;color:var(--ink-2);max-width:680px}
+  .demo-head .subhead{margin-top:18px;font-size:17px;line-height:1.55;color:var(--ink-2);max-width:760px}
+  .demo-head .subhead .subhead-aside{display:block;margin-top:10px;font-size:14.5px;color:var(--muted);font-style:italic}
 
   /* Tabbed demo shell */
   .demo-shell{max-width:1100px;margin:0 auto}
@@ -1205,8 +1206,8 @@
           <span class="a-role">Builds your account universe</span>
         </div>
         <h3 class="a-name">Targeting <em>Agent</em></h3>
-        <p class="a-body">Sources every company in your total addressable market. Qualifies each against your ICP using your product context. Enriches with tech stack, headcount, funding stage, and leadership. Prunes existing customers, current pipeline, and do-not-contact lists.</p>
-        <div class="a-out"><span class="lbl">Output</span><span class="v">Living account universe, typically 5,000–15,000 companies, updated weekly. Stays with your team.</span></div>
+        <p class="a-body">Sources every company in your total addressable market. Qualifies each against your ICP using your product context. Enriches with tech stack, headcount, funding stage, and leadership. <strong>Prunes existing customers, current pipeline, and do-not-contact lists — the universe is net-new logos only, not accounts your AEs are already working.</strong></p>
+        <div class="a-out"><span class="lbl">Output</span><span class="v">Living account universe of net-new logos, typically 5,000–15,000 companies, updated weekly. Stays with your team.</span></div>
       </article>
 
       <article class="agent">
@@ -1225,7 +1226,7 @@
           <span class="a-role">Watches for buying moments</span>
         </div>
         <h3 class="a-name">Signal <em>Agent</em></h3>
-        <p class="a-body">Monitors your account universe daily for trigger events across six categories: hiring surges, leadership changes, funding rounds, product launches, tech stack shifts, and job postings revealing pain points. Scores each signal for relevance to your specific product.</p>
+        <p class="a-body">Monitors your account universe daily for trigger events across 50+ signal types. <strong>Categories adapt to your buyer</strong> — what fires for a revenue leader isn't what fires for a research, procurement, ops, or engineering buyer. The Context Agent's intake defines what counts as a signal in your specific market.</p>
         <div class="a-out"><span class="lbl">Output</span><span class="v">Daily signal feed. Accounts heating up, flagged as they heat.</span></div>
       </article>
 
@@ -1268,7 +1269,7 @@
     <div class="demo-head reveal">
       <div class="label">one account, end-to-end</div>
       <h2>Here's what the system <em>actually</em> produces.</h2>
-      <p class="subhead">A real account. Public data only.</p>
+      <p class="subhead">A real account. Public data only. <span class="subhead-aside">The demo runs on a B2B SaaS example — the same system runs the same way for clients selling into research, finance, operations, engineering, or any niche where depth beats spray.</span></p>
     </div>
 
     <div class="demo-shell">
@@ -1594,7 +1595,7 @@
         <div>
           <div class="idx">04</div>
           <h3>One-to-one <em>outbound</em></h3>
-          <p>Written per account and decision makers within the account, sent continuously.</p>
+          <p>Written per account and decision makers within the account, sent continuously. Typical client: <strong>3,000–5,000</strong> one-to-one sends per month.</p>
         </div>
       </article>
 
@@ -1670,6 +1671,9 @@
     <div class="operator-single reveal">
       <p class="op-lead">
         The orchestration, qualification logic, research pipeline, writing engine, signal monitoring, and brief generator are built from scratch, not assembled from other people's tools. Data providers are used where they beat building from scratch. Everything else is built in-house, not wrapped around someone else's API.
+      </p>
+      <p class="op-lead" style="margin-top:16px">
+        The system runs continuously — it doesn't stop if I'm on a plane or asleep. Capacity is tight by design: <strong>2 new clients per quarter</strong>, so no one's account ends up on a backburner.
       </p>
       <p class="op-kicker">You're buying operated depth from the person who built the depth.</p>
     </div>
