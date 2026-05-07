@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenLoop B&M — Cold Email Campaign</title>
+<meta name="description" content="Anonymous outbound campaign for OpenLoop's B&M offer. 1,000 emails to medspa and chiro owners. Seven replied." />
+<meta name="robots" content="noindex,nofollow" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23192b58'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23ec0156'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* OpenLoop tokens — pulled from openloophealth.com */
+    --color-base-White: #fff;
+    --color-base-Black: #000;
+    --color-neutral-50: #f8f7f8;
+    --color-neutral-100: #ececee;
+    --color-neutral-200: #e1e0e4;
+    --color-neutral-700: #585462;
+    --color-neutral-800: #423f4a;
+    --color-neutral-900: #140c22;
+    --color-primary-eggshell: #fffdf9;
+    --color-primary-white-shore: #f7f4f0;
+    --color-sapphire-800: #0c2c5f;
+    --color-peony-400: #ee448e;
+    --color-peony-500: #d31360;
+    --color-secondary-peony: #ee448e;
+
+    /* OpenLoop heading + body colors as observed on their h1/h2/p samples */
+    --heading: #1f1f1f;
+    --body: #404040;
+    --muted: #5f5f5f;
+
+    /* Brand */
+    --navy: #192b58;
+    --accent: #ec0156;        /* OpenLoop logo pink */
+    --accent-hover: #ad1049;
+
+    --bg: #ffffff;
+    --border: #e1e0e4;
+    --rule-soft: #ececee;
+    --soft: #f8f7f8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--body);
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Top accent stripe — OpenLoop pink */
+  .accent-stripe {
+    height: 3px;
+    background: var(--accent);
+  }
+
+  /* Memo strip — slim micro bar above main header */
+  .memo-strip {
+    background: var(--color-primary-white-shore);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 0;
+  }
+  .memo-strip-inner {
+    max-width: 1180px; margin: 0 auto; padding: 0 28px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    font-size: 12px; color: var(--muted); font-weight: 500; letter-spacing: .02em;
+  }
+  .memo-strip-tag { display: inline-flex; align-items: center; gap: 8px; }
+  .memo-strip-tag .dot { width:6px; height:6px; border-radius:50%; background:var(--accent); }
+  .memo-strip-tag strong { color: var(--heading); font-weight: 600; }
+
+  /* Top bar — main header */
+  .topbar {
+    border-bottom: 1px solid var(--border);
+    background: #fff;
+    padding: 18px 0;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .topbar-inner {
+    max-width: 1180px; margin: 0 auto; padding: 0 28px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .topbar-left { display: inline-flex; align-items: center; gap: 16px; }
+  .topbar-logo { height: 28px; width: auto; display: block; }
+
+  /* Veo wordmark */
+  .veo-mark {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600; font-size: 17px; letter-spacing: -.01em;
+    color: var(--heading); text-decoration: none;
+    line-height: 1;
+  }
+  .veo-mark em { font-style: italic; color: #C83A0E; font-weight: 600; }
+  .veo-mark .veo-glyph { display: inline-block; height: 22px; width: auto; }
+
+  /* X separator */
+  .topbar-x {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px;
+    color: var(--muted); font-weight: 400; font-size: 14px;
+  }
+
+  /* Nav */
+  .topbar-nav {
+    display: inline-flex; align-items: center; gap: 28px;
+    font-size: 14.5px; font-weight: 500;
+  }
+  .topbar-nav a {
+    color: var(--heading); text-decoration: none;
+    padding: 4px 0; border-bottom: 2px solid transparent;
+    transition: color .2s, border-color .2s;
+  }
+  .topbar-nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* Topbar CTA — compact */
+  .topbar-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent); color: #fff;
+    padding: 10px 18px; border-radius: 8px;
+    font-weight: 600; font-size: 14px; letter-spacing: 0;
+    text-decoration: none;
+    border: 1.5px solid var(--accent);
+    transition: background .2s, border-color .2s, transform .15s;
+  }
+  .topbar-cta:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: #fff; transform: translateY(-1px); }
+
+  @media (max-width: 980px) {
+    .topbar-nav { display: none; }
+  }
+  @media (max-width: 600px) {
+    .topbar-logo { height: 22px; }
+    .veo-mark { font-size: 15px; }
+    .veo-mark span { display: none; }
+    .topbar-x { font-size: 12px; }
+    .topbar-cta { padding: 9px 14px; font-size: 13px; }
+    .memo-strip-inner { font-size: 11px; }
+  }
+
+  /* Hero — OpenLoop-style 2-column */
+  .hero {
+    background: var(--bg);
+    padding: 72px 28px 88px;
+  }
+  .hero-inner {
+    max-width: 1180px; margin: 0 auto;
+    display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center;
+  }
+  .hero-copy { max-width: 600px; }
+  .hero-for {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent); background: rgba(236,1,86,0.06);
+    border: 1px solid rgba(236,1,86,0.18);
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 24px;
+  }
+  .hero-for .pill-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .hero h1 {
+    font-size: clamp(32px, 4vw, 46px);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -.018em;
+    color: var(--heading);
+    margin-bottom: 22px;
+  }
+  .hero h1 .pink { color: var(--accent); }
+  .hero-sub {
+    font-size: 20px;
+    color: var(--body);
+    line-height: 1.45;
+    font-weight: 500;
+    margin-bottom: 32px;
+  }
+
+  /* CTA button — OpenLoop pink-filled */
+  .cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--accent); color: #fff;
+    padding: 14px 26px; border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600; font-size: 16px; letter-spacing: 0;
+    text-decoration: none;
+    border: 1.5px solid var(--accent);
+    box-shadow: 0 1px 2px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.1);
+    transition: background .2s, border-color .2s, transform .15s, box-shadow .2s;
+  }
+  .cta:hover {
+    background: var(--accent-hover); border-color: var(--accent-hover);
+    color: #fff; text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -2px rgba(0,0,0,.06), 0 10px 15px -3px rgba(0,0,0,.1);
+  }
+  .cta .arr { transition: transform .2s; display: inline-block; }
+  .cta:hover .arr { transform: translateX(3px); }
+  .cta-block { margin-top: 24px; }
+  .hero-image {
+    position: relative;
+    display: flex; justify-content: center; align-items: center;
+    min-height: 380px;
+  }
+  .hero-image img {
+    width: 100%; height: auto; max-width: 540px; display: block;
+  }
+  @media (max-width: 900px) {
+    .hero { padding: 48px 28px 56px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 32px; }
+    .hero-image { order: -1; min-height: auto; }
+    .hero-image img { max-width: 360px; }
+  }
+
+  /* Page body */
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 28px 120px;
+  }
+
+  .section { margin-top: 80px; }
+  .section:first-child { margin-top: 0; }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h2 {
+    font-size: clamp(24px, 2.6vw, 32px);
+    font-weight: 700;
+    margin-bottom: 16px;
+    line-height: 1.15;
+    color: var(--heading);
+    letter-spacing: -.012em;
+  }
+
+  p {
+    margin-bottom: 18px;
+    font-size: 18px;
+    color: var(--body);
+    font-weight: 500;
+    line-height: 1.6;
+  }
+
+  strong { font-weight: 700; color: var(--heading); }
+
+  a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    font-weight: 600;
+  }
+  a:hover { color: var(--accent-hover); text-decoration-thickness: 2px; }
+
+  /* Reply blocks */
+  .reply {
+    margin-bottom: 44px;
+    padding: 28px 30px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 1px 3px rgba(0,0,0,.06);
+    transition: box-shadow .2s, border-color .2s;
+  }
+  .reply:hover { border-color: #cfcdd6; box-shadow: 0 4px 6px -2px rgba(0,0,0,.05), 0 10px 15px -3px rgba(0,0,0,.08); }
+
+  .reply-who {
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 8px;
+    color: var(--heading);
+    line-height: 1.3;
+    letter-spacing: -.01em;
+  }
+  .reply-who span {
+    font-weight: 500;
+    color: var(--muted);
+    font-size: 15px;
+    margin-left: 8px;
+  }
+  .reply-detail {
+    font-size: 16px;
+    color: var(--body);
+    margin-bottom: 16px;
+    line-height: 1.6;
+    font-weight: 500;
+  }
+  .reply-quote {
+    background: rgba(236,1,86,0.04);
+    border-left: 3px solid var(--accent);
+    padding: 18px 22px;
+    border-radius: 0 8px 8px 0;
+    font-size: 16px;
+    font-style: italic;
+    line-height: 1.65;
+    margin: 14px 0 0;
+    color: var(--heading);
+    font-weight: 500;
+  }
+  .reply-meta {
+    font-size: 13.5px;
+    color: var(--muted);
+    margin-top: 14px;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+  .reply-meta a { color: var(--heading); font-weight: 600; text-decoration-color: var(--border); }
+  .reply-meta a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+  .reply-extra {
+    margin-top: 16px;
+    font-size: 15px;
+    color: var(--body);
+    line-height: 1.6;
+    font-weight: 500;
+  }
+  .reply-extra strong { color: var(--heading); }
+
+  .reply-shot {
+    margin-top: 18px;
+    height: 280px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--soft);
+    box-shadow: 0 1px 3px rgba(0,0,0,.04);
+    position: relative;
+    cursor: zoom-in;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .reply-shot:hover { border-color: var(--accent); box-shadow: 0 4px 12px rgba(236,1,86,.1); }
+  .reply-shot img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: top center;
+    display: block;
+  }
+  .reply-shot-tag {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(255,255,255,0.95);
+    color: var(--heading);
+    font-size: 11px; font-weight: 600;
+    padding: 5px 10px; border-radius: 6px;
+    border: 1px solid var(--border);
+    display: inline-flex; align-items: center; gap: 6px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .reply-shot-tag::before { content: "⛶"; color: var(--accent); font-size: 12px; }
+
+  /* Lightbox for full-size screenshots */
+  .lightbox {
+    position: fixed; inset: 0;
+    background: rgba(15, 12, 34, 0.92);
+    display: none;
+    align-items: center; justify-content: center;
+    z-index: 100;
+    padding: 40px 32px;
+    cursor: zoom-out;
+  }
+  .lightbox.is-open { display: flex; }
+  .lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto; height: auto;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    cursor: default;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 22px; right: 26px;
+    background: rgba(255,255,255,0.12); color: #fff;
+    border: 1px solid rgba(255,255,255,0.18);
+    cursor: pointer;
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    font-size: 22px; line-height: 1;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .2s, transform .15s;
+    font-family: inherit;
+  }
+  .lightbox-close:hover { background: rgba(255,255,255,0.22); transform: scale(1.05); }
+  .reply-shot::after {
+    content: "";
+    position: absolute; left: 0; right: 0; bottom: 0; height: 56px;
+    background: linear-gradient(to bottom, rgba(248,247,248,0), rgba(248,247,248,.95));
+    pointer-events: none;
+  }
+  @media (max-width: 600px) {
+    .reply-shot { height: 220px; }
+  }
+
+
+  /* Email copy block */
+  .email-copy {
+    background: var(--color-primary-white-shore);
+    border-radius: 12px;
+    padding: 26px 28px;
+    margin: 14px 0 28px;
+    font-size: 15.5px;
+    line-height: 1.75;
+    white-space: pre-wrap;
+    color: var(--heading);
+    border: 1px solid var(--border);
+    font-weight: 500;
+  }
+  .email-meta {
+    font-size: 15px;
+    color: var(--body);
+    margin: 0 0 16px;
+    line-height: 1.6;
+    font-weight: 500;
+  }
+  .email-meta strong { color: var(--heading); font-weight: 700; }
+
+  /* Sign-off */
+  .sign-off {
+    margin-top: 72px;
+    padding-top: 36px;
+    border-top: 1px solid var(--border);
+    font-size: 17px;
+    color: var(--body);
+    line-height: 1.7;
+    font-weight: 500;
+  }
+  .sign-off .name { color: var(--heading); font-weight: 700; font-size: 18px; }
+  .sign-off a { color: var(--muted); font-weight: 500; text-decoration-color: var(--border); }
+  .sign-off a:hover { color: var(--accent); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 56px 20px 36px; }
+    .hero h1 { font-size: 30px; }
+    .hero-sub { font-size: 18px; }
+    .page { padding: 36px 20px 80px; }
+    h2 { font-size: 22px; }
+    p { font-size: 16px; }
+    .email-copy { padding: 20px 22px; font-size: 14.5px; }
+    .reply { padding: 22px 22px; }
+  }
+
+  /* Google Docs–style outline nav with progress */
+  .docnav {
+    position: fixed;
+    left: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    padding: 4px 0;
+  }
+  .docnav-bar {
+    position: absolute;
+    left: 12px;
+    top: 14px; bottom: 14px;
+    width: 2px;
+    background: var(--border);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+  .docnav-bar-fill {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    background: var(--accent);
+    border-radius: 1px;
+    height: 0;
+    transition: height .15s ease-out;
+  }
+  .docnav-list {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 28px;
+    position: relative;
+  }
+  .docnav-list li a {
+    display: flex; align-items: center; gap: 16px;
+    text-decoration: none; color: var(--muted);
+    font-size: 13px; font-weight: 500;
+    white-space: nowrap;
+    line-height: 1;
+  }
+  .docnav-list .docnav-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    transition: all .2s;
+  }
+  .docnav-list li a:hover .docnav-dot { border-color: var(--accent); }
+  .docnav-list li a:hover { color: var(--heading); }
+  .docnav-list li.passed .docnav-dot {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .docnav-list li.active .docnav-dot {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(236,1,86,0.18);
+  }
+  .docnav-list li.active a {
+    color: var(--heading);
+    font-weight: 600;
+  }
+  .docnav-label {
+    opacity: 0;
+    transform: translateX(-6px);
+    transition: opacity .22s ease, transform .22s ease;
+    pointer-events: none;
+    background: #fff;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    color: var(--heading);
+  }
+  .docnav:hover .docnav-label {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+  /* Make hover area wider so labels reveal reliably */
+  .docnav { padding: 12px 14px 12px 0; }
+  @media (max-width: 1340px) { .docnav { display: none; } }
+</style>
+</head>
+<body>
+
+  <!-- Top accent stripe (OpenLoop pink) -->
+  <div class="accent-stripe"></div>
+
+  <!-- Google Docs–style outline nav -->
+  <aside class="docnav" aria-label="Page outline">
+    <div class="docnav-bar"><div class="docnav-bar-fill" id="navFill"></div></div>
+    <ol class="docnav-list">
+      <li data-target="seven"><a href="#seven"><span class="docnav-dot"></span><span class="docnav-label">The seven</span></a></li>
+      <li data-target="email"><a href="#email"><span class="docnav-dot"></span><span class="docnav-label">The email</span></a></li>
+      <li data-target="how"><a href="#how"><span class="docnav-dot"></span><span class="docnav-label">How I found them</span></a></li>
+      <li data-target="next"><a href="#next"><span class="docnav-dot"></span><span class="docnav-label">What's next</span></a></li>
+    </ol>
+  </aside>
+
+  <!-- Memo strip -->
+  <div class="memo-strip">
+    <div class="memo-strip-inner">
+      <span class="memo-strip-tag"><span class="dot"></span><strong>Private memo</strong> · for Brian Godla · OpenLoop</span>
+      <span>prepared by veogrowth.com</span>
+    </div>
+  </div>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-left">
+        <a href="https://veogrowth.com" target="_blank" rel="noopener" class="veo-mark" aria-label="veogrowth">
+          <svg class="veo-glyph" viewBox="0 0 220 120" aria-hidden="true">
+            <path d="M40 60 L70 30 L100 60 L70 90 Z" fill="#C83A0E"/>
+            <path d="M100 60 L120 60" stroke="#E8490B" stroke-width="4" stroke-dasharray="4 5" opacity=".8" stroke-linecap="round"/>
+            <path d="M120 60 L150 30 L180 60 L150 90 Z" fill="none" stroke="#14110D" stroke-width="6" stroke-linejoin="miter"/>
+          </svg>
+          <span>v<em>eo</em>growth</span>
+        </a>
+        <span class="topbar-x" aria-hidden="true">×</span>
+        <img class="topbar-logo" src="openloop-logo.svg" alt="OpenLoop">
+      </div>
+      <nav class="topbar-nav" aria-label="Page sections">
+        <a href="#seven">The seven</a>
+        <a href="#email">The email</a>
+        <a href="#how">How I found them</a>
+        <a href="#next">What's next</a>
+      </nav>
+      <a class="topbar-cta" href="https://calendly.com/veogrowth/discovery" target="_blank" rel="noopener">Book 15 min →</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <div class="hero-for"><span class="pill-dot"></span>OpenLoop · B&amp;M cold email campaign</div>
+        <h1>1,000 emails to medspa and chiro owners. <span class="pink">Seven replied.</span></h1>
+        <p class="hero-sub">An anonymous outbound campaign for OpenLoop's B&amp;M offer. The seven owners are below.</p>
+        <a class="cta" href="https://calendly.com/veogrowth/discovery" target="_blank" rel="noopener">Book 15 min <span class="arr">→</span></a>
+      </div>
+      <div class="hero-image">
+        <img src="hero.webp" alt="" loading="eager">
+      </div>
+    </div>
+  </div>
+
+<div class="page">
+
+  <!-- THE SEVEN -->
+  <div class="section" id="seven" style="margin-top:0">
+    <div class="section-label">The seven</div>
+
+    <div class="reply">
+      <div class="reply-who">Advanced Chiropractic ICT <span>Wichita, KS</span></div>
+      <div class="reply-detail">Owner is Dr. Holt. Two locations. No prescriber on staff. No weight loss line on the site.</div>
+      <div class="reply-quote">"Hey Nate, Sure, walk me through it."</div>
+      <div class="reply-meta">Sent to <a href="mailto:office@advancedchiroict.com">office@advancedchiroict.com</a> · <a href="https://advancedchiroict.com" target="_blank" rel="noopener">advancedchiroict.com</a></div>
+      <div class="reply-shot" role="button" tabindex="0" aria-label="Expand screenshot"><span class="reply-shot-tag">Expand</span><img src="img/01-advanced-chiropractic-ict.webp" alt="Reply thread from Advanced Chiropractic ICT" loading="lazy"></div>
+    </div>
+
+    <div class="reply">
+      <div class="reply-who">Kinetic Spine &amp; Rehab <span>Rockville, MD</span></div>
+      <div class="reply-detail">One location. Independent chiro plus PT. No prescriber on staff. Owner isn't named on the About page; admin replied directly.</div>
+      <div class="reply-quote">"Hey Owen, Sounds interesting. Can you send over some more info on how this works? Thanks!"</div>
+      <div class="reply-meta">Sent to <a href="mailto:admin@kineticspinerehab.com">admin@kineticspinerehab.com</a> · <a href="https://kineticspinerehab.com" target="_blank" rel="noopener">kineticspinerehab.com</a></div>
+      <div class="reply-shot" role="button" tabindex="0" aria-label="Expand screenshot"><span class="reply-shot-tag">Expand</span><img src="img/02-kinetic-spine.webp" alt="Reply thread from Kinetic Spine & Rehab" loading="lazy"></div>
+    </div>
+
+    <div class="reply">
+      <div class="reply-who">Replenish Health Spa <span>NC</span></div>
+      <div class="reply-detail">Two location medspa. Site sells stem cell hair, exosomes, IV. No GLP-1, hormones, or peptides on the live pages. The About page has an unfilled placeholder reading "Dr Name, Creds" where the prescribing clinician bio should go. Reply came from the shared inbox.</div>
+      <div class="reply-quote">"Sure. What does a walk through look like?"</div>
+      <div class="reply-meta">Sent to <a href="mailto:info@replenishhealthspa.com">info@replenishhealthspa.com</a> · <a href="https://replenishhealthspa.com" target="_blank" rel="noopener">replenishhealthspa.com</a></div>
+      <div class="reply-shot" role="button" tabindex="0" aria-label="Expand screenshot"><span class="reply-shot-tag">Expand</span><img src="img/03-replenish.webp" alt="Reply thread from Replenish Health Spa" loading="lazy"></div>
+    </div>
+
+    <div class="reply">
+      <div class="reply-who">Lakeshore Skin + Body <span>MI</span></div>
+      <div class="reply-detail">Two prescribers on staff already, Brooke Young NP and Paige Kulju PA. No weight loss line on the site.</div>
+      <div class="reply-quote">"Hi Finn, That sounds interesting. Happy to hear more about how this works. Thanks!"</div>
+      <p class="reply-extra">Reply was signed Patient Concierge, not the owner.</p>
+      <div class="reply-meta">Sent to <a href="mailto:info@lakeshoreskinandbody.com">info@lakeshoreskinandbody.com</a> · <a href="https://lakeshoreskinandbody.com" target="_blank" rel="noopener">lakeshoreskinandbody.com</a></div>
+      <div class="reply-shot" role="button" tabindex="0" aria-label="Expand screenshot"><span class="reply-shot-tag">Expand</span><img src="img/04-lakeshore.webp" alt="Reply thread from Lakeshore Skin + Body" loading="lazy"></div>
+    </div>
+
+    <div class="reply">
+      <div class="reply-who">AES Med Spa <span>IL</span></div>
+      <div class="reply-detail">Has Dr. Umar Bhatti as supervising MD for physician directed protocols.</div>
+      <div class="reply-quote">"Hi Ryan, Thanks for reaching out. I'm the owner of AES Med Spa and would be open to learning more about your program. Before scheduling a walkthrough, could you please share: Company website, How the program works operationally, Pharmacy partners used, Whether medications are compounded or branded..."</div>
+      <p class="reply-extra">Owner is asking the exact diligence questions a serious GLP-1 buyer asks. <strong>Dr. Bhatti's role on the site looks like aesthetics protocols, not weight loss prescribing.</strong></p>
+      <div class="reply-meta">Sent to <a href="mailto:info@aesmedspa.com">info@aesmedspa.com</a> · <a href="https://aesmedspa.com" target="_blank" rel="noopener">aesmedspa.com</a></div>
+      <div class="reply-shot" role="button" tabindex="0" aria-label="Expand screenshot"><span class="reply-shot-tag">Expand</span><img src="img/05-aes-medspa.webp" alt="Reply thread from AES Med Spa" loading="lazy"></div>
+    </div>
+
+    <div class="reply">
+      <div class="reply-who">Well Room VA <span>Virginia</span></div>
+      <div class="reply-detail">Owner Megan Kingdon is an NP. Site has a fully built Semaglutide and Tirzepatide program live at $1,850/month. One location.</div>
+      <div class="reply-quote">"Hey Owen, Sounds interesting. Can you explain an quick overview of how it works before I book a demo? I don't want to waste anyone's time.. Megan"</div>
+      <p class="reply-extra">She's already running the program OpenLoop sells to set up. Single location in VA. OpenLoop covers all 50.</p>
+      <div class="reply-meta">Sent to <a href="mailto:megan@wellroomva.com">megan@wellroomva.com</a> · <a href="https://wellroomva.com" target="_blank" rel="noopener">wellroomva.com</a></div>
+      <div class="reply-shot" role="button" tabindex="0" aria-label="Expand screenshot"><span class="reply-shot-tag">Expand</span><img src="img/06-well-room.webp" alt="Reply thread from Well Room VA" loading="lazy"></div>
+    </div>
+
+    <div class="reply">
+      <div class="reply-who">Advanced Back &amp; Neck Care <span>NJ</span></div>
+      <div class="reply-detail">Owner Dr. Xerxes Oshidar runs ChiroThin, marketed on the site as "Doctor Supervised Weight Loss... Without Hormones."</div>
+      <div class="reply-quote">"Yes. Call the office 6092617562"</div>
+      <p class="reply-extra">Two word reply may be staff. The site's positioning against Rx weight loss is worth knowing before the call.</p>
+      <div class="reply-meta">Sent to <a href="mailto:droshidar@advancedbackandneckcare.com">droshidar@advancedbackandneckcare.com</a> · <a href="https://advancedbackandneckcare.com" target="_blank" rel="noopener">advancedbackandneckcare.com</a></div>
+      <div class="reply-shot" role="button" tabindex="0" aria-label="Expand screenshot"><span class="reply-shot-tag">Expand</span><img src="img/07-advanced-back-neck.webp" alt="Reply thread from Advanced Back & Neck Care" loading="lazy"></div>
+    </div>
+  </div>
+
+  <!-- THE EMAIL -->
+  <div class="section" id="email">
+    <div class="section-label">The email</div>
+
+    <p class="email-meta">Subject line rotation: <strong>"GLP-1,"</strong> <strong>"GLP-1 program,"</strong> <strong>"weight loss program."</strong></p>
+
+    <p>Chiro body:</p>
+
+    <div class="email-copy">Hi Sam,
+
+We've been setting up chiropractors with a branded GLP-1 and recovery peptide program in about two weeks. Our clinicians prescribe, we handle pharmacy and compliance across all 50 states, you keep your brand and the patient relationship. You don't hire a doctor, deal with the DEA, or sort licensing in every state your patients live in.
+
+Most chiros start with GLP-1 and add peptides, hormones, or IV under the same setup later. One relationship, not five vendors.
+
+Want me to walk you through it?</div>
+  </div>
+
+  <!-- HOW I FOUND THEM -->
+  <div class="section" id="how">
+    <div class="section-label">How I found them</div>
+
+    <p>I sourced practices from public data and ran each one through a disqualifier pass. Drop anything already mentioning <strong>Hims, Mochi, Henry Meds, Klarity, Numan, LifeMD, Ro, or Medvi</strong> (already in another funnel). Drop anything with a live <strong>weight loss, GLP-1, hormone, or peptide line</strong> on the site (already running it). Flag anything with an <strong>MD, NP, or PA on the team page</strong> (prescribing covered in house). Re-fetch each site in the hour before send so nothing's stale.</p>
+  </div>
+
+  <!-- TURNING THIS ON -->
+  <div class="section" id="next">
+    <div class="section-label">Turning this on</div>
+
+    <p>With CRM access to exclude practices already in your pipeline and a read on what's landing on AE discovery calls in Q2, the targeting tightens and there's a real follow up sequence per prospect instead of one email.</p>
+
+    <p>The model would be a monthly retainer. Rotating angles each month so the same prospects come back in June on longevity or peptides instead of GLP-1, then again in July from a different sender. Owners aren't burned by one no reply, they're burned by the same pitch on repeat. The addressable pool is large enough to recycle for a year before we'd need to re-source.</p>
+
+    <p>The seven owners above are yours either way. If you want this running into your June class, reply with a time.</p>
+
+    <div class="cta-block">
+      <a class="cta" href="https://calendly.com/veogrowth/discovery" target="_blank" rel="noopener">Book 15 min <span class="arr">→</span></a>
+    </div>
+  </div>
+
+  <div class="sign-off">
+    <span class="name">Dmitry</span><br>
+    <a href="mailto:dmitry@veogrowth.com">dmitry@veogrowth.com</a>
+  </div>
+
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot full size">
+  <button class="lightbox-close" type="button" aria-label="Close">×</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+  // Smooth scroll for anchor links accounting for sticky topbar
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href').slice(1);
+      if (!id) return;
+      const t = document.getElementById(id);
+      if (!t) return;
+      e.preventDefault();
+      const top = t.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+
+  // Doc nav active section + progress fill
+  (function() {
+    const items = document.querySelectorAll('.docnav-list li');
+    const ids = ['seven','email','how','next'];
+    const sections = ids.map(id => document.getElementById(id));
+    const fill = document.getElementById('navFill');
+    if (!fill || sections.some(s => !s)) return;
+
+    function update() {
+      const winH = window.innerHeight;
+      const scrollTop = window.scrollY;
+      let activeIdx = -1;
+      sections.forEach((sec, i) => {
+        const rect = sec.getBoundingClientRect();
+        if (rect.top <= winH * 0.4) activeIdx = i;
+      });
+      if (activeIdx < 0) activeIdx = 0;
+      items.forEach((li, i) => {
+        li.classList.toggle('active', i === activeIdx);
+        li.classList.toggle('passed', i < activeIdx);
+      });
+      const start = sections[0].offsetTop - winH * 0.4;
+      const end = sections[sections.length - 1].offsetTop - winH * 0.4;
+      const progress = Math.max(0, Math.min(1, (scrollTop - start) / Math.max(1, end - start)));
+      fill.style.height = (progress * 100) + '%';
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+
+  // Lightbox for screenshots
+  (function() {
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    const closeBtn = lb.querySelector('.lightbox-close');
+
+    function openShot(shot) {
+      const img = shot.querySelector('img');
+      if (!img) return;
+      lbImg.src = img.src;
+      lbImg.alt = img.alt || '';
+      lb.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+    function close() {
+      lb.classList.remove('is-open');
+      document.body.style.overflow = '';
+      lbImg.src = '';
+    }
+
+    document.querySelectorAll('.reply-shot').forEach(shot => {
+      shot.addEventListener('click', () => openShot(shot));
+      shot.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openShot(shot); }
+      });
+    });
+    lb.addEventListener('click', e => {
+      if (e.target === lb || e.target === closeBtn || e.target.closest('.lightbox-close')) close();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && lb.classList.contains('is-open')) close();
+    });
+  })();
+</script>
+</body>
+</html>
