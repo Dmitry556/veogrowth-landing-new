@@ -546,9 +546,8 @@
   <aside class="docnav" aria-label="Page outline">
     <div class="docnav-bar"><div class="docnav-bar-fill" id="navFill"></div></div>
     <ol class="docnav-list">
-      <li data-target="seven"><a href="#seven"><span class="docnav-dot"></span><span class="docnav-label">The seven</span></a></li>
-      <li data-target="email"><a href="#email"><span class="docnav-dot"></span><span class="docnav-label">The email</span></a></li>
-      <li data-target="how"><a href="#how"><span class="docnav-dot"></span><span class="docnav-label">How I found them</span></a></li>
+      <li data-target="leads"><a href="#leads"><span class="docnav-dot"></span><span class="docnav-label">Leads generated</span></a></li>
+      <li data-target="process"><a href="#process"><span class="docnav-dot"></span><span class="docnav-label">The process</span></a></li>
       <li data-target="next"><a href="#next"><span class="docnav-dot"></span><span class="docnav-label">What's next</span></a></li>
     </ol>
   </aside>
@@ -577,9 +576,8 @@
         <img class="topbar-logo" src="/openloop/openloop-logo.svg" alt="OpenLoop">
       </div>
       <nav class="topbar-nav" aria-label="Page sections">
-        <a href="#seven">The seven</a>
-        <a href="#email">The email</a>
-        <a href="#how">How I found them</a>
+        <a href="#leads">Leads generated</a>
+        <a href="#process">The process</a>
         <a href="#next">What's next</a>
       </nav>
       <a class="topbar-cta" href="https://calendly.com/veogrowth/discovery" target="_blank" rel="noopener">Book 15 min →</a>
@@ -590,7 +588,7 @@
   <div class="hero">
     <div class="hero-inner">
       <div class="hero-copy">
-        <h1>Hey Brian, I ran an anonymous outbound campaign and got <span class="pink">7 medspa and chiro owners</span> interested in talking about OpenLoop.</h1>
+        <h1>Hey Brian, I ran an anonymous outbound campaign of <span class="pink">1,000 emails</span> and got <span class="pink">7 medspa and chiro owners</span> interested in talking about OpenLoop.</h1>
         <a class="cta" href="https://calendly.com/veogrowth/discovery" target="_blank" rel="noopener">Book 15 min <span class="arr">→</span></a>
       </div>
       <div class="hero-image">
@@ -601,9 +599,9 @@
 
 <div class="page">
 
-  <!-- THE SEVEN -->
-  <div class="section" id="seven" style="margin-top:0">
-    <div class="section-label">The seven</div>
+  <!-- LEADS GENERATED -->
+  <div class="section" id="leads" style="margin-top:0">
+    <div class="section-label">Leads generated</div>
 
     <div class="reply">
       <div class="reply-who">Advanced Chiropractic ICT <span>Wichita, KS</span></div>
@@ -666,13 +664,17 @@
     </div>
   </div>
 
-  <!-- THE EMAIL -->
-  <div class="section" id="email">
-    <div class="section-label">The email</div>
+  <!-- THE PROCESS -->
+  <div class="section" id="process">
+    <div class="section-label">The process</div>
 
-    <p class="email-meta">Subject line rotation: <strong>"GLP-1,"</strong> <strong>"GLP-1 program,"</strong> <strong>"weight loss program."</strong></p>
+    <p>Sourced from our Google Maps database.</p>
 
-    <p>Chiro body:</p>
+    <p>Qualified for ICP fit. Dropped anything already mentioning <strong>Hims, Mochi, Henry Meds, Klarity, Numan, LifeMD, Ro, or Medvi</strong> (already in another funnel). Dropped anything with a live <strong>weight loss, GLP-1, hormone, or peptide line</strong> on the site (already running it). Flagged anything with an <strong>MD, NP, or PA on the team page</strong> (prescribing covered in house).</p>
+
+    <p>Found owner names and emails.</p>
+
+    <p style="margin-top:32px">Sent this email. Subject line rotation: <strong>"GLP-1,"</strong> <strong>"GLP-1 program,"</strong> <strong>"weight loss program."</strong></p>
 
     <div class="email-copy">Hi Sam,
 
@@ -681,17 +683,6 @@ We've been setting up chiropractors with a branded GLP-1 and recovery peptide pr
 Most chiros start with GLP-1 and add peptides, hormones, or IV under the same setup later. One relationship, not five vendors.
 
 Want me to walk you through it?</div>
-  </div>
-
-  <!-- HOW I FOUND THEM -->
-  <div class="section" id="how">
-    <div class="section-label">How I found them</div>
-
-    <p>Sourced from our Google Maps database.</p>
-
-    <p>Qualified for ICP fit. Dropped anything already mentioning <strong>Hims, Mochi, Henry Meds, Klarity, Numan, LifeMD, Ro, or Medvi</strong> (already in another funnel). Dropped anything with a live <strong>weight loss, GLP-1, hormone, or peptide line</strong> on the site (already running it). Flagged anything with an <strong>MD, NP, or PA on the team page</strong> (prescribing covered in house).</p>
-
-    <p>Found owner names and emails.</p>
   </div>
 
   <!-- WHAT'S NEXT -->
@@ -741,7 +732,7 @@ Want me to walk you through it?</div>
   // Doc nav active section + progress fill
   (function() {
     const items = document.querySelectorAll('.docnav-list li');
-    const ids = ['seven','email','how','next'];
+    const ids = ['leads','process','next'];
     const sections = ids.map(id => document.getElementById(id));
     const fill = document.getElementById('navFill');
     if (!fill || sections.some(s => !s)) return;
