@@ -5,7 +5,8 @@ Reference markdown for veogrowth — committed to git so it survives any local-d
 | File | Purpose |
 |---|---|
 | `brand-assets.md` | **Master reference.** Positioning, ICP, pricing, voice rules, system architecture, all asset locations, canonical copy blocks. Start here. |
-| `full-site-content.md` | Verbatim site copy (every section, in order). |
+| `openloop-memo.md` | Reference for the `/openloop` private memo: structure, voice rules, file inventory, OG card setup, history of dropped design paths. |
+| `full-site-content.md` | Verbatim main-site copy (every section, in order). |
 | `demo-example.md` | Standalone markdown of the Gong demo section on the site. |
 | `linkedin-playbook-post.md` | The "Human-in-the-loop AI agent outbound playbook" caption text for the LinkedIn post. |
 | `smartac-campaign.md` | SmartAC anonymous-campaign proof artifact (extracted from legacy site). |

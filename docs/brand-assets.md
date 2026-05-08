@@ -2,7 +2,12 @@
 
 Comprehensive context for any future session, contractor, or Claude instance working on veogrowth. **Reload this file as conversation context to restore full project state.**
 
-**Status as of 2026-05-06:** Live at https://www.veogrowth.com (Vercel) · GitHub: https://github.com/Dmitry556/veogrowth-landing-new · Operator: Dmitry Pinchuk · NYC.
+**Status as of 2026-05-08:** Live at https://www.veogrowth.com (Vercel) · GitHub: https://github.com/Dmitry556/veogrowth-landing-new · Operator: Dmitry Pinchuk · NYC.
+
+**What changed since 2026-05-06:**
+- Site copy updated to multi-channel positioning (email + LinkedIn). See § 4 & § 6 below — Outreach Agent and Outputs sections now describe outreach across "email, LinkedIn, and other channels where the buyer is reachable."
+- Voxpopme proof section was added (commit `de3e876`) then removed (commit `27adecc`) — assets and copy reusable from those commits when the proof is added back later. Markdown source for the proof copy lives in conversation history; reusable: 25-brand logo wall, Miguel Palma quote with photo, Swarovski/GEICO/Irving Oil reply specimens with redaction script pattern.
+- New private memo page at `/openloop` — proof artifact for OpenLoop's sales team. See `docs/openloop-memo.md` for full reference.
 
 ---
 
@@ -75,8 +80,8 @@ Sources every company in TAM, enriches each, qualifies against ICP definition fr
 **Output:** daily feed of accounts heating up, scored 0–100 for relevance.
 
 ### 4 · Outreach Agent (continuous)
-When signal fires on qualified account, writes specific email anchored in research and signal. Sent from branded infrastructure in client's name.
-**Output:** 3,000–5,000 one-to-one sends/month for typical mid-TAM client.
+When signal fires on qualified account, writes specific message anchored in research and signal, in the channel where the buyer is most reachable: email, LinkedIn, or other relevant channels. Sent from branded infrastructure (domains and LinkedIn accounts) set up in client's name.
+**Output:** 3,000–5,000 one-to-one touches/month for typical mid-TAM client, across email + LinkedIn.
 
 ### 5 · Meeting Agent (per meeting)
 Classifies replies, escalates ambiguous ones, books confirmed meetings on rep calendar, delivers pre-call brief 24h before with who they're meeting, what fired, what to lead with, what to avoid.
@@ -236,6 +241,18 @@ This URL `/smartac` is currently 404 on the new Vercel deployment but no cold em
 
 ---
 
+## 10b · OpenLoop private memo (`/openloop`)
+
+A bespoke proof artifact for OpenLoop's SMB inside-sales org. Lives at `https://veogrowth.com/openloop`. Generic memo (no individual recipient) — sendable to anyone at OpenLoop. `noindex,nofollow` for SEO; LinkedIn bot still reaches it for OG preview.
+
+**Page hits a different visual register than the main site** — Inter font (no Fraunces), white bg (no paper cream), OpenLoop's actual pink `#ec0156` and navy `#192b58`. Uses OpenLoop's actual homepage hero photo + their wordmark SVG (extracted from their JS bundle), with a co-branded "veogrowth × OpenLoop" lockup so it reads as a tailored proof artifact, not impersonation.
+
+**Custom 1200×630 OG card** for LinkedIn DM previews. Title in OG: *"1,000 cold emails. 7 owners interested."*
+
+**Full reference:** `docs/openloop-memo.md` — page structure, voice rules, file inventory, regeneration scripts, history of decisions.
+
+---
+
 ## 11 · Contact
 
 - **Email:** dmitry@veogrowth.com
@@ -255,8 +272,11 @@ This URL `/smartac` is currently 404 on the new Vercel deployment but no cold em
 - `robots.txt`, `sitemap.xml`
 - `og-cover.html` — 1200×630 OG image stage (export to PNG before deploy)
 - `README.md`
-- `docs/brand-assets.md` — this file
-- `docs/full-site-content.md` — full site copy
+- `openloop/` — private OpenLoop memo (see § 10b and `docs/openloop-memo.md`)
+  - `index.html`, `og.png`, `hero.webp`, `openloop-logo.svg`, `img/01–07-*.webp`
+- `docs/brand-assets.md` — this file (master reference)
+- `docs/openloop-memo.md` — OpenLoop page reference
+- `docs/full-site-content.md` — full main site copy
 - `docs/demo-example.md` — demo section markdown
 - `docs/linkedin-playbook-post.md` — LinkedIn post caption
 - `docs/smartac-campaign.md` — SmartAC artifact
@@ -276,4 +296,4 @@ This URL `/smartac` is currently 404 on the new Vercel deployment but no cold em
 
 ---
 
-*Last updated 2026-05-06. Update when any asset, copy line, pricing detail, or positioning shifts.*
+*Last updated 2026-05-08. Update when any asset, copy line, pricing detail, or positioning shifts.*
