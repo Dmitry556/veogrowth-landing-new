@@ -1920,6 +1920,15 @@
       });
     });
   })();
+
+  /* Expand all FAQs before Cmd/Ctrl+A so select-all captures every answer */
+  document.addEventListener('keydown', function(e) {
+    if ((e.metaKey || e.ctrlKey) && (e.key === 'a' || e.key === 'A')) {
+      var t = e.target;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+      document.querySelectorAll('details.faq').forEach(function(d) { d.open = true; });
+    }
+  }, true);
 </script>
 
 <button class="to-top" id="toTop" aria-label="Back to top">
