@@ -785,6 +785,163 @@
   .case-insight .ci-link .arr{transition:transform .2s}
   .case-insight .ci-link:hover .arr{transform:translateX(4px)}
 
+  /* ——— Proof section ——— */
+  #proof{padding:64px 0 56px;border-top:1px solid var(--rule);background:var(--paper)}
+  .proof-head{display:grid;grid-template-columns:minmax(0,560px) 1fr;gap:40px;align-items:end;margin-bottom:28px}
+  @media(max-width:860px){.proof-head{grid-template-columns:1fr;gap:14px}}
+  .proof-head .label{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-2);display:flex;align-items:center;gap:12px}
+  .proof-head .label::before{content:"";width:24px;height:.5px;background:var(--ink)}
+  .proof-head h2{margin:14px 0 0;font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 60,"WONK" 1;font-weight:400;font-size:clamp(34px,3.6vw,52px);line-height:1;letter-spacing:-.025em}
+  .proof-head h2 em{font-style:italic;color:var(--signal);font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
+  .proof-head .ph-note{
+    margin:14px 0 0;
+    font-family:"Instrument Sans",sans-serif;font-style:italic;
+    font-size:14px;line-height:1.4;color:var(--ink-3);max-width:540px;
+  }
+  .proof-head h2 .h-brand{white-space:nowrap}
+  .proof-head h2 .h-brand .h-logo{
+    display:inline-block;
+    width:.62em;height:.62em;
+    border-radius:50%;
+    object-fit:cover;
+    vertical-align:baseline;
+    margin-right:.18em;
+    transform:translateY(.06em);
+    mix-blend-mode:multiply;
+  }
+  .proof-head .ph-sub{margin:0;font-size:15px;line-height:1.5;color:var(--ink-2);max-width:520px}
+
+  /* Logo wall — denser, real logos */
+  .proof-logos{
+    margin:0 0 28px;
+    display:grid;grid-template-columns:repeat(5,1fr);
+    border-top:1px solid var(--rule);border-left:1px solid var(--rule);
+    background:var(--paper);
+  }
+  .proof-logos .lg{
+    border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);
+    padding:6px 10px;aspect-ratio:4 / 1;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .2s;overflow:hidden;
+  }
+  .proof-logos .lg:hover{background:var(--paper-2)}
+  .proof-logos .lg img{
+    max-height:40px;max-width:78%;width:auto;height:auto;object-fit:contain;
+    mix-blend-mode:multiply;
+    filter:saturate(0) contrast(1.05);
+    opacity:.95;transition:filter .25s, opacity .25s, transform .25s;
+  }
+  .proof-logos .lg:hover img{filter:saturate(1) contrast(1);opacity:1;transform:scale(1.04)}
+  .proof-logos .lg .fb{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
+  @media(max-width:860px){.proof-logos{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:520px){.proof-logos{grid-template-columns:repeat(2,1fr)}}
+
+  /* Miguel block — photo + quote, side by side, compact */
+  .proof-miguel{
+    display:grid;grid-template-columns:200px 1fr;gap:32px;align-items:center;
+    margin:0 0 40px;padding:28px 32px;
+    background:var(--paper-2);border:1px solid var(--rule);
+    position:relative;
+  }
+  .proof-miguel::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--signal)}
+  .proof-miguel .pm-photo{width:170px;height:170px;border-radius:50%;overflow:hidden;background:var(--paper-3);flex-shrink:0;border:2px solid var(--paper);box-shadow:0 0 0 1px var(--rule)}
+  .proof-miguel .pm-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .proof-miguel .pm-status{position:absolute;top:10px;right:14px;font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--signal);border:.5px dashed var(--signal);padding:3px 7px}
+  .proof-miguel blockquote{margin:0;font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 80;font-weight:400;font-size:clamp(18px,1.7vw,22px);line-height:1.35;letter-spacing:-.012em;color:var(--ink)}
+  .proof-miguel blockquote em{font-style:italic;color:var(--signal);font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
+  .proof-miguel .pm-attr{margin-top:18px;display:flex;flex-direction:column;gap:4px}
+  .proof-miguel .pm-name{
+    font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 60;
+    font-weight:500;font-size:19px;line-height:1.15;letter-spacing:-.012em;color:var(--ink);
+  }
+  .proof-miguel .pm-title{
+    font-family:"Instrument Sans",sans-serif;font-style:italic;
+    font-size:13.5px;line-height:1.45;color:var(--ink-3);letter-spacing:0;
+  }
+  .proof-miguel .pm-title .pm-co{
+    font-style:normal;color:var(--ink);font-weight:600;letter-spacing:-.005em;
+    display:inline-flex;align-items:center;gap:6px;vertical-align:baseline;
+  }
+  .proof-miguel .pm-title .pm-co img{
+    height:16px;width:auto;max-width:90px;
+    mix-blend-mode:multiply;filter:saturate(0) contrast(1.05);opacity:.95;
+    transform:translateY(2px);
+  }
+  .proof-miguel .pm-title .pm-dot{display:inline-block;width:3px;height:3px;background:var(--ink-3);border-radius:50%;vertical-align:middle;margin:0 8px 2px}
+  @media(max-width:780px){
+    .proof-miguel{grid-template-columns:1fr;text-align:left;padding:24px 22px;gap:18px}
+    .proof-miguel .pm-photo{width:96px;height:96px}
+  }
+
+  /* 3 case cards in a row */
+  .proof-cases{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:1000px){.proof-cases{grid-template-columns:1fr 1fr;gap:14px}}
+  @media(max-width:680px){.proof-cases{grid-template-columns:1fr}}
+
+  .proof-case{
+    background:var(--paper);border:1px solid var(--rule);
+    padding:22px 22px 24px;display:flex;flex-direction:column;gap:14px;
+    transition:border-color .25s, transform .25s;
+  }
+  .proof-case:hover{border-color:var(--ink-3)}
+  .proof-case .pc-top{display:flex;align-items:center;justify-content:flex-end;min-height:30px}
+  .proof-case .pc-top .pc-logo{height:30px;width:auto;max-width:120px;mix-blend-mode:multiply;filter:saturate(0) contrast(1.05);opacity:.9}
+  .proof-case h3{margin:0;font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 60,"WONK" 1;font-weight:400;font-size:24px;line-height:1.05;letter-spacing:-.022em;color:var(--ink)}
+  .proof-case .pc-desc{margin:0;font-family:"Instrument Sans",sans-serif;font-style:italic;font-size:12.5px;line-height:1.45;color:var(--ink-3)}
+
+  .proof-case .pc-screen{
+    background:var(--paper-2);border:1px solid var(--rule);
+    padding:0;position:relative;
+    aspect-ratio:5 / 6;overflow:hidden;
+  }
+  .proof-case .pc-screen img{
+    width:100%;height:100%;object-fit:contain;object-position:top center;display:block;
+  }
+  .proof-case .pc-screen .pcs-tag{
+    position:absolute;top:6px;left:8px;
+    background:var(--paper);padding:3px 7px;
+    font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--ink-3);
+    z-index:2;border:.5px solid var(--rule);
+  }
+
+  .proof-case .pc-narr{font-size:13.5px;line-height:1.5;color:var(--ink-2);margin:0}
+  .proof-case .pc-reply-cue{display:flex;align-items:center;gap:8px;margin:6px 0 -4px;font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--signal)}
+  .proof-case .pc-reply-cue::before{content:"";flex:1;height:.5px;background:var(--signal);opacity:.45}
+  .proof-case .pc-reply-cue::after{content:"";flex:1;height:.5px;background:var(--signal);opacity:.45}
+  .proof-case .pc-pull{margin:auto 0 0;padding:14px 0 0;border-top:.5px solid var(--rule)}
+  .proof-case .pc-pull blockquote{margin:0;font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 80;font-style:italic;font-weight:500;font-size:15px;line-height:1.32;color:var(--ink)}
+  .proof-case .pc-pull blockquote em{color:var(--signal);font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
+  .proof-case .pc-pull .pp-attr{margin-top:8px;font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3)}
+  .proof-case .pc-pull .pp-attr strong{color:var(--ink);font-weight:600}
+
+  /* By the numbers strip */
+  .proof-stats{
+    margin-top:56px;
+    display:grid;grid-template-columns:repeat(3,1fr);
+    border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+    background:var(--paper);
+  }
+  .proof-stat{
+    padding:32px 28px;border-right:1px solid var(--rule);
+    display:flex;flex-direction:column;gap:14px;justify-content:space-between;min-height:160px;
+  }
+  .proof-stat:last-child{border-right:none}
+  .proof-stat .v{
+    font-family:"Fraunces",serif;font-variation-settings:"opsz" 144,"SOFT" 40,"WONK" 1;
+    font-weight:400;font-size:clamp(48px,5vw,76px);line-height:.95;letter-spacing:-.035em;color:var(--ink);
+  }
+  .proof-stat .v em{font-style:italic;color:var(--signal);font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
+  .proof-stat .v .unit{font-size:.42em;color:var(--muted);letter-spacing:0;margin-left:6px;font-style:normal}
+  .proof-stat .l{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-2);line-height:1.4}
+  .proof-stat .l span{display:block;color:var(--muted);font-size:10px;letter-spacing:.14em;text-transform:lowercase;margin-top:4px}
+  @media(max-width:780px){.proof-stats{grid-template-columns:1fr}.proof-stat{border-right:none;border-bottom:1px solid var(--rule);min-height:auto;padding:24px 22px}}
+
+  @media(max-width:600px){
+    #proof{padding:48px 0 40px}
+    .proof-head h2{font-size:30px}
+  }
+
   /* ——— Terms / Guarantee ——— */
   .terms-wrap{background:var(--forest);color:var(--forest-ink);margin:0 -28px;padding:80px 28px;border-top:.5px solid var(--rule);border-bottom:.5px solid var(--rule);position:relative;overflow:hidden}
   .terms-wrap::before{
@@ -1098,6 +1255,7 @@
       <nav class="bar-nav" aria-label="Primary">
         <a href="#system">How it works</a>
         <a href="#demo">Example</a>
+        <a href="#proof">Results</a>
         <a href="#pricing">Pricing</a>
         <a href="#faq">FAQ</a>
       </nav>
@@ -1568,6 +1726,119 @@
     </div><!-- /.demo-shell -->
 
     <p class="demo-closing reveal">This happens <em>continuously</em> across your account universe. Every week.</p>
+  </div>
+</section>
+
+<!-- ——— Proof ——— -->
+<section id="proof">
+  <div class="wrap wider">
+    <div class="proof-head reveal">
+      <div>
+        <div class="label">proof</div>
+        <h2>118+ enterprise meetings <em>booked</em> for Voxpopme.</h2>
+        <p class="ph-note">($11M ARR B2B SaaS, selling to the world's biggest consumer brands.)</p>
+      </div>
+      <p class="ph-sub">Senior buyers at companies like GEICO, Stanley Black &amp; Decker, Ally Financial, and Sephora. Booked directly onto reps' calendars.</p>
+    </div>
+
+    <!-- Logo wall — real logos via logo.dev. Replace pk_K_kVDVBSQt2RJUEoA2dcyA with your publishable token. -->
+    <div class="proof-logos reveal" aria-label="Companies whose buyers have booked meetings">
+      <div class="lg"><img src="https://img.logo.dev/geico.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="GEICO" loading="lazy" onerror="this.outerHTML='<span class=fb>GEICO</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/stanleyblackanddecker.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Stanley Black & Decker" loading="lazy" onerror="this.outerHTML='<span class=fb>Stanley B&amp;D</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/ally.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Ally Financial" loading="lazy" onerror="this.outerHTML='<span class=fb>Ally</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/sephora.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Sephora" loading="lazy" onerror="this.outerHTML='<span class=fb>Sephora</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/kia.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Kia" loading="lazy" onerror="this.outerHTML='<span class=fb>Kia</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/caseys.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Casey's" loading="lazy" onerror="this.outerHTML='<span class=fb>Casey&#39;s</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/swarovskioptik.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Swarovski Optik" loading="lazy" onerror="this.outerHTML='<span class=fb>Swarovski Optik</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/harrys.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Harry's" loading="lazy" onerror="this.outerHTML='<span class=fb>Harry&#39;s</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/cottonon.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Cotton On" loading="lazy" onerror="this.outerHTML='<span class=fb>Cotton On</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/ifood.com.br?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="iFood" loading="lazy" onerror="this.outerHTML='<span class=fb>iFood</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/fremantle.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Fremantle" loading="lazy" onerror="this.outerHTML='<span class=fb>Fremantle</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/kohler.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Kohler" loading="lazy" onerror="this.outerHTML='<span class=fb>Kohler</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/fossil.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Fossil" loading="lazy" onerror="this.outerHTML='<span class=fb>Fossil</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/macmillan.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Macmillan" loading="lazy" onerror="this.outerHTML='<span class=fb>Macmillan</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/wolt.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Wolt" loading="lazy" onerror="this.outerHTML='<span class=fb>Wolt</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/organicvalley.coop?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Organic Valley" loading="lazy" onerror="this.outerHTML='<span class=fb>Organic Valley</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/cancer.org?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="American Cancer Society" loading="lazy" onerror="this.outerHTML='<span class=fb>Am. Cancer Society</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/rovio.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Rovio" loading="lazy" onerror="this.outerHTML='<span class=fb>Rovio</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/picsart.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="PicsArt" loading="lazy" onerror="this.outerHTML='<span class=fb>PicsArt</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/epidemicsound.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Epidemic Sound" loading="lazy" onerror="this.outerHTML='<span class=fb>Epidemic Sound</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/lovesac.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="LoveSac" loading="lazy" onerror="this.outerHTML='<span class=fb>LoveSac</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/tajin.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Tajin" loading="lazy" onerror="this.outerHTML='<span class=fb>Tajin</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/c3presents.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="C3 Presents" loading="lazy" onerror="this.outerHTML='<span class=fb>C3 Presents</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/fromourplace.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Our Place" loading="lazy" onerror="this.outerHTML='<span class=fb>Our Place</span>'"></div>
+      <div class="lg"><img src="https://img.logo.dev/irvingoil.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Irving Oil" loading="lazy" onerror="this.outerHTML='<span class=fb>Irving Oil</span>'"></div>
+    </div>
+
+    <!-- Miguel block — photo + quote inline -->
+    <figure class="proof-miguel reveal">
+      <span class="pm-status">draft · opt B/3</span>
+      <div class="pm-photo"><img src="miguel.webp" alt="Miguel Palma" loading="lazy"></div>
+      <div class="pm-content">
+        <blockquote>"Dmitry has booked over <em>100 meetings</em> for us across our engagement. He's reliable, the quality stays high, and we keep going because it works."</blockquote>
+        <div class="pm-attr">
+          <div class="pm-name">Miguel Palma</div>
+          <div class="pm-title">VP, Marketing &amp; Sales Development<span class="pm-dot"></span><span class="pm-co"><img src="https://img.logo.dev/voxpopme.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="" onerror="this.style.display='none'">Voxpopme</span></div>
+        </div>
+      </div>
+    </figure>
+
+    <!-- 3 reply cases in a row -->
+    <div class="proof-cases stagger">
+
+      <article class="proof-case reveal">
+        <div class="pc-top">
+          <img class="pc-logo" src="https://img.logo.dev/swarovskioptik.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Swarovski Optik" onerror="this.style.display='none'">
+        </div>
+        <h3>Swarovski Optik</h3>
+        <p class="pc-desc">Austrian premium optics manufacturer. Part of the Swarovski group.</p>
+        <div class="pc-screen" aria-label="Email thread — Swarovski Optik">
+          <img src="img/replies/swarovski.png" alt="Email thread with Swarovski Optik buyer" loading="lazy">
+        </div>
+        <p class="pc-narr">System detected a new product launch. Wrote a question their team actually thinks about: what each color and form factor signals to a buyer who holds a pair for a decade.</p>
+        <div class="pc-reply-cue">they replied</div>
+        <div class="pc-pull">
+          <blockquote>"<em>Best cold-call email</em> I have ever received."</blockquote>
+          <p class="pp-attr"><strong>Head of Marketing Strategy &amp; Insight</strong> · Swarovski Optik</p>
+        </div>
+      </article>
+
+      <article class="proof-case reveal">
+        <div class="pc-top">
+          <img class="pc-logo" src="https://img.logo.dev/geico.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="GEICO" onerror="this.style.display='none'">
+        </div>
+        <h3>GEICO</h3>
+        <p class="pc-desc">3rd largest US auto insurer. Berkshire Hathaway subsidiary. $42B+ annual premiums.</p>
+        <div class="pc-screen" aria-label="Email thread — GEICO">
+          <img src="img/replies/geico.png" alt="Email thread with GEICO buyer" loading="lazy">
+        </div>
+        <p class="pc-narr">System pulled a third-party research data point. Framed the question that data creates. No product pitch up front. Buyer's own problem, stated precisely.</p>
+        <div class="pc-reply-cue">they replied</div>
+        <div class="pc-pull">
+          <blockquote>"Congrats, your <em>cold call sales email</em> worked."</blockquote>
+          <p class="pp-attr"><strong>Director, Marketing Research</strong> · GEICO</p>
+        </div>
+      </article>
+
+      <article class="proof-case reveal">
+        <div class="pc-top">
+          <img class="pc-logo" src="https://img.logo.dev/irvingoil.com?token=pk_K_kVDVBSQt2RJUEoA2dcyA&size=200&format=png" alt="Irving Oil" onerror="this.style.display='none'">
+        </div>
+        <h3>Irving Oil</h3>
+        <p class="pc-desc">One of Canada's largest privately held companies. Operates Canada's largest oil refinery.</p>
+        <div class="pc-screen" aria-label="Email thread — Irving Oil">
+          <img src="img/replies/irving.png" alt="Email thread with Irving Oil buyer" loading="lazy">
+        </div>
+        <p class="pc-narr">System found a specific internal research community the buyer built. Email didn't pitch against it. Asked whether the community could go deeper, positioned the client's platform as a complement.</p>
+        <div class="pc-reply-cue">they replied</div>
+        <div class="pc-pull">
+          <blockquote>"You did your <em>homework</em>. Let's have a chat."</blockquote>
+          <p class="pp-attr"><strong>Consumer Insights &amp; Research Manager</strong> · Irving Oil</p>
+        </div>
+      </article>
+
+    </div>
+
   </div>
 </section>
 
