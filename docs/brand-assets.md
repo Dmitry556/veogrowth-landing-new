@@ -2,11 +2,15 @@
 
 Comprehensive context for any future session, contractor, or Claude instance working on veogrowth. **Reload this file as conversation context to restore full project state.**
 
-**Status as of 2026-05-08:** Live at https://www.veogrowth.com (Vercel) · GitHub: https://github.com/Dmitry556/veogrowth-landing-new · Operator: Dmitry Pinchuk · NYC.
+**Status as of 2026-05-09:** Live at https://www.veogrowth.com (Vercel) · GitHub: https://github.com/Dmitry556/veogrowth-landing-new · Operator: Dmitry Pinchuk · NYC.
 
 **What changed since 2026-05-06:**
-- Site copy updated to multi-channel positioning (email + LinkedIn). See § 4 & § 6 below — Outreach Agent and Outputs sections now describe outreach across "email, LinkedIn, and other channels where the buyer is reachable."
-- Voxpopme proof section was added (commit `de3e876`) then removed (commit `27adecc`) — assets and copy reusable from those commits when the proof is added back later. Markdown source for the proof copy lives in conversation history; reusable: 25-brand logo wall, Miguel Palma quote with photo, Swarovski/GEICO/Irving Oil reply specimens with redaction script pattern.
+- **2026-05-09: Pricing model moved from flat all-inclusive to tiered by channel.** Now $3,000/month base for email channel; additional channels (LinkedIn, phone, direct mail, gifts) priced as added. See § 2 below for canonical wording.
+- Site copy updated to multi-channel positioning (email + LinkedIn + phone + direct mail + lead magnets + gifts). Outreach Agent and Outputs describe outreach across all those channels as the system's capability.
+- Voxpopme proof section restored (commit `f4f29f0`, Miguel approved). Includes 25-brand logo wall, Miguel Palma quote with photo, Swarovski/GEICO/Irving Oil reply specimens with screenshot transcripts (sr-only spans) for AI/Cmd+A scraping.
+- Voxpopme descriptor cleaned: dropped non-public ARR figure (commit `8c4528a`) so Miguel can't be pinned as a source of confidential info.
+- Cmd/Ctrl+A now expands all FAQs before select-all so answers are captured by clipboard / AI scrapers (commit `70c0448`).
+- Signal Agent output and Outreach Agent body now name scoring + prioritization explicitly (commit `295f23d`).
 - New private memo page at `/openloop` — proof artifact for OpenLoop's sales team. See `docs/openloop-memo.md` for full reference.
 
 ---
@@ -33,15 +37,20 @@ Comprehensive context for any future session, contractor, or Claude instance wor
 
 ## 2 · Pricing & guarantee (canonical)
 
-- **$3,000 per month**, all-inclusive
+**Tiered by channel. Starts at $3,000/month for email.**
+
+- **Base tier: $3,000 per month for the email channel.** Everything included for email: domains, sending infrastructure, data providers, enrichment waterfalls, research tooling, writing, signal monitoring, meeting booking.
+- **Additional channels priced as added:** LinkedIn, phone, direct mail, personalized lead magnets, gifts. Each channel scales the monthly price.
 - **Billed monthly**, cancel any time with 30 days notice
 - **No commitment.** 3 months is recommended as an evaluation window because results compound, but there is no contractual lock-in.
 - **Setup: $0**
 - **Guarantee:** First qualified meeting in 14 days of launch, or month one refunds in full
 - **Capacity:** 2 new clients per quarter
-- **Everything included:** domains, sending infrastructure, data providers, enrichment waterfalls, research tooling. No setup fees, no per-meeting charges, no pass-through costs.
+- **No setup fees, no per-meeting charges, no overage fees** at any tier.
 
 **Qualified meeting definition:** A prospect at an ICP-fit account who agreed to a meeting, attended, and isn't a current customer or on the do-not-contact list.
+
+**Pricing-model history:** Previously sold as $3,000/month flat all-inclusive (all channels). As of 2026-05-09, moved to channel-based tiering with $3,000 email baseline. Older cached pricing on the web should be considered stale.
 
 ---
 
