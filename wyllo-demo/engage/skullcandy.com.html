@@ -1,0 +1,340 @@
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Skullcandy — ENGAGE</title><style>
+/* ==========================================================================
+   Wyllo demo — internal ops / admin-panel design system.
+   One shared visual language across index / account / person / engage /
+   analytics / blocklist pages. Restraint over flair: muted palette, flat
+   surfaces, dense-but-legible data tables, consistent type + spacing scale.
+   Design tokens below; every class name is preserved for the templates.
+   ========================================================================== */
+:root {
+  /* neutrals */
+  --bg: #f4f6f8; --surface: #ffffff; --surface-2: #fafbfc;
+  --line: #e3e6ea; --line-strong: #d3d8de; --line-soft: #eceef1;
+  --ink: #1b2430; --ink-2: #4a5568; --muted: #6b7482; --faint: #98a1ac;
+  /* accent (links / active) */
+  --accent: #1a56c4; --accent-ink: #123e91; --accent-wash: #eef3fb; --accent-line: #c6dbf5;
+  /* semantic */
+  --green: #1a7f37; --green-wash: #eef7f0; --green-line: #b9dcc3;
+  --amber: #a9720a; --amber-wash: #fdf6e3; --amber-line: #e6cd8f;
+  --red: #b02a37; --red-wash: #fbeaec; --red-line: #e6b0b6;
+  /* header/head fills */
+  --head-fill: #eef1f4; --head-fill-hover: #e4e8ec;
+  /* type scale */
+  --fs-xs: 11px; --fs-sm: 12px; --fs-base: 13px; --fs-md: 14px; --fs-lg: 16px; --fs-xl: 19px;
+  /* spacing scale */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px; --s6: 28px;
+  --radius: 6px; --radius-sm: 4px;
+  --shadow: 0 1px 2px rgba(16,24,40,.05);
+}
+* { box-sizing: border-box; }
+body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  margin: 0; color: var(--ink); font-size: var(--fs-md); line-height: 1.5;
+  background: var(--bg); -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* top app bar — slim product chrome strip spanning every page. The wordmark is
+   structural chrome (a generic tool name), injected here so it rides above the
+   centered content column on all pages including the detail views that have no
+   section nav. Muted fill, hairline bottom border, left-aligned to the column. */
+body::before {
+  content: "GTM Console";
+  display: block; box-sizing: border-box;
+  font-size: var(--fs-sm); font-weight: 700; line-height: 1;
+  letter-spacing: .09em; text-transform: uppercase; color: var(--ink-2);
+  background: var(--head-fill); border-bottom: 1px solid var(--line-strong);
+  padding: 12px 0; padding-inline: max(var(--s4), calc((100% - 1040px) / 2 + var(--s4)));
+}
+
+.wrap { max-width: 1040px; margin: 0 auto; padding: var(--s5) var(--s4) var(--s6); }
+.wrap.wide { max-width: 1400px; }
+/* ENGAGE "why reach out / why not" — clamp to 2 lines so rows stay compact (full text on hover) */
+.whyreach-td { vertical-align: top; }
+.whyreach { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; max-width: 300px; line-height: 1.35; color: var(--muted); }
+h1 { font-size: var(--fs-xl); margin: 0 0 var(--s2); font-weight: 650;
+  letter-spacing: -.01em; color: var(--ink); }
+h2 { font-size: var(--fs-sm); text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
+  border-bottom: 1px solid var(--line); padding-bottom: var(--s1); margin: var(--s5) 0 var(--s3);
+  font-weight: 700; }
+
+/* funnel — monospace summary strip */
+.funnel { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: var(--fs-sm);
+  color: var(--ink-2); background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: var(--radius-sm); padding: var(--s2) var(--s3); margin-bottom: var(--s3); }
+
+/* data tables */
+.tblwrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--surface); box-shadow: var(--shadow); }
+table { border-collapse: collapse; width: 100%; font-size: var(--fs-base); background: var(--surface); }
+th, td { border-bottom: 1px solid var(--line-soft); padding: 9px 12px; text-align: left; vertical-align: middle; }
+th { position: sticky; top: 0; background: var(--head-fill); z-index: 1; font-size: var(--fs-xs);
+  font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-2);
+  border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
+tbody tr:last-child td { border-bottom: none; }
+/* subtle zebra banding for a machine-uniform rhythm (declared before :hover so
+   hover — equal specificity — still wins). */
+tbody tr:nth-child(even) td { background: var(--surface-2); }
+tbody tr:hover td, tr:hover td { background: var(--accent-wash); }
+/* IDENTIFY table column discipline: keep the atomic columns on one line so every
+   row is the same height; only Company (1) + Incumbent (6) may wrap when needed.
+   Headcount right-aligns with tabular figures so the digits stack. */
+#idtable td:nth-child(2), #idtable td:nth-child(3), #idtable td:nth-child(4),
+#idtable td:nth-child(5), #idtable td:nth-child(7), #idtable td:nth-child(8) { white-space: nowrap; }
+#idtable td:nth-child(3), #idtable th:nth-child(3) { text-align: right; font-variant-numeric: tabular-nums; }
+/* sortable column headers — spreadsheet/DB style */
+th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+th.sortable:hover { background: var(--head-fill-hover); color: var(--ink); }
+th.sortable .arrow { font-size: 9px; color: var(--accent); margin-left: 4px; }
+
+/* ICP badge — small circle, hi/mid/lo colour coding */
+.badge { display: inline-block; min-width: 28px; text-align: center; border-radius: 11px;
+  padding: 2px 8px; background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line-strong);
+  font-size: var(--fs-xs); font-weight: 700; font-variant-numeric: tabular-nums; cursor: help; }
+.b-hi { background: var(--green-wash); color: var(--green); border-color: var(--green-line); }
+.b-mid { background: var(--amber-wash); color: var(--amber); border-color: var(--amber-line); }
+.b-lo { background: var(--surface-2); color: var(--muted); border-color: var(--line-strong); }
+
+.muted { color: var(--muted); font-size: var(--fs-sm); }
+.pending { color: var(--faint); font-style: italic; }
+.ok { color: var(--green); }
+
+/* content cards */
+.section { border: 1px solid var(--line); background: var(--surface); border-radius: var(--radius);
+  padding: var(--s4) var(--s5); margin-bottom: var(--s3); box-shadow: var(--shadow); }
+.kv { margin: var(--s1) 0; }
+.kv b { color: var(--ink-2); font-weight: 600; display: inline-block; min-width: 140px; }
+
+/* two-column definition layout for the composed key-value cards (account Summary
+   tab, per-account ENGAGE header, person info card). The value is a run of
+   sibling inline nodes, so a flex/grid split would fragment it — instead the label
+   sits in a fixed left gutter (absolute) and the value flows as one wrapping
+   column. A long value (e.g. Priority "Work now — …") therefore wraps entirely
+   inside the value column and never collides with the label. */
+#tab-summary .kv, .wrap > .section .kv {
+  position: relative; padding-left: 158px; margin: var(--s2) 0; min-height: 1.4em; line-height: 1.5; }
+#tab-summary .kv b, .wrap > .section .kv b {
+  position: absolute; left: 0; top: 0; display: block; width: 142px; min-width: 0;
+  color: var(--muted); font-weight: 600; font-size: var(--fs-sm); text-transform: none; }
+ul.clean { margin: var(--s1) 0; padding-left: 18px; }
+ul.clean li { margin: var(--s1) 0; }
+.src { font-size: var(--fs-xs); }
+
+/* person avatars + thumbs */
+.avatar { width: 92px; height: 92px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line-strong); }
+.avatar-init { width: 92px; height: 92px; border-radius: 50%; background: #46618f; color: #fff;
+  display: inline-flex; align-items: center; justify-content: center; font-size: 34px; font-weight: 700; }
+.thumb { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 7px; border: 1px solid var(--line-strong); }
+.thumb-init { width: 26px; height: 26px; border-radius: 50%; background: #46618f; color: #fff;
+  display: inline-flex; align-items: center; justify-content: center; font-size: var(--fs-xs); font-weight: 700;
+  vertical-align: middle; margin-right: 7px; }
+.phdr { display: flex; gap: var(--s4); align-items: center; margin-bottom: var(--s3); }
+
+/* role tag / pill */
+.role { display: inline-block; padding: 2px 8px; border: 1px solid var(--line-strong); border-radius: 10px;
+  font-size: var(--fs-xs); background: var(--surface-2); color: var(--ink-2); font-weight: 600;
+  letter-spacing: .02em; }
+
+/* experience / triggers — left-border rail */
+.exp { border-left: 3px solid var(--line-strong); padding-left: var(--s3); margin: var(--s3) 0; }
+.back { font-size: var(--fs-sm); margin-bottom: var(--s3); }
+.back a { font-weight: 600; }
+
+/* top nav bar */
+.nav { display: flex; gap: 2px; border-bottom: 1px solid var(--line-strong); margin-bottom: var(--s4);
+  padding-bottom: 0; }
+.navitem { display: inline-block; padding: 8px 14px; font-size: var(--fs-sm); font-weight: 600;
+  text-decoration: none; color: var(--muted); border: 1px solid transparent; border-bottom: none;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+.navitem:hover { background: var(--surface-2); color: var(--ink); text-decoration: none; }
+.navitem.nav-active { color: var(--ink); background: var(--surface); border-color: var(--line-strong);
+  margin-bottom: -1px; box-shadow: 0 -2px 0 var(--accent) inset; }
+.navitem.nav-off { color: var(--faint); cursor: default; }
+
+/* incumbent confidence indicator — tiny dot + label */
+.conf { font-size: 10px; margin-left: 5px; white-space: nowrap; cursor: help; font-weight: 600; }
+.conf-hi { color: var(--green); }
+.conf-lo { color: var(--amber); }
+
+/* suppression banner — MUST stay unmissable (red, high-contrast) */
+.suppressed { border: 1px solid var(--red-line); border-left: 4px solid var(--red);
+  background: var(--red-wash); color: #7a1620; border-radius: var(--radius);
+  padding: var(--s3) var(--s4); margin-bottom: var(--s3); font-weight: 700; }
+.suppressed .muted2 { display: block; font-weight: 400; color: #9a4048; margin-top: var(--s1); font-size: var(--fs-sm); }
+/* out-of-ICP / do-not-contact chip (stays in IDENTIFY, distinct from the NoFraud blocklist) */
+.dnc { display: inline-block; background: var(--red-wash); color: var(--red); border: 1px solid var(--red-line);
+  border-radius: var(--radius-sm); padding: 1px 6px; font-size: 10px; font-weight: 700; letter-spacing: .03em;
+  margin-left: 6px; vertical-align: middle; }
+/* out-of-ICP / do-not-contact banner — MUST stay unmissable (amber, high-contrast) */
+.dq-banner { border: 1px solid var(--amber-line); border-left: 4px solid var(--amber);
+  background: var(--amber-wash); color: #6f4a09; border-radius: var(--radius);
+  padding: var(--s3) var(--s4); margin: var(--s2) 0 var(--s3); font-weight: 700; }
+.dq-banner .muted2 { display: block; font-weight: 400; color: #8a6413; margin-top: var(--s1); font-size: var(--fs-sm); }
+
+/* account sub-tabs — same visual language as the top nav */
+.tabbar { display: flex; flex-wrap: wrap; gap: 2px; border-bottom: 1px solid var(--line-strong); margin: var(--s2) 0 0; }
+.tab { padding: 8px 14px; font-size: var(--fs-sm); font-weight: 600; color: var(--muted); background: transparent;
+  border: 1px solid transparent; border-bottom: none; border-radius: var(--radius-sm) var(--radius-sm) 0 0; cursor: pointer; }
+.tab:hover { background: var(--surface-2); color: var(--ink); }
+.tab.tab-active { color: var(--ink); background: var(--surface); border-color: var(--line-strong);
+  margin-bottom: -1px; box-shadow: 0 -2px 0 var(--accent) inset; }
+.tabpanels { border: 1px solid var(--line-strong); border-top: none; background: var(--surface);
+  border-radius: 0 0 var(--radius) var(--radius); padding: var(--s4); box-shadow: var(--shadow); }
+.tabpanel h2:first-child { margin-top: 0; }
+
+/* freeform prose rendered from the dossier markdown */
+.prose { font-size: var(--fs-md); line-height: 1.6; color: var(--ink); max-width: 82ch; }
+.prose p { margin: var(--s2) 0; }
+.prose .prose-h { font-size: var(--fs-md); font-weight: 700; margin: var(--s5) 0 var(--s2); color: var(--ink); }
+.prose ul.prose-ul, .prose ol.prose-ol { margin: var(--s2) 0; padding-left: 22px; }
+.prose ul.prose-ul li, .prose ol.prose-ol li { margin: var(--s2) 0; }
+.prose code { background: var(--line-soft); padding: 1px 5px; border-radius: 3px;
+  font-family: ui-monospace, monospace; font-size: var(--fs-sm); }
+.prose a { word-break: break-word; }
+.prose + .prose { border-top: 1px solid var(--line-soft); margin-top: var(--s4); padding-top: var(--s4); }
+.prose-note { color: var(--muted); font-size: var(--fs-sm); margin: 0 0 var(--s3); }
+
+/* priority letter + dot — P1 = work-now (green), P2 = amber, P3 = grey */
+.prio { cursor: help; white-space: nowrap; font-weight: 700; }
+.pdot { display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  margin-right: 6px; vertical-align: middle; background: var(--faint); }
+.prio-p1 .pdot { background: var(--green); }
+.prio-p2 .pdot { background: var(--amber); }
+.prio-p3 .pdot { background: var(--faint); }
+
+/* JS hover card (escapes table overflow — appended to <body>) */
+.hov { cursor: help; }
+#tooltip { position: fixed; z-index: 9999; display: none; max-width: 340px;
+  background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius);
+  box-shadow: 0 6px 24px rgba(16,24,40,.16); padding: var(--s3); font-size: var(--fs-sm);
+  color: var(--ink-2); line-height: 1.5; text-align: left; }
+.tt-h { font-weight: 700; margin-bottom: var(--s2); font-size: var(--fs-sm); color: var(--ink);
+  text-transform: uppercase; letter-spacing: .04em; }
+.tt-body { white-space: normal; color: var(--ink-2); }
+.tt-row { display: flex; justify-content: space-between; gap: var(--s3); margin: var(--s1) 0; }
+.tt-row + .tt-row { border-top: 1px solid var(--line-soft); padding-top: var(--s1); }
+.tt-pts { color: var(--green); font-weight: 700; white-space: nowrap; }
+.tt-note { color: var(--muted); }
+
+/* ENGAGE list groups + per-account play shell */
+.eng-lead { color: var(--ink-2); margin: -4px 0 var(--s4); font-size: var(--fs-base); }
+.eng-group { margin-bottom: var(--s5); }
+.eng-group h2 .cnt { color: var(--faint); font-weight: 700; }
+.campaign-tag { display: inline-block; padding: 2px 9px; border-radius: 11px; font-size: var(--fs-xs);
+  font-weight: 700; border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink-2); margin-right: 6px; }
+.camp-a { border-color: var(--green-line); color: var(--green); background: var(--green-wash); }
+.camp-b { border-color: var(--red-line); color: var(--red); background: var(--red-wash); }
+.preview-note { border: 1px solid var(--amber-line); border-left: 4px solid var(--amber);
+  background: var(--amber-wash); color: #6f4a09; border-radius: var(--radius); padding: var(--s2) var(--s3);
+  margin-bottom: var(--s3); font-size: var(--fs-sm); font-weight: 600; }
+.person-block { border: 1px solid var(--line); border-radius: var(--radius); padding: var(--s3) var(--s4);
+  margin: var(--s2) 0; background: var(--surface); box-shadow: var(--shadow); }
+.person-block .who { font-weight: 700; }
+.chip { display: inline-block; padding: 2px 8px; border: 1px solid var(--line-strong); border-radius: 11px;
+  font-size: var(--fs-xs); color: var(--muted); background: var(--surface-2); white-space: nowrap; }
+/* play verification-state chips — muted green (verified) / amber (pending),
+   same wash tokens as the b-hi/b-mid score badges. */
+.chip.chip-ok { color: var(--green); background: var(--green-wash); border-color: var(--green-line); }
+.chip.chip-pending { color: var(--amber); background: var(--amber-wash); border-color: var(--amber-line); }
+
+/* committee card (per-account ENGAGE) — photo + identity + contacts row */
+.cmt-card { display: flex; gap: var(--s3); align-items: flex-start; }
+.cmt-card .thumb { width: 42px; height: 42px; margin-right: 0; flex: 0 0 42px; }
+.cmt-card .thumb-init { width: 42px; height: 42px; margin-right: 0; flex: 0 0 42px; font-size: 16px; }
+.cmt-body { flex: 1 1 auto; min-width: 0; }
+.cmt-contacts { margin-top: var(--s2); display: flex; flex-wrap: wrap; gap: var(--s1) var(--s4); font-size: var(--fs-sm); }
+.cmt-contacts .cl { white-space: nowrap; }
+.cmt-contacts .cl b { color: var(--muted); font-weight: 700; margin-right: 5px; text-transform: uppercase;
+  font-size: 10px; letter-spacing: .04em; }
+.cmt-contacts a { color: var(--accent); text-decoration: none; }
+.cmt-contacts a:hover { text-decoration: underline; }
+
+/* "View play" link (ENGAGE table cell) + button (per-account ENGAGE page) —
+   opens the data-driven play_view.html at this account. */
+a.play-link { font-size: var(--fs-sm); font-weight: 700; color: var(--accent); text-decoration: none;
+  white-space: nowrap; }
+a.play-link:hover { text-decoration: underline; }
+a.play-btn { display: inline-block; padding: 7px 15px; border-radius: var(--radius-sm);
+  background: var(--accent); color: #fff; font-size: var(--fs-base); font-weight: 600;
+  text-decoration: none; }
+a.play-btn:hover { background: var(--accent-ink); text-decoration: none; }
+
+/* inline source citations (CHANGE 4) — the CLAIM text is the citation: a subtle
+   dotted underline; hovering reveals the source URL; clicking opens it in a NEW tab.
+   Two forms: .cite wraps a claim (underline + trailing mark); .citechip is a
+   compact superscript chip used inside prose. */
+.cite { text-decoration: none; border-bottom: 1px dotted var(--accent-line); cursor: help; color: inherit; }
+a.cite:hover { text-decoration: none; border-bottom-color: var(--accent); }
+.citemark { font-size: 10px; color: var(--accent); margin-left: 2px; vertical-align: super;
+  line-height: 0; text-decoration: none; }
+a.citechip { display: inline-block; font-size: 10px; color: var(--accent); text-decoration: none;
+  border: 1px solid var(--accent-line); background: var(--accent-wash); border-radius: var(--radius-sm); padding: 0 4px;
+  margin-left: 2px; vertical-align: super; line-height: 1.4; cursor: help; }
+a.citechip:hover { background: #e0ebfa; text-decoration: none; }
+/* ENGAGE lookalike placeholder cell */
+.lookalike { color: var(--faint); font-style: italic; }
+
+/* ANALYTICS — illustrative/sample framing. The banner MUST be unmistakable:
+   striped amber, bold, full-width, top of page. Nothing here is real. */
+.sample-banner { border: 2px solid var(--amber); border-radius: var(--radius);
+  background: repeating-linear-gradient(45deg,#fffdf3,#fffdf3 12px,#fdf3d8 12px,#fdf3d8 24px);
+  color: #6b5200; padding: var(--s3) var(--s4); margin-bottom: var(--s4); font-size: var(--fs-base); }
+.sample-banner .bhead { font-weight: 800; font-size: var(--fs-base); text-transform: uppercase;
+  letter-spacing: .05em; display: block; margin-bottom: var(--s1); color: #6b5200; }
+.sample-banner .bsub { font-weight: 400; color: #6b5200; }
+.sample-pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px;
+  font-weight: 800; text-transform: uppercase; letter-spacing: .04em; margin-left: 8px;
+  border: 1px solid var(--amber); background: #fffdf3; color: #6b5200; vertical-align: middle; }
+/* KPI strip */
+.kpis { display: flex; flex-wrap: wrap; gap: var(--s3); margin: 0 0 var(--s4); }
+.kpi { flex: 1 1 130px; min-width: 120px; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--surface); padding: var(--s3) var(--s4); box-shadow: var(--shadow); }
+.kpi .kn { font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
+.kpi .kl { font-size: var(--fs-xs); color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-top: 3px; }
+/* status chips */
+.st { display: inline-block; padding: 2px 9px; border-radius: 11px; font-size: var(--fs-xs);
+  font-weight: 700; border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink-2); white-space: nowrap; }
+.st-booked { border-color: var(--accent-line); color: var(--accent); background: var(--accent-wash); }
+.st-held { border-color: var(--green-line); color: var(--green); background: var(--green-wash); }
+.st-noshow { border-color: var(--red-line); color: var(--red); background: var(--red-wash); }
+/* source chips */
+.srcchip { display: inline-block; padding: 2px 9px; border-radius: 11px; font-size: var(--fs-xs);
+  border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink-2); white-space: nowrap; }
+/* ---- meeting handoff brief (AE-facing) ----------------------------------
+   A single "handoff card" an AE is handed for a booked meeting: an identity
+   header, a labelled meta grid, then the briefing sections. Reuses the shared
+   tokens/chips only — no new palette, no accent stripes. */
+.hb-card { border: 1px solid var(--line-strong); background: var(--surface);
+  border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; margin-bottom: var(--s4); }
+/* identity header — account + attendee headline, status on the right */
+.hb-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between;
+  gap: var(--s3) var(--s5); padding: var(--s4) var(--s5); background: var(--surface-2);
+  border-bottom: 1px solid var(--line); }
+.hb-head .who .nm { font-size: var(--fs-lg); font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
+.hb-head .who .ti { font-size: var(--fs-sm); color: var(--muted); margin-top: 2px; }
+.hb-head .who .ti a { color: var(--muted); }
+.hb-head .who .ti a:hover { color: var(--accent); }
+.hb-stat { display: flex; gap: var(--s2); align-items: center; flex-wrap: wrap; flex-shrink: 0; }
+/* meta grid — self-adjusting, labelled fields */
+.hb-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--s4) var(--s5); padding: var(--s4) var(--s5); }
+.hb-meta .f b { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--muted); font-weight: 700; margin-bottom: 3px; }
+.hb-meta .f .v { font-size: var(--fs-md); color: var(--ink); line-height: 1.4; }
+.hb-meta .f .v .sub { display: block; font-size: var(--fs-sm); color: var(--muted); margin-top: 1px; font-weight: 400; }
+.hb-meta .f .v a { color: var(--accent); }
+/* section rhythm — label + card, tighter than the default h2 */
+.hb-label { font-size: var(--fs-sm); text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
+  font-weight: 700; margin: var(--s5) 0 var(--s2); }
+.hb-body { border: 1px solid var(--line); background: var(--surface); border-radius: var(--radius);
+  padding: var(--s3) var(--s4); box-shadow: var(--shadow); font-size: var(--fs-md); line-height: 1.6; color: var(--ink); }
+.hb-body.prose { max-width: 74ch; }
+/* the wedge / "your angle" — a tinted callout (full border, no accent stripe) */
+.hb-say { background: var(--accent-wash); border: 1px solid var(--accent-line); border-radius: var(--radius);
+  padding: var(--s3) var(--s4); font-size: var(--fs-md); line-height: 1.6; color: var(--accent-ink); max-width: 74ch; }
+.hb-say .say-k { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .05em;
+  font-weight: 700; color: var(--accent); margin-bottom: var(--s1); }
+/* footer disclaimer echo */
+.hb-foot { color: var(--muted); font-size: var(--fs-sm); margin-top: var(--s4);
+  padding-top: var(--s3); border-top: 1px solid var(--line-soft); }
+</style><div class="wrap"><div class="back"><a href="../engage.html">&larr; Back to ENGAGE</a></div><h1>Skullcandy</h1><div class="section"><div class="kv"><b>Account</b> Skullcandy <span class="muted">skullcandy.com</span> · <a href="../accounts/skullcandy.com.html">full dossier</a></div><div class="kv"><b>Incumbent</b> Riskified <span class="conf conf-lo" title="Detected server-side (likely server-to-server) — lower confidence">&#9679; server-side</span></div><div class="kv"><b>Priority</b> <span class="prio prio-p1"><span class="pdot"></span>P1</span> <span class="muted">— Work now — Riskified published Skullcandy fraud/approval case evidence and Shopify Dispute Resolve press/IR release. (2026-03-17); Skullcandy launched Crusher 1080 ANC at $279.99 with Sound by Bose technology. (2026-07-15)</span></div><div class="kv" style="margin-top:8px"><a class="play-btn" href="../play_view.html#skullcandy.com">View coordinated play &rarr;</a> <span class="chip chip-ok" title="Fact-checked against its research bundle">&#10003; Verified</span></div></div><div class="tabs"><div class="tabbar"><button class="tab tab-active" onclick="showTab(this,'etab-whynow')">Why now</button><button class="tab" onclick="showTab(this,'etab-lookalike')">Lookalike case study</button><button class="tab" onclick="showTab(this,'etab-committee')">Buying committee (6)</button><button class="tab" onclick="showTab(this,'etab-play')">Play</button></div><div class="tabpanels"><div class="tabpanel" id="etab-whynow" style="display:block"><div class="section"><div class="kv"><b>Incumbent</b> Riskified <span class="conf conf-lo" title="Detected server-side (likely server-to-server) — lower confidence">&#9679; server-side</span></div></div><div class="prose"><div class="prose-h" style="margin-top:0">Why-now signals</div><ol class="prose-ol"><li><strong>2026-07-15 — premium launch pressure: Crusher 1080 ANC went live at $279.99; the product page was observed as Out of Stock during this run.</strong> Skullcandy announced the Crusher 1080 ANC with Sound by Bose technologies on July 15, 2026, positioning it as a major step in the Crusher line and pricing it at $279.99. The official product page opened during this run showed the same $279.99 price and an Out of Stock state. A third-party Verge article on July 16 also reported the product as available starting that day at $279.99. <strong>Why it matters:</strong> a new high-consideration flagship SKU creates a live approval, fulfillment, resale-adjacent, customer-service, return, and warranty surface. This is not proof of fraud. It is a current operating moment where good-order approvals, chargeback controls, launch exception handling, and post-purchase abuse controls all matter more than during ordinary catalog flow.<a class="citechip hov" href="https://www.prnewswire.com/news-releases/new-skullcandy-crusher-1080-anc-redefines-consumer-audio-with-mind-bending-bass-and-breakthrough-sound-by-bose-technologies-302826777.html" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.prnewswire.com/news-releases/new-skullcandy-crusher-1080-anc-redefines-consumer-audio-with-mind-bending-bass-and-breakthrough-sound-by-bose-technologies-302826777.html</span></div></span></a> ; <a class="citechip hov" href="https://www.skullcandy.com/products/crusher-1080-anc-headphones" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.skullcandy.com/products/crusher-1080-anc-headphones</span></div></span></a> ; <a class="citechip hov" href="https://www.theverge.com/tech/966022/skullcandy-cruser-1080-anc-bose-tuning-noise-cancelling-wireless-headphones" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.theverge.com/tech/966022/skullcandy-cruser-1080-anc-bose-tuning-noise-cancelling-wireless-headphones</span></div></span></a></li></ol><ol class="prose-ol"><li><strong>2026-07-16 — CEO-level brand-reinvention narrative is active in national tech press.</strong> WIRED framed the Crusher 1080 ANC as part of Skullcandy’s effort to shift perception from bargain-bin audio toward stronger engineering credibility. Brian Garofalow told WIRED that Skullcandy had been strong at community-building but had been working to improve product innovation; he also connected the Bose partnership to that correction. <strong>Why it matters:</strong> the executive narrative is not merely “new SKU.” It is a brand-repositioning moment where false declines, payment friction, delayed order review, bad post-purchase experiences, or messy warranty/return handling would directly undermine the repositioning.<a class="citechip hov" href="https://www.wired.com/story/can-bose-help-skullcandy-shake-its-bargain-bin-reputation/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.wired.com/story/can-bose-help-skullcandy-shake-its-bargain-bin-reputation/</span></div></span></a> ; <a class="citechip hov" href="https://www.prnewswire.com/news-releases/new-skullcandy-crusher-1080-anc-redefines-consumer-audio-with-mind-bending-bass-and-breakthrough-sound-by-bose-technologies-302826777.html" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.prnewswire.com/news-releases/new-skullcandy-crusher-1080-anc-redefines-consumer-audio-with-mind-bending-bass-and-breakthrough-sound-by-bose-technologies-302826777.html</span></div></span></a></li></ol><ol class="prose-ol"><li><strong>2026-07-21/22 approx. — public customer chatter around the new Crusher 1080 ANC includes disappointment and return intent.</strong> One recent Reddit post about the Crusher 1080 ANC says the buyer received the product quickly, was disappointed, and was considering a return. Another recent Reddit thread described similar dissatisfaction and return consideration. Treat this as unverified customer-community evidence, not company-confirmed product defect evidence and not abuse evidence. <strong>Why it matters:</strong> even non-fraud post-purchase friction increases the load on support, returns, warranty validation, and exception policy. For a fresh premium SKU, those workflows become a live reason to inspect whether risk signals stop at checkout or continue into CX/returns/warranty.<a class="citechip hov" href="https://www.reddit.com/r/Skullcandy/comments/1v29i8v/dont_waste_your_money_on_the_crusher_1080_anc/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.reddit.com/r/Skullcandy/comments/1v29i8v/dont_waste_your_money_on_the_crusher_1080_anc/</span></div></span></a> ; <a class="citechip hov" href="https://www.reddit.com/r/Skullcandy/comments/1uzjasn/picked_up_a_pair_of_crusher_1080s_today_and_im_disappointed/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.reddit.com/r/Skullcandy/comments/1uzjasn/picked_up_a_pair_of_crusher_1080s_today_and_im_disappointed/</span></div></span></a></li></ol><ol class="prose-ol"><li><strong>2026-06 to 2026-07 — ecommerce/growth org appears to be scaling channels and execution capacity.</strong> Evin Catlett posted about Skullcandy’s ecommerce/growth momentum and hiring for two critical roles roughly one month before the run. A Common Thread Collective post says Catlett discussed how Skullcandy used TikTok Shop for omnichannel growth. A Skullcandy marketing-team LinkedIn post around the Method 360 ANC launch described a new affiliate program, performance-influencer work, UGC, and TikTok Shop launch execution. The official ApplicantPro jobs page opened during this run did not show current openings; treat the hiring evidence as LinkedIn-post evidence, not proof that roles remain open. <strong>Why it matters:</strong> as paid/social/TikTok/affiliate/UGC channels scale, the risk perimeter becomes more account-, promo-, coupon-, and repeat-customer-behavior oriented, not only card-not-present fraud at checkout.<a class="citechip hov" href="https://www.linkedin.com/posts/evincatlett_the-momentum-at-skullcandy-continues-to-build-activity-7449509866815119360-2pul" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.linkedin.com/posts/evincatlett_the-momentum-at-skullcandy-continues-to-build-activity-7449509866815119360-2pul</span></div></span></a> ; <a class="citechip hov" href="https://www.linkedin.com/posts/common-thread-collective_skullcandy-inc-used-tiktok-shop-to-drive-activity-7470513004661354496-7Vh1" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.linkedin.com/posts/common-thread-collective_skullcandy-inc-used-tiktok-shop-to-drive-activity-7470513004661354496-7Vh1</span></div></span></a> ; <a class="citechip hov" href="https://www.linkedin.com/posts/delaney-dykman-ab2775205_how-it-started-vs-how-its-going-coming-activity-7420898316441333760-R8w5" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.linkedin.com/posts/delaney-dykman-ab2775205_how-it-started-vs-how-its-going-coming-activity-7420898316441333760-R8w5</span></div></span></a> ; <a class="citechip hov" href="https://skullcandy.applicantpro.com/jobs/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://skullcandy.applicantpro.com/jobs/</span></div></span></a></li></ol><ol class="prose-ol"><li><strong>2026-06-23 approx. — coupon-code friction surfaced publicly; official policy shows rule complexity.</strong> A Reddit thread discussed a Skullcandy promotional “Surprise” code not applying as expected. Separately, Skullcandy’s official coupon help policy says some warranty coupons are single-use, valid for one year, non-transferable, limited to one code per transaction, cannot be combined with other offers, and may exclude limited-edition colorways. <strong>Why it matters:</strong> this is not evidence of coupon abuse. It is evidence that Skullcandy has promo-code constraints customers notice, and that support/coupon-policy enforcement sits adjacent to ecommerce conversion and customer experience.<a class="citechip hov" href="https://www.reddit.com/r/Skullcandy/comments/1udvvpc/issue_with_the_new_surprise_code/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.reddit.com/r/Skullcandy/comments/1udvvpc/issue_with_the_new_surprise_code/</span></div></span></a> ; <a class="citechip hov" href="https://www.skullcandy.com/blogs/ordering-information/coupon-code-help-policy" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.skullcandy.com/blogs/ordering-information/coupon-code-help-policy</span></div></span></a></li></ol><ol class="prose-ol"><li><strong>2026-03-17 — the Riskified incumbent story became public recently enough to be a live benchmark hook.</strong> Riskified’s Skullcandy case study and press release describe the current incumbent adoption narrative: Skullcandy had a fraud strategy in place for years, worried its old setup may have cost good revenue through false declines, paired fraud screening with Shopify/Shop Pay changes, and later saw low decline rates, lower false-positive tickets, a 4X month-over-month approved-revenue result, and an approximately 0.06% chargeback rate over 12 months. Zachary Belles is quoted in the Riskified press release as the operator using the Riskified Shopify app and monitoring fraud performance. <strong>Why it matters:</strong> Play A is not speculative. The current public record already names the incumbent and frames the winning metric set as approvals, false positives, and chargebacks.<a class="citechip hov" href="https://www.riskified.com/resources/case-study/skullcandy/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.riskified.com/resources/case-study/skullcandy/</span></div></span></a> ; <a class="citechip hov" href="https://www.riskified.com/press/skullcandy-amplifies-ecommerce-growth-and-approval-rates-with-riskified/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.riskified.com/press/skullcandy-amplifies-ecommerce-growth-and-approval-rates-with-riskified/</span></div></span></a></li></ol></div><div class="prose"><div class="prose-h" style="margin-top:0">Incumbent timing</div><p><strong>Incumbent status:</strong> Riskified is given in the prompt and is corroborated by Riskified’s own Skullcandy case study and press release. Do not re-detect the incumbent and do not imply uncertainty about adoption.<a class="citechip hov" href="https://www.riskified.com/resources/case-study/skullcandy/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.riskified.com/resources/case-study/skullcandy/</span></div></span></a> ; <a class="citechip hov" href="https://www.riskified.com/press/skullcandy-amplifies-ecommerce-growth-and-approval-rates-with-riskified/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.riskified.com/press/skullcandy-amplifies-ecommerce-growth-and-approval-rates-with-riskified/</span></div></span></a></p><p><strong>Adoption timing:</strong> no exact original Riskified adoption date was found in opened sources. The public Riskified materials are dated 2026-03-17 and say Skullcandy had a fraud strategy in place for years before the recalibration. Shopify’s case study describes Skullcandy’s migration to Shopify Plus and says checkout and fraud screening got sharper after it moved to Shopify Checkout/Shop Pay and paired Shopify fraud logic with a third-party tool; that case study does not name Riskified in the opened lines.<a class="citechip hov" href="https://www.riskified.com/resources/case-study/skullcandy/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.riskified.com/resources/case-study/skullcandy/</span></div></span></a> ; <a class="citechip hov" href="https://www.riskified.com/press/skullcandy-amplifies-ecommerce-growth-and-approval-rates-with-riskified/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.riskified.com/press/skullcandy-amplifies-ecommerce-growth-and-approval-rates-with-riskified/</span></div></span></a> ; <a class="citechip hov" href="https://www.shopify.com/hk/case-studies/skullcandy" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.shopify.com/hk/case-studies/skullcandy</span></div></span></a></p><p><strong>Likely timing hook:</strong> the re-evaluation angle is not “contract renewal found.” No RFP, renewal notice, or live procurement event naming Riskified was opened during this run. The timing hook is that Skullcandy’s public Riskified success story is recent, named, and metric-heavy, while Skullcandy is simultaneously pushing a flagship launch and expanded DTC/social commerce execution. That creates a credible benchmark conversation: whether the public payment-fraud gains still hold during 2026 launch traffic and whether the same visibility extends into returns, warranty claims, support decisions, coupons, loyalty, and repeat-account behavior.<a class="citechip hov" href="https://www.riskified.com/resources/case-study/skullcandy/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.riskified.com/resources/case-study/skullcandy/</span></div></span></a> ; <a class="citechip hov" href="https://www.skullcandy.com/products/crusher-1080-anc-headphones" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.skullcandy.com/products/crusher-1080-anc-headphones</span></div></span></a> ; <a class="citechip hov" href="https://www.reddit.com/r/Skullcandy/comments/1v29i8v/dont_waste_your_money_on_the_crusher_1080_anc/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.reddit.com/r/Skullcandy/comments/1v29i8v/dont_waste_your_money_on_the_crusher_1080_anc/</span></div></span></a> ; <a class="citechip hov" href="https://www.skullcandy.com/blogs/ordering-information/coupon-code-help-policy" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.skullcandy.com/blogs/ordering-information/coupon-code-help-policy</span></div></span></a></p><p><strong>Coverage-gap framing:</strong> do not claim Riskified lacks post-purchase capabilities. The safe claim is narrower: the public Skullcandy/Riskified evidence centers approval rate, decline rate, false-positive tickets, chargeback rate, Shopify-app fraud monitoring, and checkout/payment performance. The live why-now signals are more mixed: new premium SKU, out-of-stock state, post-purchase customer chatter, return/warranty workflows, and coupon-rule friction. That mismatch is the displacement wedge.<a class="citechip hov" href="https://www.riskified.com/resources/case-study/skullcandy/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.riskified.com/resources/case-study/skullcandy/</span></div></span></a> ; <a class="citechip hov" href="https://www.riskified.com/press/skullcandy-amplifies-ecommerce-growth-and-approval-rates-with-riskified/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.riskified.com/press/skullcandy-amplifies-ecommerce-growth-and-approval-rates-with-riskified/</span></div></span></a> ; <a class="citechip hov" href="https://www.skullcandy.com/blogs/returns/returns-refunds" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.skullcandy.com/blogs/returns/returns-refunds</span></div></span></a> ; <a class="citechip hov" href="https://www.skullcandy.com/blogs/warranty/warranty-policy" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.skullcandy.com/blogs/warranty/warranty-policy</span></div></span></a> ; <a class="citechip hov" href="https://www.skullcandy.com/blogs/ordering-information/coupon-code-help-policy" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.skullcandy.com/blogs/ordering-information/coupon-code-help-policy</span></div></span></a></p></div><div class="prose"><div class="prose-h" style="margin-top:0">Pitch reasoning</div><p><strong>Fitted play: PLAY A — incumbent displacement.</strong> Skullcandy is already on Riskified, and the public incumbent story names the operational buyer and the exact metrics that matter: approvals, false positives, chargebacks, decline thresholds, and Shopify-app fraud monitoring. The right move is not an alarmist threat email. It is a benchmark email anchored in a live launch moment.</p><p><strong>Why not Play B first:</strong> I found public resale-adjacent history, coupon confusion, launch chatter, and customer-service/return pressure, but I did not open credible evidence of an active fraud-as-a-service campaign or live organized scheme targeting Skullcandy. Play B would overclaim. Use it only if new evidence appears, such as named abuse communities, live promo exploitation, coordinated reseller activity, or repeated warranty/return manipulation evidence from credible sources.</p><p><strong>Primary person:</strong> Zachary Belles. He is the named operator in the Riskified story and the cleanest bridge to incumbent benchmarking. <strong>Second thread:</strong> Evin Catlett, because she owns the growth/conversion/customer-experience side of launch traffic, TikTok Shop, affiliate, and ecommerce performance.</p><p><strong>Wedge capability:</strong> incumbent benchmark plus broader journey coverage. Lead with payment approval and chargeback economics because that is already Skullcandy’s public language. Add post-purchase risk as the “what the public case does not show” expansion: launch returns, warranty claims, coupon/rewards rules, CX decisions, repeat-customer behavior, and exceptions.</p><p><strong>Best why-now hook:</strong> “Your Riskified story is public and very strong on checkout outcomes. With Crusher 1080 ANC now live and customer conversations already moving into returns/expectations, it may be worth benchmarking whether that same risk visibility carries through post-purchase workflows, not just payment authorization.”</p><p><strong>Per-person likely feeling, grounded only as inference:</strong> Belles likely cares about not disrupting a working fraud stack while improving measurable visibility. Catlett likely cares about not letting fraud controls hurt conversion, TikTok/social commerce growth, or launch experience. Garofalow likely cares about protecting the Bose-linked premium repositioning. Ainbinder likely cares about chargeback economics and vendor ROI. Hough likely cares about operational consistency in returns/warranty/fulfillment. Torres likely cares about AR/credit-risk exceptions and international dispute economics, but his evidence is the thinnest.</p></div></div><div class="tabpanel" id="etab-lookalike" style="display:none"><div class="prose"><div class="prose-h" style="margin-top:0">Lookalike case study</div><p><strong>Match exists: yes.</strong></p><p><strong>Best match: Brew Watch Company.</strong> Use the embedded Wyllo customer-story context supplied in the prompt; no public URL was supplied, and Wyllo was not researched per instruction. Brew is the closest operational match because it is a DTC brand shipping compact higher-value physical products globally, where the central risk is deciding order risk before fulfillment, preventing chargebacks, and protecting revenue without slowing growth. Skullcandy’s products are not watches, but the risk shape is similar: compact shippable goods, premium launch SKUs, global storefronts, and a need to approve legitimate orders while blocking costly bad ones.</p><p><strong>Why not Everlane/OluKai/Monday Swimwear first:</strong> those stories are stronger for high-return apparel/footwear workflows. Skullcandy has a return/warranty surface, but the freshest live trigger is a flagship electronic product launch with payment-approval, fulfillment, and chargeback stakes. Monday Swimwear is a useful runner-up if the thread shifts toward lean operations, chargeback representation, return abuse, and global customer-support workload. Caraway is also relevant for premium physical-goods inventory/revenue protection. Brew remains the cleanest first match.</p><p><strong>How to use the match truthfully:</strong> cite Brew for operational similarity only. Do not import watch-specific facts into Skullcandy. Do not quote Brew’s inconsistent metric fields as if they predict Skullcandy impact. The safe case-study line is: “This looks less like a generic apparel returns story and more like a compact high-value physical-goods story where the costliest mistake is shipping the wrong risky order or blocking the wrong good customer.” Source: embedded Wyllo customer-story context supplied in prompt, Brew Watch Company case-study record.</p></div></div><div class="tabpanel" id="etab-committee" style="display:none"><div class="muted" style="margin:0 0 8px">Everyone the system would thread on this account. Direct contact on file for 6 of 6. Coordinated outreach copy lives in the play view.</div><div class="person-block"><div class="cmt-card"><img class="thumb" src="https://media.licdn.com/dms/image/v2/D5603AQF2S5gyn3jHCQ/profile-displayphoto-crop_800_800/B56Zx7znOBIgAM-/0/1771603653872?e=1786579200&amp;v=beta&amp;t=u_-LWtiIrlnKecAPlnL9W4YKdYMEv9Tfq9ip_moRulI" alt=""><div class="cmt-body"><div class="who"><a href="../people/zachary-belles-09695119.html">Zachary Belles</a> <span class="muted">— Global IT &amp; Business Systems Leader</span> <span class="role">fraud / payments / IT owner</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:zach.belles@skullcandy.com">zach.belles@skullcandy.com</a></span><span class="cl"><b>Phone</b>+1 610-751-6577</span><span class="cl"><b>LinkedIn</b><a href="https://www.linkedin.com/in/zachary-belles-09695119" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div><div class="person-block"><div class="cmt-card"><img class="thumb" src="https://media.licdn.com/dms/image/v2/D5603AQEdp9Vub0J7kA/profile-displayphoto-crop_800_800/B56Zm8nSKcHkAI-/0/1759806039032?e=1786579200&amp;v=beta&amp;t=fKv5G3rNLUazMEKBl8bJkOWpwCQXvuWB-BB3cf0IJ_8" alt=""><div class="cmt-body"><div class="who"><a href="../people/evincatlett.html">Evin Catlett</a> <span class="muted">— Global VP, Ecommerce &amp; Growth Marketing @ Skullcandy</span> <span class="role">ecomm / DTC / loyalty-retention</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:evin.catlett@skullcandy.com">evin.catlett@skullcandy.com</a></span><span class="cl"><b>Phone</b>+1 801-440-1308</span><span class="cl"><b>LinkedIn</b><a href="https://www.linkedin.com/in/evincatlett" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div><div class="person-block"><div class="cmt-card"><img class="thumb" src="https://media.licdn.com/dms/image/v2/D5603AQGvDEe3WbzWBw/profile-displayphoto-shrink_800_800/B56ZY5XAH6HQAc-/0/1744719054665?e=1786579200&amp;v=beta&amp;t=v0pNrELZjlXTwWPSqEoF1mZrJ-YnRa6L27n2hWnPRX0" alt=""><div class="cmt-body"><div class="who"><a href="../people/brian-garofalow-02b7bb2.html">Brian Garofalow</a> <span class="muted">— Chief Executive Officer at Skullcandy</span> <span class="role">executive sponsor</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:bg@skullcandy.com">bg@skullcandy.com</a></span><span class="cl"><b>Phone</b>+1 760-216-3365</span><span class="cl"><b>LinkedIn</b><a href="https://www.linkedin.com/in/brian-garofalow-02b7bb2" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div><div class="person-block"><div class="cmt-card"><img class="thumb" src="https://media.licdn.com/dms/image/v2/C5603AQFl4t2eakXydw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1630190893809?e=1786579200&amp;v=beta&amp;t=JO1n5-0A-9hybbuSe0uyZIRvcGg_Vrl17WsRI76yb4I" alt=""><div class="cmt-body"><div class="who"><a href="../people/aainbinder.html">Adam Ainbinder</a> <span class="muted">— Skullcandy CFO, hands on manager, analytics expert, sell side experience, and systems implementer</span> <span class="role">finance_sponsor</span></div><div class="kv" style="margin-top:3px"><span class="muted">responsible for: Owns chargeback cost + ROI case; approves fraud-tool budget</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:adam.ainbinder@skullcandy.com">adam.ainbinder@skullcandy.com</a></span><span class="cl"><b>Phone</b>+1 949-266-7367</span><span class="cl"><b>LinkedIn</b><a href="https://www.linkedin.com/in/aainbinder" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div><div class="person-block"><div class="cmt-card"><img class="thumb" src="https://media.licdn.com/dms/image/v2/D5603AQHV0X20CpUWzA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1715972650022?e=1786579200&amp;v=beta&amp;t=3woE5TdAxNRH84L6pcN1hTeOtU11eEU1JPQ4zvKXMGk" alt=""><div class="cmt-body"><div class="who"><a href="../people/jillian-hough-85ab2055.html">Jillian Hough</a> <span class="muted">— Senior Director of Operations at Skullcandy Inc.</span> <span class="role">ops / returns</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:jillian.hough@skullcandy.com">jillian.hough@skullcandy.com</a></span><span class="cl"><b>Phone</b>+1 604-351-7077</span><span class="cl"><b>LinkedIn</b><a href="https://ca.linkedin.com/in/jillian-hough-85ab2055" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div><div class="person-block"><div class="cmt-card"><img class="thumb" src="https://media.licdn.com/dms/image/v2/C4E03AQHxkDfg2LTOWQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1588689462769?e=1786579200&amp;v=beta&amp;t=vxdJcUFXgJL711Vg6xOEXZdnipMB3Qsj3tXdAc3Y9B4" alt=""><div class="cmt-body"><div class="who"><a href="../people/diego-torres-229073a6.html">Diego Torres</a> <span class="muted">— Manager AR and Credit Risk Analyst  -   GmbH, Canada &amp; International</span> <span class="role">finance / credit risk</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:diego.torres@skullcandy.com">diego.torres@skullcandy.com</a></span><span class="cl"><b>Phone</b>+1 435-655-1646</span><span class="cl"><b>LinkedIn</b><a href="https://www.linkedin.com/in/diego-torres-229073a6" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div></div><div class="tabpanel" id="etab-play" style="display:none"><div class="section"><div class="kv"><b>Coordinated play</b> A multi-threaded outreach sequence across this account's buying committee.</div><div class="kv" style="margin-top:8px"><a class="play-btn" href="../play_view.html#skullcandy.com">View coordinated play &rarr;</a> <span class="chip chip-ok" title="Fact-checked against its research bundle">&#10003; Verified</span></div></div></div></div></div><script>function showTab(btn,id){var c=btn.closest('.tabs');c.querySelectorAll('.tabpanel').forEach(function(p){p.style.display='none';});c.querySelectorAll('.tab').forEach(function(t){t.classList.remove('tab-active');});var el=document.getElementById(id);if(el)el.style.display='block';btn.classList.add('tab-active');}</script></div><div id="tooltip"></div><script>(function(){var tip=document.getElementById('tooltip');function show(e){var c=e.currentTarget.querySelector(".tt-content");if(!c)return;tip.innerHTML=c.innerHTML;tip.style.display='block';move(e);}function move(e){var pad=12,x=e.clientX+pad,y=e.clientY+pad,w=tip.offsetWidth,h=tip.offsetHeight;if(x+w>window.innerWidth-8)x=window.innerWidth-8-w;if(y+h>window.innerHeight-8)y=e.clientY-pad-h;if(x<8)x=8;if(y<8)y=8;tip.style.left=x+'px';tip.style.top=y+'px';}function hide(){tip.style.display='none';}document.querySelectorAll('[data-tip]').forEach(function(el){el.addEventListener('mouseenter',show);el.addEventListener('mousemove',move);el.addEventListener('mouseleave',hide);});})();</script>

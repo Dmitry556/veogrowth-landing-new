@@ -1,0 +1,340 @@
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Jenni Kayne — ENGAGE</title><style>
+/* ==========================================================================
+   Wyllo demo — internal ops / admin-panel design system.
+   One shared visual language across index / account / person / engage /
+   analytics / blocklist pages. Restraint over flair: muted palette, flat
+   surfaces, dense-but-legible data tables, consistent type + spacing scale.
+   Design tokens below; every class name is preserved for the templates.
+   ========================================================================== */
+:root {
+  /* neutrals */
+  --bg: #f4f6f8; --surface: #ffffff; --surface-2: #fafbfc;
+  --line: #e3e6ea; --line-strong: #d3d8de; --line-soft: #eceef1;
+  --ink: #1b2430; --ink-2: #4a5568; --muted: #6b7482; --faint: #98a1ac;
+  /* accent (links / active) */
+  --accent: #1a56c4; --accent-ink: #123e91; --accent-wash: #eef3fb; --accent-line: #c6dbf5;
+  /* semantic */
+  --green: #1a7f37; --green-wash: #eef7f0; --green-line: #b9dcc3;
+  --amber: #a9720a; --amber-wash: #fdf6e3; --amber-line: #e6cd8f;
+  --red: #b02a37; --red-wash: #fbeaec; --red-line: #e6b0b6;
+  /* header/head fills */
+  --head-fill: #eef1f4; --head-fill-hover: #e4e8ec;
+  /* type scale */
+  --fs-xs: 11px; --fs-sm: 12px; --fs-base: 13px; --fs-md: 14px; --fs-lg: 16px; --fs-xl: 19px;
+  /* spacing scale */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px; --s6: 28px;
+  --radius: 6px; --radius-sm: 4px;
+  --shadow: 0 1px 2px rgba(16,24,40,.05);
+}
+* { box-sizing: border-box; }
+body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  margin: 0; color: var(--ink); font-size: var(--fs-md); line-height: 1.5;
+  background: var(--bg); -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* top app bar — slim product chrome strip spanning every page. The wordmark is
+   structural chrome (a generic tool name), injected here so it rides above the
+   centered content column on all pages including the detail views that have no
+   section nav. Muted fill, hairline bottom border, left-aligned to the column. */
+body::before {
+  content: "GTM Console";
+  display: block; box-sizing: border-box;
+  font-size: var(--fs-sm); font-weight: 700; line-height: 1;
+  letter-spacing: .09em; text-transform: uppercase; color: var(--ink-2);
+  background: var(--head-fill); border-bottom: 1px solid var(--line-strong);
+  padding: 12px 0; padding-inline: max(var(--s4), calc((100% - 1040px) / 2 + var(--s4)));
+}
+
+.wrap { max-width: 1040px; margin: 0 auto; padding: var(--s5) var(--s4) var(--s6); }
+.wrap.wide { max-width: 1400px; }
+/* ENGAGE "why reach out / why not" — clamp to 2 lines so rows stay compact (full text on hover) */
+.whyreach-td { vertical-align: top; }
+.whyreach { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; max-width: 300px; line-height: 1.35; color: var(--muted); }
+h1 { font-size: var(--fs-xl); margin: 0 0 var(--s2); font-weight: 650;
+  letter-spacing: -.01em; color: var(--ink); }
+h2 { font-size: var(--fs-sm); text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
+  border-bottom: 1px solid var(--line); padding-bottom: var(--s1); margin: var(--s5) 0 var(--s3);
+  font-weight: 700; }
+
+/* funnel — monospace summary strip */
+.funnel { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: var(--fs-sm);
+  color: var(--ink-2); background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: var(--radius-sm); padding: var(--s2) var(--s3); margin-bottom: var(--s3); }
+
+/* data tables */
+.tblwrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--surface); box-shadow: var(--shadow); }
+table { border-collapse: collapse; width: 100%; font-size: var(--fs-base); background: var(--surface); }
+th, td { border-bottom: 1px solid var(--line-soft); padding: 9px 12px; text-align: left; vertical-align: middle; }
+th { position: sticky; top: 0; background: var(--head-fill); z-index: 1; font-size: var(--fs-xs);
+  font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-2);
+  border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
+tbody tr:last-child td { border-bottom: none; }
+/* subtle zebra banding for a machine-uniform rhythm (declared before :hover so
+   hover — equal specificity — still wins). */
+tbody tr:nth-child(even) td { background: var(--surface-2); }
+tbody tr:hover td, tr:hover td { background: var(--accent-wash); }
+/* IDENTIFY table column discipline: keep the atomic columns on one line so every
+   row is the same height; only Company (1) + Incumbent (6) may wrap when needed.
+   Headcount right-aligns with tabular figures so the digits stack. */
+#idtable td:nth-child(2), #idtable td:nth-child(3), #idtable td:nth-child(4),
+#idtable td:nth-child(5), #idtable td:nth-child(7), #idtable td:nth-child(8) { white-space: nowrap; }
+#idtable td:nth-child(3), #idtable th:nth-child(3) { text-align: right; font-variant-numeric: tabular-nums; }
+/* sortable column headers — spreadsheet/DB style */
+th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+th.sortable:hover { background: var(--head-fill-hover); color: var(--ink); }
+th.sortable .arrow { font-size: 9px; color: var(--accent); margin-left: 4px; }
+
+/* ICP badge — small circle, hi/mid/lo colour coding */
+.badge { display: inline-block; min-width: 28px; text-align: center; border-radius: 11px;
+  padding: 2px 8px; background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line-strong);
+  font-size: var(--fs-xs); font-weight: 700; font-variant-numeric: tabular-nums; cursor: help; }
+.b-hi { background: var(--green-wash); color: var(--green); border-color: var(--green-line); }
+.b-mid { background: var(--amber-wash); color: var(--amber); border-color: var(--amber-line); }
+.b-lo { background: var(--surface-2); color: var(--muted); border-color: var(--line-strong); }
+
+.muted { color: var(--muted); font-size: var(--fs-sm); }
+.pending { color: var(--faint); font-style: italic; }
+.ok { color: var(--green); }
+
+/* content cards */
+.section { border: 1px solid var(--line); background: var(--surface); border-radius: var(--radius);
+  padding: var(--s4) var(--s5); margin-bottom: var(--s3); box-shadow: var(--shadow); }
+.kv { margin: var(--s1) 0; }
+.kv b { color: var(--ink-2); font-weight: 600; display: inline-block; min-width: 140px; }
+
+/* two-column definition layout for the composed key-value cards (account Summary
+   tab, per-account ENGAGE header, person info card). The value is a run of
+   sibling inline nodes, so a flex/grid split would fragment it — instead the label
+   sits in a fixed left gutter (absolute) and the value flows as one wrapping
+   column. A long value (e.g. Priority "Work now — …") therefore wraps entirely
+   inside the value column and never collides with the label. */
+#tab-summary .kv, .wrap > .section .kv {
+  position: relative; padding-left: 158px; margin: var(--s2) 0; min-height: 1.4em; line-height: 1.5; }
+#tab-summary .kv b, .wrap > .section .kv b {
+  position: absolute; left: 0; top: 0; display: block; width: 142px; min-width: 0;
+  color: var(--muted); font-weight: 600; font-size: var(--fs-sm); text-transform: none; }
+ul.clean { margin: var(--s1) 0; padding-left: 18px; }
+ul.clean li { margin: var(--s1) 0; }
+.src { font-size: var(--fs-xs); }
+
+/* person avatars + thumbs */
+.avatar { width: 92px; height: 92px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line-strong); }
+.avatar-init { width: 92px; height: 92px; border-radius: 50%; background: #46618f; color: #fff;
+  display: inline-flex; align-items: center; justify-content: center; font-size: 34px; font-weight: 700; }
+.thumb { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 7px; border: 1px solid var(--line-strong); }
+.thumb-init { width: 26px; height: 26px; border-radius: 50%; background: #46618f; color: #fff;
+  display: inline-flex; align-items: center; justify-content: center; font-size: var(--fs-xs); font-weight: 700;
+  vertical-align: middle; margin-right: 7px; }
+.phdr { display: flex; gap: var(--s4); align-items: center; margin-bottom: var(--s3); }
+
+/* role tag / pill */
+.role { display: inline-block; padding: 2px 8px; border: 1px solid var(--line-strong); border-radius: 10px;
+  font-size: var(--fs-xs); background: var(--surface-2); color: var(--ink-2); font-weight: 600;
+  letter-spacing: .02em; }
+
+/* experience / triggers — left-border rail */
+.exp { border-left: 3px solid var(--line-strong); padding-left: var(--s3); margin: var(--s3) 0; }
+.back { font-size: var(--fs-sm); margin-bottom: var(--s3); }
+.back a { font-weight: 600; }
+
+/* top nav bar */
+.nav { display: flex; gap: 2px; border-bottom: 1px solid var(--line-strong); margin-bottom: var(--s4);
+  padding-bottom: 0; }
+.navitem { display: inline-block; padding: 8px 14px; font-size: var(--fs-sm); font-weight: 600;
+  text-decoration: none; color: var(--muted); border: 1px solid transparent; border-bottom: none;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+.navitem:hover { background: var(--surface-2); color: var(--ink); text-decoration: none; }
+.navitem.nav-active { color: var(--ink); background: var(--surface); border-color: var(--line-strong);
+  margin-bottom: -1px; box-shadow: 0 -2px 0 var(--accent) inset; }
+.navitem.nav-off { color: var(--faint); cursor: default; }
+
+/* incumbent confidence indicator — tiny dot + label */
+.conf { font-size: 10px; margin-left: 5px; white-space: nowrap; cursor: help; font-weight: 600; }
+.conf-hi { color: var(--green); }
+.conf-lo { color: var(--amber); }
+
+/* suppression banner — MUST stay unmissable (red, high-contrast) */
+.suppressed { border: 1px solid var(--red-line); border-left: 4px solid var(--red);
+  background: var(--red-wash); color: #7a1620; border-radius: var(--radius);
+  padding: var(--s3) var(--s4); margin-bottom: var(--s3); font-weight: 700; }
+.suppressed .muted2 { display: block; font-weight: 400; color: #9a4048; margin-top: var(--s1); font-size: var(--fs-sm); }
+/* out-of-ICP / do-not-contact chip (stays in IDENTIFY, distinct from the NoFraud blocklist) */
+.dnc { display: inline-block; background: var(--red-wash); color: var(--red); border: 1px solid var(--red-line);
+  border-radius: var(--radius-sm); padding: 1px 6px; font-size: 10px; font-weight: 700; letter-spacing: .03em;
+  margin-left: 6px; vertical-align: middle; }
+/* out-of-ICP / do-not-contact banner — MUST stay unmissable (amber, high-contrast) */
+.dq-banner { border: 1px solid var(--amber-line); border-left: 4px solid var(--amber);
+  background: var(--amber-wash); color: #6f4a09; border-radius: var(--radius);
+  padding: var(--s3) var(--s4); margin: var(--s2) 0 var(--s3); font-weight: 700; }
+.dq-banner .muted2 { display: block; font-weight: 400; color: #8a6413; margin-top: var(--s1); font-size: var(--fs-sm); }
+
+/* account sub-tabs — same visual language as the top nav */
+.tabbar { display: flex; flex-wrap: wrap; gap: 2px; border-bottom: 1px solid var(--line-strong); margin: var(--s2) 0 0; }
+.tab { padding: 8px 14px; font-size: var(--fs-sm); font-weight: 600; color: var(--muted); background: transparent;
+  border: 1px solid transparent; border-bottom: none; border-radius: var(--radius-sm) var(--radius-sm) 0 0; cursor: pointer; }
+.tab:hover { background: var(--surface-2); color: var(--ink); }
+.tab.tab-active { color: var(--ink); background: var(--surface); border-color: var(--line-strong);
+  margin-bottom: -1px; box-shadow: 0 -2px 0 var(--accent) inset; }
+.tabpanels { border: 1px solid var(--line-strong); border-top: none; background: var(--surface);
+  border-radius: 0 0 var(--radius) var(--radius); padding: var(--s4); box-shadow: var(--shadow); }
+.tabpanel h2:first-child { margin-top: 0; }
+
+/* freeform prose rendered from the dossier markdown */
+.prose { font-size: var(--fs-md); line-height: 1.6; color: var(--ink); max-width: 82ch; }
+.prose p { margin: var(--s2) 0; }
+.prose .prose-h { font-size: var(--fs-md); font-weight: 700; margin: var(--s5) 0 var(--s2); color: var(--ink); }
+.prose ul.prose-ul, .prose ol.prose-ol { margin: var(--s2) 0; padding-left: 22px; }
+.prose ul.prose-ul li, .prose ol.prose-ol li { margin: var(--s2) 0; }
+.prose code { background: var(--line-soft); padding: 1px 5px; border-radius: 3px;
+  font-family: ui-monospace, monospace; font-size: var(--fs-sm); }
+.prose a { word-break: break-word; }
+.prose + .prose { border-top: 1px solid var(--line-soft); margin-top: var(--s4); padding-top: var(--s4); }
+.prose-note { color: var(--muted); font-size: var(--fs-sm); margin: 0 0 var(--s3); }
+
+/* priority letter + dot — P1 = work-now (green), P2 = amber, P3 = grey */
+.prio { cursor: help; white-space: nowrap; font-weight: 700; }
+.pdot { display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  margin-right: 6px; vertical-align: middle; background: var(--faint); }
+.prio-p1 .pdot { background: var(--green); }
+.prio-p2 .pdot { background: var(--amber); }
+.prio-p3 .pdot { background: var(--faint); }
+
+/* JS hover card (escapes table overflow — appended to <body>) */
+.hov { cursor: help; }
+#tooltip { position: fixed; z-index: 9999; display: none; max-width: 340px;
+  background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius);
+  box-shadow: 0 6px 24px rgba(16,24,40,.16); padding: var(--s3); font-size: var(--fs-sm);
+  color: var(--ink-2); line-height: 1.5; text-align: left; }
+.tt-h { font-weight: 700; margin-bottom: var(--s2); font-size: var(--fs-sm); color: var(--ink);
+  text-transform: uppercase; letter-spacing: .04em; }
+.tt-body { white-space: normal; color: var(--ink-2); }
+.tt-row { display: flex; justify-content: space-between; gap: var(--s3); margin: var(--s1) 0; }
+.tt-row + .tt-row { border-top: 1px solid var(--line-soft); padding-top: var(--s1); }
+.tt-pts { color: var(--green); font-weight: 700; white-space: nowrap; }
+.tt-note { color: var(--muted); }
+
+/* ENGAGE list groups + per-account play shell */
+.eng-lead { color: var(--ink-2); margin: -4px 0 var(--s4); font-size: var(--fs-base); }
+.eng-group { margin-bottom: var(--s5); }
+.eng-group h2 .cnt { color: var(--faint); font-weight: 700; }
+.campaign-tag { display: inline-block; padding: 2px 9px; border-radius: 11px; font-size: var(--fs-xs);
+  font-weight: 700; border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink-2); margin-right: 6px; }
+.camp-a { border-color: var(--green-line); color: var(--green); background: var(--green-wash); }
+.camp-b { border-color: var(--red-line); color: var(--red); background: var(--red-wash); }
+.preview-note { border: 1px solid var(--amber-line); border-left: 4px solid var(--amber);
+  background: var(--amber-wash); color: #6f4a09; border-radius: var(--radius); padding: var(--s2) var(--s3);
+  margin-bottom: var(--s3); font-size: var(--fs-sm); font-weight: 600; }
+.person-block { border: 1px solid var(--line); border-radius: var(--radius); padding: var(--s3) var(--s4);
+  margin: var(--s2) 0; background: var(--surface); box-shadow: var(--shadow); }
+.person-block .who { font-weight: 700; }
+.chip { display: inline-block; padding: 2px 8px; border: 1px solid var(--line-strong); border-radius: 11px;
+  font-size: var(--fs-xs); color: var(--muted); background: var(--surface-2); white-space: nowrap; }
+/* play verification-state chips — muted green (verified) / amber (pending),
+   same wash tokens as the b-hi/b-mid score badges. */
+.chip.chip-ok { color: var(--green); background: var(--green-wash); border-color: var(--green-line); }
+.chip.chip-pending { color: var(--amber); background: var(--amber-wash); border-color: var(--amber-line); }
+
+/* committee card (per-account ENGAGE) — photo + identity + contacts row */
+.cmt-card { display: flex; gap: var(--s3); align-items: flex-start; }
+.cmt-card .thumb { width: 42px; height: 42px; margin-right: 0; flex: 0 0 42px; }
+.cmt-card .thumb-init { width: 42px; height: 42px; margin-right: 0; flex: 0 0 42px; font-size: 16px; }
+.cmt-body { flex: 1 1 auto; min-width: 0; }
+.cmt-contacts { margin-top: var(--s2); display: flex; flex-wrap: wrap; gap: var(--s1) var(--s4); font-size: var(--fs-sm); }
+.cmt-contacts .cl { white-space: nowrap; }
+.cmt-contacts .cl b { color: var(--muted); font-weight: 700; margin-right: 5px; text-transform: uppercase;
+  font-size: 10px; letter-spacing: .04em; }
+.cmt-contacts a { color: var(--accent); text-decoration: none; }
+.cmt-contacts a:hover { text-decoration: underline; }
+
+/* "View play" link (ENGAGE table cell) + button (per-account ENGAGE page) —
+   opens the data-driven play_view.html at this account. */
+a.play-link { font-size: var(--fs-sm); font-weight: 700; color: var(--accent); text-decoration: none;
+  white-space: nowrap; }
+a.play-link:hover { text-decoration: underline; }
+a.play-btn { display: inline-block; padding: 7px 15px; border-radius: var(--radius-sm);
+  background: var(--accent); color: #fff; font-size: var(--fs-base); font-weight: 600;
+  text-decoration: none; }
+a.play-btn:hover { background: var(--accent-ink); text-decoration: none; }
+
+/* inline source citations (CHANGE 4) — the CLAIM text is the citation: a subtle
+   dotted underline; hovering reveals the source URL; clicking opens it in a NEW tab.
+   Two forms: .cite wraps a claim (underline + trailing mark); .citechip is a
+   compact superscript chip used inside prose. */
+.cite { text-decoration: none; border-bottom: 1px dotted var(--accent-line); cursor: help; color: inherit; }
+a.cite:hover { text-decoration: none; border-bottom-color: var(--accent); }
+.citemark { font-size: 10px; color: var(--accent); margin-left: 2px; vertical-align: super;
+  line-height: 0; text-decoration: none; }
+a.citechip { display: inline-block; font-size: 10px; color: var(--accent); text-decoration: none;
+  border: 1px solid var(--accent-line); background: var(--accent-wash); border-radius: var(--radius-sm); padding: 0 4px;
+  margin-left: 2px; vertical-align: super; line-height: 1.4; cursor: help; }
+a.citechip:hover { background: #e0ebfa; text-decoration: none; }
+/* ENGAGE lookalike placeholder cell */
+.lookalike { color: var(--faint); font-style: italic; }
+
+/* ANALYTICS — illustrative/sample framing. The banner MUST be unmistakable:
+   striped amber, bold, full-width, top of page. Nothing here is real. */
+.sample-banner { border: 2px solid var(--amber); border-radius: var(--radius);
+  background: repeating-linear-gradient(45deg,#fffdf3,#fffdf3 12px,#fdf3d8 12px,#fdf3d8 24px);
+  color: #6b5200; padding: var(--s3) var(--s4); margin-bottom: var(--s4); font-size: var(--fs-base); }
+.sample-banner .bhead { font-weight: 800; font-size: var(--fs-base); text-transform: uppercase;
+  letter-spacing: .05em; display: block; margin-bottom: var(--s1); color: #6b5200; }
+.sample-banner .bsub { font-weight: 400; color: #6b5200; }
+.sample-pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px;
+  font-weight: 800; text-transform: uppercase; letter-spacing: .04em; margin-left: 8px;
+  border: 1px solid var(--amber); background: #fffdf3; color: #6b5200; vertical-align: middle; }
+/* KPI strip */
+.kpis { display: flex; flex-wrap: wrap; gap: var(--s3); margin: 0 0 var(--s4); }
+.kpi { flex: 1 1 130px; min-width: 120px; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--surface); padding: var(--s3) var(--s4); box-shadow: var(--shadow); }
+.kpi .kn { font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
+.kpi .kl { font-size: var(--fs-xs); color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-top: 3px; }
+/* status chips */
+.st { display: inline-block; padding: 2px 9px; border-radius: 11px; font-size: var(--fs-xs);
+  font-weight: 700; border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink-2); white-space: nowrap; }
+.st-booked { border-color: var(--accent-line); color: var(--accent); background: var(--accent-wash); }
+.st-held { border-color: var(--green-line); color: var(--green); background: var(--green-wash); }
+.st-noshow { border-color: var(--red-line); color: var(--red); background: var(--red-wash); }
+/* source chips */
+.srcchip { display: inline-block; padding: 2px 9px; border-radius: 11px; font-size: var(--fs-xs);
+  border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink-2); white-space: nowrap; }
+/* ---- meeting handoff brief (AE-facing) ----------------------------------
+   A single "handoff card" an AE is handed for a booked meeting: an identity
+   header, a labelled meta grid, then the briefing sections. Reuses the shared
+   tokens/chips only — no new palette, no accent stripes. */
+.hb-card { border: 1px solid var(--line-strong); background: var(--surface);
+  border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; margin-bottom: var(--s4); }
+/* identity header — account + attendee headline, status on the right */
+.hb-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between;
+  gap: var(--s3) var(--s5); padding: var(--s4) var(--s5); background: var(--surface-2);
+  border-bottom: 1px solid var(--line); }
+.hb-head .who .nm { font-size: var(--fs-lg); font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
+.hb-head .who .ti { font-size: var(--fs-sm); color: var(--muted); margin-top: 2px; }
+.hb-head .who .ti a { color: var(--muted); }
+.hb-head .who .ti a:hover { color: var(--accent); }
+.hb-stat { display: flex; gap: var(--s2); align-items: center; flex-wrap: wrap; flex-shrink: 0; }
+/* meta grid — self-adjusting, labelled fields */
+.hb-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--s4) var(--s5); padding: var(--s4) var(--s5); }
+.hb-meta .f b { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--muted); font-weight: 700; margin-bottom: 3px; }
+.hb-meta .f .v { font-size: var(--fs-md); color: var(--ink); line-height: 1.4; }
+.hb-meta .f .v .sub { display: block; font-size: var(--fs-sm); color: var(--muted); margin-top: 1px; font-weight: 400; }
+.hb-meta .f .v a { color: var(--accent); }
+/* section rhythm — label + card, tighter than the default h2 */
+.hb-label { font-size: var(--fs-sm); text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
+  font-weight: 700; margin: var(--s5) 0 var(--s2); }
+.hb-body { border: 1px solid var(--line); background: var(--surface); border-radius: var(--radius);
+  padding: var(--s3) var(--s4); box-shadow: var(--shadow); font-size: var(--fs-md); line-height: 1.6; color: var(--ink); }
+.hb-body.prose { max-width: 74ch; }
+/* the wedge / "your angle" — a tinted callout (full border, no accent stripe) */
+.hb-say { background: var(--accent-wash); border: 1px solid var(--accent-line); border-radius: var(--radius);
+  padding: var(--s3) var(--s4); font-size: var(--fs-md); line-height: 1.6; color: var(--accent-ink); max-width: 74ch; }
+.hb-say .say-k { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .05em;
+  font-weight: 700; color: var(--accent); margin-bottom: var(--s1); }
+/* footer disclaimer echo */
+.hb-foot { color: var(--muted); font-size: var(--fs-sm); margin-top: var(--s4);
+  padding-top: var(--s3); border-top: 1px solid var(--line-soft); }
+</style><div class="wrap"><div class="back"><a href="../engage.html">&larr; Back to ENGAGE</a></div><h1>Jenni Kayne</h1><div class="section"><div class="kv"><b>Account</b> Jenni Kayne <span class="muted">jennikayne.com</span> · <a href="../accounts/jennikayne.com.html">full dossier</a></div><div class="kv"><b>Incumbent</b> Forter <span class="conf conf-hi" title="Detected in live checkout scripts (network requests) — highest confidence">&#9679; live</span></div><div class="kv"><b>Priority</b> <span class="prio prio-p1"><span class="pdot"></span>P1</span> <span class="muted">— Work now — International ecommerce expansion across Canada, Europe, Australia, and New Zealand. (2026-06-08); Traffic jumped from 360,989 visits in 2026-05 to 485,780 visits in 2026-06. (2026-06)</span></div></div><div class="tabs"><div class="tabbar"><button class="tab tab-active" onclick="showTab(this,'etab-whynow')">Why now</button><button class="tab" onclick="showTab(this,'etab-people')">People today</button><button class="tab" onclick="showTab(this,'etab-lookalike')">Lookalike case study</button><button class="tab" onclick="showTab(this,'etab-committee')">Buying committee (5)</button></div><div class="tabpanels"><div class="tabpanel" id="etab-whynow" style="display:block"><div class="section"><div class="kv"><b>Incumbent</b> Forter <span class="conf conf-hi" title="Detected in live checkout scripts (network requests) — highest confidence">&#9679; live</span></div></div><div class="prose"><div class="prose-h" style="margin-top:0">Why-now signals</div><ul class="prose-ul"><li><strong>What</strong>: International ecommerce expansion moved from strategy to live operating surface across Canada, Europe, Australia, and New Zealand — <strong>dated event</strong>: 2026-06-08 — <strong>source</strong>: <a class="citechip hov" href="https://www.vogue.com/article/how-jenni-kayne-built-an-international-playbook-for-an-uncertain-world" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.vogue.com/article/how-jenni-kayne-built-an-international-playbook-for-an-uncertain-world</span></div></span></a> — <strong>why it implies fraud pain now</strong>: [inference] cross-border checkout, duties/taxes, payment acceptance, delivery, and returns add new fraud/risk decision complexity — <strong>freshness/disconfirm</strong>: checked; still live. Fashionista reported the April launch and Vogue reported the June operating playbook; the official country selector is live on the current site.<a class="citechip hov" href="https://fashionista.com/2026/04/jenni-kayne-international-shipping-expansion" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://fashionista.com/2026/04/jenni-kayne-international-shipping-expansion</span></div></span></a> ; <a class="citechip hov" href="https://www.jennikayne.com/pages/careers" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.jennikayne.com/pages/careers</span></div></span></a></li></ul><ul class="prose-ul"><li><strong>What</strong>: Global-E/DHL and Las Vegas returns flow are now part of the international ecommerce operating model — <strong>dated event</strong>: 2026-06-08 — <strong>source</strong>: <a class="citechip hov" href="https://www.vogue.com/article/how-jenni-kayne-built-an-international-playbook-for-an-uncertain-world" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.vogue.com/article/how-jenni-kayne-built-an-international-playbook-for-an-uncertain-world</span></div></span></a> — <strong>why it implies fraud pain now</strong>: [inference] localized checkout, duties/taxes, international shipping, and centralized returns increase the number of risk decisions that occur after the card authorization — <strong>freshness/disconfirm</strong>: checked; still live via official country selector: <a class="citechip hov" href="https://www.jennikayne.com/pages/careers" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.jennikayne.com/pages/careers</span></div></span></a></li></ul><ul class="prose-ul"><li><strong>What</strong>: A Temporary Customer Experience Representative role, removed June 12, 2026, covered Gladly support plus orders, exchanges, refunds, gift cards, promotion codes, customer issues, rewards, and loss prevention — <strong>dated event</strong>: 2026-06-12 — <strong>source</strong>: <a class="citechip hov" href="https://builtin.com/job/temporary-customer-experience-representative/9704573" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://builtin.com/job/temporary-customer-experience-representative/9704573</span></div></span></a> — <strong>why it implies fraud pain now</strong>: [inference] the role scope sits directly on post-purchase abuse surfaces: refunds, exchanges, gift cards, promo codes, and loss-prevention workflow — <strong>freshness/disconfirm</strong>: checked; superseded because the Built In page says the role was removed June 12 and the official careers page did not expose a current matching CX opening.<a class="citechip hov" href="https://www.jennikayne.com/pages/careers" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.jennikayne.com/pages/careers</span></div></span></a></li></ul><ul class="prose-ul"><li><strong>What</strong>: Public coupon-code circulation is current: Wethrift’s July 23, 2026 page lists CARO10 as a 10% storewide code with community usage two days earlier and LANI10 added two months earlier — <strong>dated event</strong>: 2026-07-23 — <strong>source</strong>: <a class="citechip hov" href="https://www.wethrift.com/jenni-kayne" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.wethrift.com/jenni-kayne</span></div></span></a> — <strong>why it implies fraud pain now</strong>: [inference] publicly circulating codes create promo-governance and attribution-control exposure, especially as international traffic scales — <strong>freshness/disconfirm</strong>: checked; still live on Wethrift page as opened on the run date.</li></ul><ul class="prose-ul"><li><strong>What</strong>: Canyon Ranch / Jenni Kayne / Oak Essentials launched a limited-time Outdoor Sanctuaries wellness experience in July 2026 — <strong>dated event</strong>: 2026-07-09 — <strong>source</strong>: <a class="citechip hov" href="https://www.globaltravelerusa.com/canyon-ranch-partners-with-jenni-kayne-oak-essentials/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.globaltravelerusa.com/canyon-ranch-partners-with-jenni-kayne-oak-essentials/</span></div></span></a> — <strong>why it implies fraud pain now</strong>: [inference] this is a secondary channel/brand-world expansion signal, not direct fraud evidence; it adds customer touchpoints across wellness, retail, and partner experience — <strong>freshness/disconfirm</strong>: checked; Canyon Ranch’s own current pages still describe Jenni Kayne-designed outdoor treatment tents and Oak Essentials services.<a class="citechip hov" href="https://www.canyonranch.com/lenox/campaigns/glamping-experience-berkshires" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.canyonranch.com/lenox/campaigns/glamping-experience-berkshires</span></div></span></a> ; <a class="citechip hov" href="https://www.canyonranch.com/lenox/campaigns/summer-events-offers" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.canyonranch.com/lenox/campaigns/summer-events-offers</span></div></span></a></li></ul></div><div class="prose"><div class="prose-h" style="margin-top:0">Incumbent timing</div><ul class="prose-ul"><li><strong>When adopted</strong>: Given incumbent is Forter by provided technographic detection; no public opened source established when Jenni Kayne adopted Forter — source: provided technographic detection. Public web searches for Jenni Kayne + Forter did not surface a Forter case study, adoption announcement, or dated customer story — source: search log.</li><li><strong>Renewal / re-evaluation signals</strong>: Signifyd’s 2025 ecommerce-leader page quotes Brandy Milam describing “our transition to Signifyd,” creating public evidence of recent fraud-stack change but not a Forter adoption date —<a class="citechip hov" href="https://www.signifyd.com/most-influential-ecommerce-leaders/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.signifyd.com/most-influential-ecommerce-leaders/</span></div></span></a> — date: 2025. No opened current role, RFP, complaint, or public post named Forter, Riskified, or Signifyd as a renewal/re-evaluation requirement — source: search log — date: 2026-07-23.</li><li><strong>Coverage gap</strong>: n/a — no sourced evidence establishes that the current incumbent coverage is payment-only; Forter’s own public positioning claims Trust Platform coverage across account protection, payment fraud, disputes, returns/INR abuse, promotion/coupon abuse, and reseller/reshipper abuse —<a class="citechip hov" href="https://www.forter.com/trust/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.forter.com/trust/</span></div></span></a>.</li></ul></div><div class="prose"><div class="prose-h" style="margin-top:0">Pitch reasoning</div><ul class="prose-ul"><li>FITTED PLAY: A (incumbent displacement) — the deciding fact is the given Forter incumbent plus public 2025 evidence of a Signifyd transition, which makes the sharper path an incumbent-benchmark/displacement conversation rather than an active-fraud-threat alert. Built from §3.</li><li>WEDGE CAPABILITY: returns/claims/post-purchase — the live CX scope touches refunds, exchanges, gift cards, promo codes, rewards, Gladly, and loss prevention while the expansion adds cross-border returns and checkout complexity. Built from §1 and §2.</li><li>WHY-NOW HOOK: the June 8, 2026 international ecommerce rollout with Global-E/DHL and Las Vegas returns flow — to whom: Brandy Milam, because her own public quote centers on a fraud/risk-vendor transition and her function owns the CX/refund/promo workflow surface.</li><li>PROOF POINT: Credo Beauty first; Monday Swimwear as the international/lean-apparel runner-up.</li><li>PER-PERSON PAIN:</li><li>Brandy Milam — [inference] she likely feels the operational tension of keeping CX smooth while refunds, promo codes, exchanges, gift cards, and loss-prevention decisions scale — BUILT-FROM: §1 CX role + §2 Brandy CX/Signifyd fact.</li><li>Kate Watters — [inference] she likely cares whether fraud/risk controls preserve full-price international growth without adding customer friction — BUILT-FROM: §1 international rollout + §2 Kate retention/full-price commentary.</li><li>Melissa Smith — [inference] she likely cares about preventing coupon/rewards abuse without increasing discount dependency or degrading the luxury retention experience — BUILT-FROM: §1 Wethrift signal + §2 Klaviyo/Yotpo strategy.</li><li>Samantha Mella — [inference] she likely cares about risk controls that do not interrupt high-touch home, trade, retail, and ecommerce service across one customer profile — BUILT-FROM: §2 SDG omnichannel/trade facts.</li><li>Anne Pak — [inference] if she is the finance/ops sponsor, she likely evaluates margin leakage, vendor cost, chargeback/returns exposure, and implementation risk — BUILT-FROM: §2 unverified finance/ops roster + §1 cross-border ops facts.</li><li>LEAD PERSON + ANGLE: Brandy Milam — open on the June international expansion plus her own public Signifyd-transition language, then frame a neutral benchmark across checkout, returns, promo, and CX risk instead of implying Signifyd/Forter is failing. She is the best lead because her own opened quote is directly about a fraud/risk vendor transition and her function touches refund/promo/loss-prevention workflow.</li><li>RUNNER-UP NOTE: Play B was not chosen because no current brand-named fraud scheme, Telegram/Snapchat-style targeting, or above-retail resale spike was confirmed; coupon exposure is useful support but not sharper than the incumbent/change-timing angle.</li></ul></div></div><div class="tabpanel" id="etab-people" style="display:none"><div class="muted" style="margin:0 0 8px">Each committee person as of this week — what they say, what sits on their desk, and what they publicly care about.</div><div class="person-block"><div class="who" style="font-weight:600"><strong><a href="../people/brandy-milam-264b22a.html">Brandy Milam</a> — Vice President, Customer Experience</strong> — <a class="citechip hov" href="https://www.linkedin.com/in/brandy-milam-264b22a" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.linkedin.com/in/brandy-milam-264b22a</span></div></span></a> — role-in-deal: cx_returns.</div><div class="kv" style="margin:5px 0 0"><b style="min-width:auto;display:inline">In their own voice:</b> <span class="tt-note">“One of the initiatives I&#x27;m most proud of is our transition to Signifyd. The implementation process was incredibly seamless, and the integration of Signifyd’s machine learning algorithm has been a huge win for our organization, our team, and, most importantly, our customers!” —<a class="citechip hov" href="https://www.signifyd.com/most-influential-ecommerce-leaders/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.signifyd.com/most-influential-ecommerce-leaders/</span></div></span></a> — date: 2025.</span></div><div class="kv" style="margin:5px 0 0"><b style="min-width:auto;display:inline">On their desk (structural):</b> <span class="tt-note">CX owns customer communications in Gladly and handles orders, exchange requests, refunds, gift cards, promotion codes, customer issues, rewards signups, and loss prevention in job-posted scope —<a class="citechip hov" href="https://builtin.com/job/temporary-customer-experience-representative/9704573" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://builtin.com/job/temporary-customer-experience-representative/9704573</span></div></span></a> ; <a class="citechip hov" href="https://builtin.com/job/customer-experience-representative/6295321" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://builtin.com/job/customer-experience-representative/6295321</span></div></span></a>. Brandy is publicly framed as customer-centric and data-driven in CX strategy —<a class="citechip hov" href="https://www.signifyd.com/most-influential-ecommerce-leaders/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.signifyd.com/most-influential-ecommerce-leaders/</span></div></span></a>.</span></div><div class="kv" style="margin:5px 0 0"><b style="min-width:auto;display:inline">Publicly cares about:</b> <span class="tt-note">Customer-centric CX, data-driven operations, and using machine learning without losing the human customer experience —<a class="citechip hov" href="https://www.signifyd.com/most-influential-ecommerce-leaders/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.signifyd.com/most-influential-ecommerce-leaders/</span></div></span></a>.</span></div></div><div class="person-block"><div class="who" style="font-weight:600"><strong><a href="../people/kateawatters.html">Kate Watters</a> — CEO / President [source-dependent]</strong> — <a class="citechip hov" href="https://www.linkedin.com/in/kateawatters" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.linkedin.com/in/kateawatters</span></div></span></a> — role-in-deal: executive/ecomm/cross_border.</div><div class="kv" style="margin:5px 0 0"><b style="min-width:auto;display:inline">In their own voice:</b> <span class="tt-note">“Launching international shipping requires significant coordination across logistics, technology and customer experience.” In Vogue, she said the Global-E investment “does feel significant” but was worthwhile to “streamline and outsource a little bit of the lift.” —<a class="citechip hov" href="https://fashionista.com/2026/04/jenni-kayne-international-shipping-expansion" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://fashionista.com/2026/04/jenni-kayne-international-shipping-expansion</span></div></span></a> ; <a class="citechip hov" href="https://www.vogue.com/article/how-jenni-kayne-built-an-international-playbook-for-an-uncertain-world" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.vogue.com/article/how-jenni-kayne-built-an-international-playbook-for-an-uncertain-world</span></div></span></a> — dates: 2026-04-21 / 2026-06-08.</span></div><div class="kv" style="margin:5px 0 0"><b style="min-width:auto;display:inline">On their desk (structural):</b> <span class="tt-note">International ecommerce launched across Canada, Europe, Australia, and New Zealand; Global-E handles local currency, duties, taxes, and checkout complexity while DHL Express manages shipping —<a class="citechip hov" href="https://www.vogue.com/article/how-jenni-kayne-built-an-international-playbook-for-an-uncertain-world" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.vogue.com/article/how-jenni-kayne-built-an-international-playbook-for-an-uncertain-world</span></div></span></a>. The official country selector shows the expanded region set live —<a class="citechip hov" href="https://www.jennikayne.com/pages/careers" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.jennikayne.com/pages/careers</span></div></span></a>.</span></div><div class="kv" style="margin:5px 0 0"><b style="min-width:auto;display:inline">Publicly cares about:</b> <span class="tt-note">Sustainable global growth, full-price demand, operational lift, and customer experience; Vogue quotes Watters tying 74% retention and a 20-point YoY DTC full-price penetration increase to long-term brand health —<a class="citechip hov" href="https://www.vogue.com/article/how-jenni-kayne-built-an-international-playbook-for-an-uncertain-world" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.vogue.com/article/how-jenni-kayne-built-an-international-playbook-for-an-uncertain-world</span></div></span></a>.</span></div></div><div class="person-block"><div class="who" style="font-weight:600"><strong><a href="../people/melissa-smith-jennikayne-com.html">Melissa Smith</a> — Director of Retention</strong> — LinkedIn URL: — role-in-deal: promo_loyalty_retention.</div><div class="kv" style="margin:5px 0 0"><b style="min-width:auto;display:inline">In their own voice:</b> <span class="tt-note">“I’ve always advocated for less email. It doesn’t feel like a luxury experience to be getting 3 emails a day.” —<a class="citechip hov" href="https://www.klaviyo.com/customers/case-studies/jenni-kayne-email-efficiency" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.klaviyo.com/customers/case-studies/jenni-kayne-email-efficiency</span></div></span></a> — date: 2023.</span></div><div class="kv" style="margin:5px 0 0"><b style="min-width:auto;display:inline">On their desk (structural):</b> <span class="tt-note">Retention uses Klaviyo segmentation by purchase history, browsing history, and zero-party interest data —<a class="citechip hov" href="https://www.klaviyo.com/customers/case-studies/jenni-kayne-email-efficiency" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.klaviyo.com/customers/case-studies/jenni-kayne-email-efficiency</span></div></span></a>. Jenni Kayne also uses online-to-store discount codes, $5K+ abandoned-cart notifications to local store managers, and Yotpo rewards banners in email —<a class="citechip hov" href="https://www.klaviyo.com/customers/case-studies/jenni-kayne-email-efficiency" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.klaviyo.com/customers/case-studies/jenni-kayne-email-efficiency</span></div></span></a>. Public coupon-code circulation is current on Wethrift —<a class="citechip hov" href="https://www.wethrift.com/jenni-kayne" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.wethrift.com/jenni-kayne</span></div></span></a>.</span></div><div class="kv" style="margin:5px 0 0"><b style="min-width:auto;display:inline">Publicly cares about:</b> <span class="tt-note">Retention quality, luxury-feeling communication, personalization, rewards, and controlled use of discounts —<a class="citechip hov" href="https://www.klaviyo.com/customers/case-studies/jenni-kayne-email-efficiency" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.klaviyo.com/customers/case-studies/jenni-kayne-email-efficiency</span></div></span></a>.</span></div></div><div class="person-block"><div class="who" style="font-weight:600"><strong><a href="../people/samantha-mella-2845923a.html">Samantha Mella</a> — Director of Home Experience</strong> — <a class="citechip hov" href="https://www.linkedin.com/in/samantha-mella-2845923a" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.linkedin.com/in/samantha-mella-2845923a</span></div></span></a> — role-in-deal: ecomm/omnichannel/home_trade.</div><div class="kv" style="margin:5px 0 0"><b style="min-width:auto;display:inline">In their own voice:</b> <span class="tt-note">“Shopify has helped us fulfill our omnichannel vision and provide a customer experience that is smooth and seamless. We can sell everything from clothing to dinner tables all in one system. Everything just feels easy for our clients and our team.” —<a class="citechip hov" href="https://www.sdg.la/case-studies/jenni-kayne/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.sdg.la/case-studies/jenni-kayne/</span></div></span></a> — date: undated case study; opened 2026-07-23.</span></div><div class="kv" style="margin:5px 0 0"><b style="min-width:auto;display:inline">On their desk (structural):</b> <span class="tt-note">SDG says Jenni Kayne runs apparel, home, and skincare on Shopify Plus/POS with ecommerce, retail, unified customer profiles, endless aisle, and B2B trade quoting —<a class="citechip hov" href="https://www.sdg.la/case-studies/jenni-kayne/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.sdg.la/case-studies/jenni-kayne/</span></div></span></a>. The official site exposes JKH Membership, Trade Program, JK Interiors, fabric swatches, furniture/decor, and skincare navigation surfaces —<a class="citechip hov" href="https://www.jennikayne.com/pages/careers" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.jennikayne.com/pages/careers</span></div></span></a>.</span></div><div class="kv" style="margin:5px 0 0"><b style="min-width:auto;display:inline">Publicly cares about:</b> <span class="tt-note">Smooth omnichannel service across apparel, furniture/home, stores, ecommerce, and trade clients —<a class="citechip hov" href="https://www.sdg.la/case-studies/jenni-kayne/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.sdg.la/case-studies/jenni-kayne/</span></div></span></a>.</span></div></div><div class="person-block"><div class="who" style="font-weight:600"><strong><a href="../people/anne-pak-0b16b88.html">Anne Pak</a> — VP, Finance &amp; Operations / CFO [unverified aggregator-only title conflict]</strong> — <a class="citechip hov" href="https://www.linkedin.com/in/anne-pak-0b16b88" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.linkedin.com/in/anne-pak-0b16b88</span></div></span></a> — role-in-deal: finance_sponsor/ops.</div><div class="kv" style="margin:5px 0 0"><b style="min-width:auto;display:inline">In their own voice:</b> <span class="tt-note">CONFIRMED-ABSENT / THIN. Queries run: <code>&quot;Anne Pak&quot; &quot;Jenni Kayne&quot; CFO</code>; <code>&quot;Anne Pak&quot; &quot;Jenni Kayne&quot; &quot;Finance&quot;</code>; <code>&quot;Anne Pak&quot; &quot;Jenni Kayne&quot; &quot;VP&quot;</code>; <code>site:linkedin.com/posts &quot;Anne Pak&quot; &quot;Jenni Kayne&quot;</code>. No opened own-voice venue tied to this employer/title was found — source: search log.</span></div><div class="kv" style="margin:5px 0 0"><b style="min-width:auto;display:inline">On their desk (structural):</b> <span class="tt-note">[unverified] The supplied committee roster identifies Anne Pak as finance/operations sponsor; no opened first-party or own-voice source confirmed the exact title — source: provided committee roster. Finance/ops relevance is structural: international ecommerce uses Global-E/DHL and returns route through the Las Vegas distribution center —<a class="citechip hov" href="https://www.vogue.com/article/how-jenni-kayne-built-an-international-playbook-for-an-uncertain-world" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.vogue.com/article/how-jenni-kayne-built-an-international-playbook-for-an-uncertain-world</span></div></span></a>. SDG says the platform includes POS, unified customer profiles, trade quoting, and 19-market international shipping with localized checkout —<a class="citechip hov" href="https://www.sdg.la/case-studies/jenni-kayne/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.sdg.la/case-studies/jenni-kayne/</span></div></span></a>.</span></div><div class="kv" style="margin:5px 0 0"><b style="min-width:auto;display:inline">Publicly cares about:</b> <span class="tt-note">[inference] cost, operational complexity, cross-border margin, disputes/chargebacks, and risk tooling ROI; no own-voice source found —<a class="citechip hov" href="https://www.vogue.com/article/how-jenni-kayne-built-an-international-playbook-for-an-uncertain-world" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.vogue.com/article/how-jenni-kayne-built-an-international-playbook-for-an-uncertain-world</span></div></span></a> ; <a class="citechip hov" href="https://www.sdg.la/case-studies/jenni-kayne/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.sdg.la/case-studies/jenni-kayne/</span></div></span></a>.</span></div></div></div><div class="tabpanel" id="etab-lookalike" style="display:none"><div class="prose"><div class="prose-h" style="margin-top:0">Lookalike case study</div><ul class="prose-ul"><li><strong>Matched</strong>: <code>yes</code>.</li><li><strong>Credo Beauty</strong> — <strong>parallel</strong>: Jenni Kayne resembles Credo Beauty on Shopify Plus, premium customer trust, CX/manual-review surfaces, rewards/discount governance, and apparel/home/beauty retail complexity; the account facts behind that parallel are the SDG Shopify Plus/omnichannel case study, the CX role’s refund/promo/loss-prevention scope, and the Klaviyo/Yotpo rewards/discount strategy — <strong>story source</strong>: embedded Wyllo customer-story context, <code>id: credo-beauty</code>; public URL not supplied in the prompt and Wyllo research was prohibited. Account<a class="citechip hov" href="https://www.sdg.la/case-studies/jenni-kayne/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.sdg.la/case-studies/jenni-kayne/</span></div></span></a> ; <a class="citechip hov" href="https://builtin.com/job/temporary-customer-experience-representative/9704573" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://builtin.com/job/temporary-customer-experience-representative/9704573</span></div></span></a> ; <a class="citechip hov" href="https://www.klaviyo.com/customers/case-studies/jenni-kayne-email-efficiency" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.klaviyo.com/customers/case-studies/jenni-kayne-email-efficiency</span></div></span></a>.</li><li><strong>Monday Swimwear</strong> — <strong>parallel</strong>: Jenni Kayne resembles Monday Swimwear on lean global DTC expansion, apparel-return exposure, false-decline/chargeback relevance, and international volume; the account facts behind that parallel are the June international rollout, Global-E/DHL checkout and shipping model, and Las Vegas returns flow — <strong>story source</strong>: embedded Wyllo customer-story context, <code>id: monday-swimwear</code>; public URL not supplied in the prompt and Wyllo research was prohibited. Account<a class="citechip hov" href="https://www.vogue.com/article/how-jenni-kayne-built-an-international-playbook-for-an-uncertain-world" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.vogue.com/article/how-jenni-kayne-built-an-international-playbook-for-an-uncertain-world</span></div></span></a>.</li></ul></div></div><div class="tabpanel" id="etab-committee" style="display:none"><div class="muted" style="margin:0 0 8px">Everyone the system would thread on this account. Direct contact on file for 5 of 5.</div><div class="person-block"><div class="cmt-card"><img class="thumb" src="https://media.licdn.com/dms/image/v2/D4E03AQHRhAZVTYQ1nQ/profile-displayphoto-crop_800_800/B4EZ56qcb1GwAI-/0/1780174409989?e=1786579200&amp;v=beta&amp;t=ftln9XuZgf8L7156RsM_IoBPTeN3ZlQW_gh7lfIbnjc" alt=""><div class="cmt-body"><div class="who"><a href="../people/brandy-milam-264b22a.html">Brandy Milam</a> <span class="muted">— Customer Experience</span> <span class="role">fraud/cx_returns</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:bmilam@jennikayne.com">bmilam@jennikayne.com</a></span><span class="cl"><b>Phone</b>+1 228-238-5805</span><span class="cl"><b>LinkedIn</b><a href="https://www.linkedin.com/in/brandy-milam-264b22a" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div><div class="person-block"><div class="cmt-card"><img class="thumb" src="https://media.licdn.com/dms/image/v2/D5603AQEpNn0kgW4G_Q/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1726854428766?e=1786579200&amp;v=beta&amp;t=Oc32lWhLIgXgOgO8gK9mg8B2yixs0Z7TUZjOXjw6NU0" alt=""><div class="cmt-body"><div class="who"><a href="../people/kateawatters.html">Kate Watters</a> <span class="muted">— President at Jenni Kayne</span> <span class="role">executive/ecomm/cross_border</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:kwatters@jennikayne.com">kwatters@jennikayne.com</a></span><span class="cl"><b>Phone</b>+1 312-330-1381</span><span class="cl"><b>LinkedIn</b><a href="https://www.linkedin.com/in/kateawatters" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div><div class="person-block"><div class="cmt-card"><span class="thumb-init">MS</span><div class="cmt-body"><div class="who"><a href="../people/melissa-smith-jennikayne-com.html">Melissa Smith</a> <span class="muted">— Director of Retention</span> <span class="role">promo_loyalty_retention</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:msmith@jennikayne.com">msmith@jennikayne.com</a></span><span class="cl"><b>Phone</b><span class="muted">&mdash;</span></span><span class="cl"><b>LinkedIn</b><span class="muted">&mdash;</span></span></div></div></div></div><div class="person-block"><div class="cmt-card"><img class="thumb" src="https://media.licdn.com/dms/image/v2/D5603AQFTogfv8Lr-Gg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1716250100735?e=1786579200&amp;v=beta&amp;t=BdVuicDqzq1MfztdWna3RIERAB7aDwwa2tSfxHgyDBc" alt=""><div class="cmt-body"><div class="who"><a href="../people/samantha-mella-2845923a.html">Samantha Mella</a> <span class="muted">— Senior Director of Brand Experience</span> <span class="role">ecomm/omnichannel/home_trade</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:smella@jennikayne.com">smella@jennikayne.com</a></span><span class="cl"><b>Phone</b>+1 516-592-2681</span><span class="cl"><b>LinkedIn</b><a href="https://www.linkedin.com/in/samantha-mella-2845923a" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div><div class="person-block"><div class="cmt-card"><span class="thumb-init">AP</span><div class="cmt-body"><div class="who"><a href="../people/anne-pak-0b16b88.html">Anne Pak</a> <span class="muted">— CFO at Jenni Kayne</span> <span class="role">finance_sponsor/ops</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:apak@jennikayne.com">apak@jennikayne.com</a></span><span class="cl"><b>Phone</b>+1 818-642-2266</span><span class="cl"><b>LinkedIn</b><a href="https://www.linkedin.com/in/anne-pak-0b16b88" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div></div></div></div><script>function showTab(btn,id){var c=btn.closest('.tabs');c.querySelectorAll('.tabpanel').forEach(function(p){p.style.display='none';});c.querySelectorAll('.tab').forEach(function(t){t.classList.remove('tab-active');});var el=document.getElementById(id);if(el)el.style.display='block';btn.classList.add('tab-active');}</script></div><div id="tooltip"></div><script>(function(){var tip=document.getElementById('tooltip');function show(e){var c=e.currentTarget.querySelector(".tt-content");if(!c)return;tip.innerHTML=c.innerHTML;tip.style.display='block';move(e);}function move(e){var pad=12,x=e.clientX+pad,y=e.clientY+pad,w=tip.offsetWidth,h=tip.offsetHeight;if(x+w>window.innerWidth-8)x=window.innerWidth-8-w;if(y+h>window.innerHeight-8)y=e.clientY-pad-h;if(x<8)x=8;if(y<8)y=8;tip.style.left=x+'px';tip.style.top=y+'px';}function hide(){tip.style.display='none';}document.querySelectorAll('[data-tip]').forEach(function(el){el.addEventListener('mouseenter',show);el.addEventListener('mousemove',move);el.addEventListener('mouseleave',hide);});})();</script>

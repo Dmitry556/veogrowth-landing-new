@@ -1,0 +1,340 @@
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Makeup By Mario — ENGAGE</title><style>
+/* ==========================================================================
+   Wyllo demo — internal ops / admin-panel design system.
+   One shared visual language across index / account / person / engage /
+   analytics / blocklist pages. Restraint over flair: muted palette, flat
+   surfaces, dense-but-legible data tables, consistent type + spacing scale.
+   Design tokens below; every class name is preserved for the templates.
+   ========================================================================== */
+:root {
+  /* neutrals */
+  --bg: #f4f6f8; --surface: #ffffff; --surface-2: #fafbfc;
+  --line: #e3e6ea; --line-strong: #d3d8de; --line-soft: #eceef1;
+  --ink: #1b2430; --ink-2: #4a5568; --muted: #6b7482; --faint: #98a1ac;
+  /* accent (links / active) */
+  --accent: #1a56c4; --accent-ink: #123e91; --accent-wash: #eef3fb; --accent-line: #c6dbf5;
+  /* semantic */
+  --green: #1a7f37; --green-wash: #eef7f0; --green-line: #b9dcc3;
+  --amber: #a9720a; --amber-wash: #fdf6e3; --amber-line: #e6cd8f;
+  --red: #b02a37; --red-wash: #fbeaec; --red-line: #e6b0b6;
+  /* header/head fills */
+  --head-fill: #eef1f4; --head-fill-hover: #e4e8ec;
+  /* type scale */
+  --fs-xs: 11px; --fs-sm: 12px; --fs-base: 13px; --fs-md: 14px; --fs-lg: 16px; --fs-xl: 19px;
+  /* spacing scale */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px; --s6: 28px;
+  --radius: 6px; --radius-sm: 4px;
+  --shadow: 0 1px 2px rgba(16,24,40,.05);
+}
+* { box-sizing: border-box; }
+body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  margin: 0; color: var(--ink); font-size: var(--fs-md); line-height: 1.5;
+  background: var(--bg); -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* top app bar — slim product chrome strip spanning every page. The wordmark is
+   structural chrome (a generic tool name), injected here so it rides above the
+   centered content column on all pages including the detail views that have no
+   section nav. Muted fill, hairline bottom border, left-aligned to the column. */
+body::before {
+  content: "GTM Console";
+  display: block; box-sizing: border-box;
+  font-size: var(--fs-sm); font-weight: 700; line-height: 1;
+  letter-spacing: .09em; text-transform: uppercase; color: var(--ink-2);
+  background: var(--head-fill); border-bottom: 1px solid var(--line-strong);
+  padding: 12px 0; padding-inline: max(var(--s4), calc((100% - 1040px) / 2 + var(--s4)));
+}
+
+.wrap { max-width: 1040px; margin: 0 auto; padding: var(--s5) var(--s4) var(--s6); }
+.wrap.wide { max-width: 1400px; }
+/* ENGAGE "why reach out / why not" — clamp to 2 lines so rows stay compact (full text on hover) */
+.whyreach-td { vertical-align: top; }
+.whyreach { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; max-width: 300px; line-height: 1.35; color: var(--muted); }
+h1 { font-size: var(--fs-xl); margin: 0 0 var(--s2); font-weight: 650;
+  letter-spacing: -.01em; color: var(--ink); }
+h2 { font-size: var(--fs-sm); text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
+  border-bottom: 1px solid var(--line); padding-bottom: var(--s1); margin: var(--s5) 0 var(--s3);
+  font-weight: 700; }
+
+/* funnel — monospace summary strip */
+.funnel { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: var(--fs-sm);
+  color: var(--ink-2); background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: var(--radius-sm); padding: var(--s2) var(--s3); margin-bottom: var(--s3); }
+
+/* data tables */
+.tblwrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--surface); box-shadow: var(--shadow); }
+table { border-collapse: collapse; width: 100%; font-size: var(--fs-base); background: var(--surface); }
+th, td { border-bottom: 1px solid var(--line-soft); padding: 9px 12px; text-align: left; vertical-align: middle; }
+th { position: sticky; top: 0; background: var(--head-fill); z-index: 1; font-size: var(--fs-xs);
+  font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-2);
+  border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
+tbody tr:last-child td { border-bottom: none; }
+/* subtle zebra banding for a machine-uniform rhythm (declared before :hover so
+   hover — equal specificity — still wins). */
+tbody tr:nth-child(even) td { background: var(--surface-2); }
+tbody tr:hover td, tr:hover td { background: var(--accent-wash); }
+/* IDENTIFY table column discipline: keep the atomic columns on one line so every
+   row is the same height; only Company (1) + Incumbent (6) may wrap when needed.
+   Headcount right-aligns with tabular figures so the digits stack. */
+#idtable td:nth-child(2), #idtable td:nth-child(3), #idtable td:nth-child(4),
+#idtable td:nth-child(5), #idtable td:nth-child(7), #idtable td:nth-child(8) { white-space: nowrap; }
+#idtable td:nth-child(3), #idtable th:nth-child(3) { text-align: right; font-variant-numeric: tabular-nums; }
+/* sortable column headers — spreadsheet/DB style */
+th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+th.sortable:hover { background: var(--head-fill-hover); color: var(--ink); }
+th.sortable .arrow { font-size: 9px; color: var(--accent); margin-left: 4px; }
+
+/* ICP badge — small circle, hi/mid/lo colour coding */
+.badge { display: inline-block; min-width: 28px; text-align: center; border-radius: 11px;
+  padding: 2px 8px; background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line-strong);
+  font-size: var(--fs-xs); font-weight: 700; font-variant-numeric: tabular-nums; cursor: help; }
+.b-hi { background: var(--green-wash); color: var(--green); border-color: var(--green-line); }
+.b-mid { background: var(--amber-wash); color: var(--amber); border-color: var(--amber-line); }
+.b-lo { background: var(--surface-2); color: var(--muted); border-color: var(--line-strong); }
+
+.muted { color: var(--muted); font-size: var(--fs-sm); }
+.pending { color: var(--faint); font-style: italic; }
+.ok { color: var(--green); }
+
+/* content cards */
+.section { border: 1px solid var(--line); background: var(--surface); border-radius: var(--radius);
+  padding: var(--s4) var(--s5); margin-bottom: var(--s3); box-shadow: var(--shadow); }
+.kv { margin: var(--s1) 0; }
+.kv b { color: var(--ink-2); font-weight: 600; display: inline-block; min-width: 140px; }
+
+/* two-column definition layout for the composed key-value cards (account Summary
+   tab, per-account ENGAGE header, person info card). The value is a run of
+   sibling inline nodes, so a flex/grid split would fragment it — instead the label
+   sits in a fixed left gutter (absolute) and the value flows as one wrapping
+   column. A long value (e.g. Priority "Work now — …") therefore wraps entirely
+   inside the value column and never collides with the label. */
+#tab-summary .kv, .wrap > .section .kv {
+  position: relative; padding-left: 158px; margin: var(--s2) 0; min-height: 1.4em; line-height: 1.5; }
+#tab-summary .kv b, .wrap > .section .kv b {
+  position: absolute; left: 0; top: 0; display: block; width: 142px; min-width: 0;
+  color: var(--muted); font-weight: 600; font-size: var(--fs-sm); text-transform: none; }
+ul.clean { margin: var(--s1) 0; padding-left: 18px; }
+ul.clean li { margin: var(--s1) 0; }
+.src { font-size: var(--fs-xs); }
+
+/* person avatars + thumbs */
+.avatar { width: 92px; height: 92px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line-strong); }
+.avatar-init { width: 92px; height: 92px; border-radius: 50%; background: #46618f; color: #fff;
+  display: inline-flex; align-items: center; justify-content: center; font-size: 34px; font-weight: 700; }
+.thumb { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 7px; border: 1px solid var(--line-strong); }
+.thumb-init { width: 26px; height: 26px; border-radius: 50%; background: #46618f; color: #fff;
+  display: inline-flex; align-items: center; justify-content: center; font-size: var(--fs-xs); font-weight: 700;
+  vertical-align: middle; margin-right: 7px; }
+.phdr { display: flex; gap: var(--s4); align-items: center; margin-bottom: var(--s3); }
+
+/* role tag / pill */
+.role { display: inline-block; padding: 2px 8px; border: 1px solid var(--line-strong); border-radius: 10px;
+  font-size: var(--fs-xs); background: var(--surface-2); color: var(--ink-2); font-weight: 600;
+  letter-spacing: .02em; }
+
+/* experience / triggers — left-border rail */
+.exp { border-left: 3px solid var(--line-strong); padding-left: var(--s3); margin: var(--s3) 0; }
+.back { font-size: var(--fs-sm); margin-bottom: var(--s3); }
+.back a { font-weight: 600; }
+
+/* top nav bar */
+.nav { display: flex; gap: 2px; border-bottom: 1px solid var(--line-strong); margin-bottom: var(--s4);
+  padding-bottom: 0; }
+.navitem { display: inline-block; padding: 8px 14px; font-size: var(--fs-sm); font-weight: 600;
+  text-decoration: none; color: var(--muted); border: 1px solid transparent; border-bottom: none;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+.navitem:hover { background: var(--surface-2); color: var(--ink); text-decoration: none; }
+.navitem.nav-active { color: var(--ink); background: var(--surface); border-color: var(--line-strong);
+  margin-bottom: -1px; box-shadow: 0 -2px 0 var(--accent) inset; }
+.navitem.nav-off { color: var(--faint); cursor: default; }
+
+/* incumbent confidence indicator — tiny dot + label */
+.conf { font-size: 10px; margin-left: 5px; white-space: nowrap; cursor: help; font-weight: 600; }
+.conf-hi { color: var(--green); }
+.conf-lo { color: var(--amber); }
+
+/* suppression banner — MUST stay unmissable (red, high-contrast) */
+.suppressed { border: 1px solid var(--red-line); border-left: 4px solid var(--red);
+  background: var(--red-wash); color: #7a1620; border-radius: var(--radius);
+  padding: var(--s3) var(--s4); margin-bottom: var(--s3); font-weight: 700; }
+.suppressed .muted2 { display: block; font-weight: 400; color: #9a4048; margin-top: var(--s1); font-size: var(--fs-sm); }
+/* out-of-ICP / do-not-contact chip (stays in IDENTIFY, distinct from the NoFraud blocklist) */
+.dnc { display: inline-block; background: var(--red-wash); color: var(--red); border: 1px solid var(--red-line);
+  border-radius: var(--radius-sm); padding: 1px 6px; font-size: 10px; font-weight: 700; letter-spacing: .03em;
+  margin-left: 6px; vertical-align: middle; }
+/* out-of-ICP / do-not-contact banner — MUST stay unmissable (amber, high-contrast) */
+.dq-banner { border: 1px solid var(--amber-line); border-left: 4px solid var(--amber);
+  background: var(--amber-wash); color: #6f4a09; border-radius: var(--radius);
+  padding: var(--s3) var(--s4); margin: var(--s2) 0 var(--s3); font-weight: 700; }
+.dq-banner .muted2 { display: block; font-weight: 400; color: #8a6413; margin-top: var(--s1); font-size: var(--fs-sm); }
+
+/* account sub-tabs — same visual language as the top nav */
+.tabbar { display: flex; flex-wrap: wrap; gap: 2px; border-bottom: 1px solid var(--line-strong); margin: var(--s2) 0 0; }
+.tab { padding: 8px 14px; font-size: var(--fs-sm); font-weight: 600; color: var(--muted); background: transparent;
+  border: 1px solid transparent; border-bottom: none; border-radius: var(--radius-sm) var(--radius-sm) 0 0; cursor: pointer; }
+.tab:hover { background: var(--surface-2); color: var(--ink); }
+.tab.tab-active { color: var(--ink); background: var(--surface); border-color: var(--line-strong);
+  margin-bottom: -1px; box-shadow: 0 -2px 0 var(--accent) inset; }
+.tabpanels { border: 1px solid var(--line-strong); border-top: none; background: var(--surface);
+  border-radius: 0 0 var(--radius) var(--radius); padding: var(--s4); box-shadow: var(--shadow); }
+.tabpanel h2:first-child { margin-top: 0; }
+
+/* freeform prose rendered from the dossier markdown */
+.prose { font-size: var(--fs-md); line-height: 1.6; color: var(--ink); max-width: 82ch; }
+.prose p { margin: var(--s2) 0; }
+.prose .prose-h { font-size: var(--fs-md); font-weight: 700; margin: var(--s5) 0 var(--s2); color: var(--ink); }
+.prose ul.prose-ul, .prose ol.prose-ol { margin: var(--s2) 0; padding-left: 22px; }
+.prose ul.prose-ul li, .prose ol.prose-ol li { margin: var(--s2) 0; }
+.prose code { background: var(--line-soft); padding: 1px 5px; border-radius: 3px;
+  font-family: ui-monospace, monospace; font-size: var(--fs-sm); }
+.prose a { word-break: break-word; }
+.prose + .prose { border-top: 1px solid var(--line-soft); margin-top: var(--s4); padding-top: var(--s4); }
+.prose-note { color: var(--muted); font-size: var(--fs-sm); margin: 0 0 var(--s3); }
+
+/* priority letter + dot — P1 = work-now (green), P2 = amber, P3 = grey */
+.prio { cursor: help; white-space: nowrap; font-weight: 700; }
+.pdot { display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  margin-right: 6px; vertical-align: middle; background: var(--faint); }
+.prio-p1 .pdot { background: var(--green); }
+.prio-p2 .pdot { background: var(--amber); }
+.prio-p3 .pdot { background: var(--faint); }
+
+/* JS hover card (escapes table overflow — appended to <body>) */
+.hov { cursor: help; }
+#tooltip { position: fixed; z-index: 9999; display: none; max-width: 340px;
+  background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius);
+  box-shadow: 0 6px 24px rgba(16,24,40,.16); padding: var(--s3); font-size: var(--fs-sm);
+  color: var(--ink-2); line-height: 1.5; text-align: left; }
+.tt-h { font-weight: 700; margin-bottom: var(--s2); font-size: var(--fs-sm); color: var(--ink);
+  text-transform: uppercase; letter-spacing: .04em; }
+.tt-body { white-space: normal; color: var(--ink-2); }
+.tt-row { display: flex; justify-content: space-between; gap: var(--s3); margin: var(--s1) 0; }
+.tt-row + .tt-row { border-top: 1px solid var(--line-soft); padding-top: var(--s1); }
+.tt-pts { color: var(--green); font-weight: 700; white-space: nowrap; }
+.tt-note { color: var(--muted); }
+
+/* ENGAGE list groups + per-account play shell */
+.eng-lead { color: var(--ink-2); margin: -4px 0 var(--s4); font-size: var(--fs-base); }
+.eng-group { margin-bottom: var(--s5); }
+.eng-group h2 .cnt { color: var(--faint); font-weight: 700; }
+.campaign-tag { display: inline-block; padding: 2px 9px; border-radius: 11px; font-size: var(--fs-xs);
+  font-weight: 700; border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink-2); margin-right: 6px; }
+.camp-a { border-color: var(--green-line); color: var(--green); background: var(--green-wash); }
+.camp-b { border-color: var(--red-line); color: var(--red); background: var(--red-wash); }
+.preview-note { border: 1px solid var(--amber-line); border-left: 4px solid var(--amber);
+  background: var(--amber-wash); color: #6f4a09; border-radius: var(--radius); padding: var(--s2) var(--s3);
+  margin-bottom: var(--s3); font-size: var(--fs-sm); font-weight: 600; }
+.person-block { border: 1px solid var(--line); border-radius: var(--radius); padding: var(--s3) var(--s4);
+  margin: var(--s2) 0; background: var(--surface); box-shadow: var(--shadow); }
+.person-block .who { font-weight: 700; }
+.chip { display: inline-block; padding: 2px 8px; border: 1px solid var(--line-strong); border-radius: 11px;
+  font-size: var(--fs-xs); color: var(--muted); background: var(--surface-2); white-space: nowrap; }
+/* play verification-state chips — muted green (verified) / amber (pending),
+   same wash tokens as the b-hi/b-mid score badges. */
+.chip.chip-ok { color: var(--green); background: var(--green-wash); border-color: var(--green-line); }
+.chip.chip-pending { color: var(--amber); background: var(--amber-wash); border-color: var(--amber-line); }
+
+/* committee card (per-account ENGAGE) — photo + identity + contacts row */
+.cmt-card { display: flex; gap: var(--s3); align-items: flex-start; }
+.cmt-card .thumb { width: 42px; height: 42px; margin-right: 0; flex: 0 0 42px; }
+.cmt-card .thumb-init { width: 42px; height: 42px; margin-right: 0; flex: 0 0 42px; font-size: 16px; }
+.cmt-body { flex: 1 1 auto; min-width: 0; }
+.cmt-contacts { margin-top: var(--s2); display: flex; flex-wrap: wrap; gap: var(--s1) var(--s4); font-size: var(--fs-sm); }
+.cmt-contacts .cl { white-space: nowrap; }
+.cmt-contacts .cl b { color: var(--muted); font-weight: 700; margin-right: 5px; text-transform: uppercase;
+  font-size: 10px; letter-spacing: .04em; }
+.cmt-contacts a { color: var(--accent); text-decoration: none; }
+.cmt-contacts a:hover { text-decoration: underline; }
+
+/* "View play" link (ENGAGE table cell) + button (per-account ENGAGE page) —
+   opens the data-driven play_view.html at this account. */
+a.play-link { font-size: var(--fs-sm); font-weight: 700; color: var(--accent); text-decoration: none;
+  white-space: nowrap; }
+a.play-link:hover { text-decoration: underline; }
+a.play-btn { display: inline-block; padding: 7px 15px; border-radius: var(--radius-sm);
+  background: var(--accent); color: #fff; font-size: var(--fs-base); font-weight: 600;
+  text-decoration: none; }
+a.play-btn:hover { background: var(--accent-ink); text-decoration: none; }
+
+/* inline source citations (CHANGE 4) — the CLAIM text is the citation: a subtle
+   dotted underline; hovering reveals the source URL; clicking opens it in a NEW tab.
+   Two forms: .cite wraps a claim (underline + trailing mark); .citechip is a
+   compact superscript chip used inside prose. */
+.cite { text-decoration: none; border-bottom: 1px dotted var(--accent-line); cursor: help; color: inherit; }
+a.cite:hover { text-decoration: none; border-bottom-color: var(--accent); }
+.citemark { font-size: 10px; color: var(--accent); margin-left: 2px; vertical-align: super;
+  line-height: 0; text-decoration: none; }
+a.citechip { display: inline-block; font-size: 10px; color: var(--accent); text-decoration: none;
+  border: 1px solid var(--accent-line); background: var(--accent-wash); border-radius: var(--radius-sm); padding: 0 4px;
+  margin-left: 2px; vertical-align: super; line-height: 1.4; cursor: help; }
+a.citechip:hover { background: #e0ebfa; text-decoration: none; }
+/* ENGAGE lookalike placeholder cell */
+.lookalike { color: var(--faint); font-style: italic; }
+
+/* ANALYTICS — illustrative/sample framing. The banner MUST be unmistakable:
+   striped amber, bold, full-width, top of page. Nothing here is real. */
+.sample-banner { border: 2px solid var(--amber); border-radius: var(--radius);
+  background: repeating-linear-gradient(45deg,#fffdf3,#fffdf3 12px,#fdf3d8 12px,#fdf3d8 24px);
+  color: #6b5200; padding: var(--s3) var(--s4); margin-bottom: var(--s4); font-size: var(--fs-base); }
+.sample-banner .bhead { font-weight: 800; font-size: var(--fs-base); text-transform: uppercase;
+  letter-spacing: .05em; display: block; margin-bottom: var(--s1); color: #6b5200; }
+.sample-banner .bsub { font-weight: 400; color: #6b5200; }
+.sample-pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px;
+  font-weight: 800; text-transform: uppercase; letter-spacing: .04em; margin-left: 8px;
+  border: 1px solid var(--amber); background: #fffdf3; color: #6b5200; vertical-align: middle; }
+/* KPI strip */
+.kpis { display: flex; flex-wrap: wrap; gap: var(--s3); margin: 0 0 var(--s4); }
+.kpi { flex: 1 1 130px; min-width: 120px; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--surface); padding: var(--s3) var(--s4); box-shadow: var(--shadow); }
+.kpi .kn { font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
+.kpi .kl { font-size: var(--fs-xs); color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-top: 3px; }
+/* status chips */
+.st { display: inline-block; padding: 2px 9px; border-radius: 11px; font-size: var(--fs-xs);
+  font-weight: 700; border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink-2); white-space: nowrap; }
+.st-booked { border-color: var(--accent-line); color: var(--accent); background: var(--accent-wash); }
+.st-held { border-color: var(--green-line); color: var(--green); background: var(--green-wash); }
+.st-noshow { border-color: var(--red-line); color: var(--red); background: var(--red-wash); }
+/* source chips */
+.srcchip { display: inline-block; padding: 2px 9px; border-radius: 11px; font-size: var(--fs-xs);
+  border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink-2); white-space: nowrap; }
+/* ---- meeting handoff brief (AE-facing) ----------------------------------
+   A single "handoff card" an AE is handed for a booked meeting: an identity
+   header, a labelled meta grid, then the briefing sections. Reuses the shared
+   tokens/chips only — no new palette, no accent stripes. */
+.hb-card { border: 1px solid var(--line-strong); background: var(--surface);
+  border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; margin-bottom: var(--s4); }
+/* identity header — account + attendee headline, status on the right */
+.hb-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between;
+  gap: var(--s3) var(--s5); padding: var(--s4) var(--s5); background: var(--surface-2);
+  border-bottom: 1px solid var(--line); }
+.hb-head .who .nm { font-size: var(--fs-lg); font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
+.hb-head .who .ti { font-size: var(--fs-sm); color: var(--muted); margin-top: 2px; }
+.hb-head .who .ti a { color: var(--muted); }
+.hb-head .who .ti a:hover { color: var(--accent); }
+.hb-stat { display: flex; gap: var(--s2); align-items: center; flex-wrap: wrap; flex-shrink: 0; }
+/* meta grid — self-adjusting, labelled fields */
+.hb-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--s4) var(--s5); padding: var(--s4) var(--s5); }
+.hb-meta .f b { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--muted); font-weight: 700; margin-bottom: 3px; }
+.hb-meta .f .v { font-size: var(--fs-md); color: var(--ink); line-height: 1.4; }
+.hb-meta .f .v .sub { display: block; font-size: var(--fs-sm); color: var(--muted); margin-top: 1px; font-weight: 400; }
+.hb-meta .f .v a { color: var(--accent); }
+/* section rhythm — label + card, tighter than the default h2 */
+.hb-label { font-size: var(--fs-sm); text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
+  font-weight: 700; margin: var(--s5) 0 var(--s2); }
+.hb-body { border: 1px solid var(--line); background: var(--surface); border-radius: var(--radius);
+  padding: var(--s3) var(--s4); box-shadow: var(--shadow); font-size: var(--fs-md); line-height: 1.6; color: var(--ink); }
+.hb-body.prose { max-width: 74ch; }
+/* the wedge / "your angle" — a tinted callout (full border, no accent stripe) */
+.hb-say { background: var(--accent-wash); border: 1px solid var(--accent-line); border-radius: var(--radius);
+  padding: var(--s3) var(--s4); font-size: var(--fs-md); line-height: 1.6; color: var(--accent-ink); max-width: 74ch; }
+.hb-say .say-k { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .05em;
+  font-weight: 700; color: var(--accent); margin-bottom: var(--s1); }
+/* footer disclaimer echo */
+.hb-foot { color: var(--muted); font-size: var(--fs-sm); margin-top: var(--s4);
+  padding-top: var(--s3); border-top: 1px solid var(--line-soft); }
+</style><div class="wrap"><div class="back"><a href="../engage.html">&larr; Back to ENGAGE</a></div><h1>Makeup By Mario</h1><div class="section"><div class="kv"><b>Account</b> Makeup By Mario <span class="muted">makeupbymario.com</span> · <a href="../accounts/makeupbymario.com.html">full dossier</a></div><div class="kv"><b>Incumbent</b> Forter, Signifyd <span class="conf conf-lo" title="Detected server-side (likely server-to-server) — lower confidence">&#9679; server-side</span></div><div class="kv"><b>Priority</b> <span class="prio prio-p1"><span class="pdot"></span>P1</span> <span class="muted">— Work now — Live social-commerce hiring across TikTok, ShopMy, LTK, affiliate management, seeding, bundles, commission tiers, and social-platform listings. (2026-07 approx (job shown as 3 weeks old on 2026-07-23)); TikTok Shop/social-commerce scaling signal from Deissy Villa Morocho&#x27;s public LinkedIn activity: first TikTok Affiliate Education Event and &#x27;over 10,000 items sold&#x27; one month into TikTok Shop. (2026-07 approx (LinkedIn activity surfaced as 1–3 weeks old in July 2026 search results))</span></div><div class="kv" style="margin-top:8px"><a class="play-btn" href="../play_view.html#makeupbymario.com">View coordinated play &rarr;</a> <span class="chip chip-ok" title="Fact-checked against its research bundle">&#10003; Verified</span></div></div><div class="tabs"><div class="tabbar"><button class="tab tab-active" onclick="showTab(this,'etab-whynow')">Why now</button><button class="tab" onclick="showTab(this,'etab-lookalike')">Lookalike case study</button><button class="tab" onclick="showTab(this,'etab-committee')">Buying committee (6)</button><button class="tab" onclick="showTab(this,'etab-play')">Play</button></div><div class="tabpanels"><div class="tabpanel" id="etab-whynow" style="display:block"><div class="section"><div class="kv"><b>Incumbent</b> Forter, Signifyd <span class="conf conf-lo" title="Detected server-side (likely server-to-server) — lower confidence">&#9679; server-side</span></div></div><div class="prose"><div class="prose-h" style="margin-top:0">Why-now signals</div><p><strong>Signal 1 — social-commerce execution is hiring right now.</strong> Makeup By Mario has a live Social Commerce Coordinator role tied directly to TikTok, ShopMy, LTK, affiliate outreach/onboarding, affiliate sales/content/conversion reporting, product-bundle curation, commission-tier adjustments, gifting logistics, launch seeding, platform listings, paid-amplification content, and creator/platform-partner relationships. The LinkedIn job page showed “over 200 applicants” when opened and was crawled recently. <strong>Why it matters:</strong> this is not generic brand marketing; it is a new operating surface where affiliate identity, commission incentives, product seeding, bundle economics, promo usage, marketplace/social checkout, and post-purchase claims can diverge from standard DTC order screening. That creates a timely reason to ask whether transaction-only fraud tooling is enough. [inference]<a class="citechip hov" href="https://www.linkedin.com/jobs/view/social-commerce-coordinator-at-makeup-by-mario-4435859177" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.linkedin.com/jobs/view/social-commerce-coordinator-at-makeup-by-mario-4435859177</span></div></span></a></p><p><strong>Signal 2 — TikTok affiliate enablement has moved from plan to executed event.</strong> Deissy Villa Morocho posted about planning and executing Makeup By Mario’s “first-ever TikTok Affiliate Education Event” at TikTok HQ in NYC, centered on “Master the Bundles,” creator education, product-bundle knowledge, TikTok partners, education-team support, and Michael J. Hastings’ involvement. <strong>Why it matters:</strong> the brand is actively teaching creators how to sell bundles, not merely experimenting with passive TikTok presence. That raises the near-term control question around creator-led traffic quality, promotion rules, suspicious affiliate patterns, bundle abuse, reseller behavior, and refund/claim handling after social-commerce purchases. [inference]<a class="citechip hov" href="https://www.linkedin.com/posts/deissyvilla_and-thats-a-wrap-on-the-first-of-many-activity-7472747266962014208-m8wN" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.linkedin.com/posts/deissyvilla_and-thats-a-wrap-on-the-first-of-many-activity-7472747266962014208-m8wN</span></div></span></a></p><p><strong>Signal 3 — TikTok Shop scaled fast enough to be worth controlling.</strong> Deissy Villa Morocho’s public LinkedIn activity surfaced a post stating Makeup By Mario was one month into TikTok Shop, had sold more than 10,000 items, had hundreds of creators sharing the brand, and that she had led the TikTok Shop launch. This was surfaced from public LinkedIn profile activity; I did not open the <code>linkedin.com/in</code> profile URL because the supplied prompt forbids fetching profile pages. <strong>Why it matters:</strong> the volume described is operationally meaningful for a prestige beauty brand and makes fraud/policy controls around social checkout, creator incentives, and returns more current than a generic “beauty brand on Shopify” story. [inference; profile-activity source, not an opened post page]<a class="citechip hov" href="https://www.linkedin.com/in/deissyvilla" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.linkedin.com/in/deissyvilla</span></div></span></a></p><p><strong>Signal 4 — July discounting and public coupon circulation create a live promo-abuse surface.</strong> On 2026-07-23, the Makeup By Mario homepage displayed a National Lipstick Day Sale with up to 50% off the lip collection. Public coupon pages concurrently listed July 2026 Makeup By Mario discount offers and shopper activity: CouponBirds showed multiple codes/deals with recent “last used” labels, while Wethrift listed July 2026 discount codes and usage activity. This is not evidence of confirmed abuse; it is evidence of active public promo circulation. <strong>Why it matters:</strong> the brand’s own policy limits the welcome discount to one account/person and allows account termination for non-compliance, so public coupon circulation plus sale periods create a concrete policy-enforcement question around repeat accounts, discount stacking attempts, affiliate codes, and margin leakage. [inference]<a class="citechip hov" href="https://www.makeupbymario.com/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.makeupbymario.com/</span></div></span></a> ; <a class="citechip hov" href="https://www.couponbirds.com/codes/makeupbymario.com" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.couponbirds.com/codes/makeupbymario.com</span></div></span></a> ; <a class="citechip hov" href="https://www.wethrift.com/makeup-by-mario" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.wethrift.com/makeup-by-mario</span></div></span></a> ; <a class="citechip hov" href="https://www.makeupbymario.com/en-gb/pages/shipping-returns" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.makeupbymario.com/en-gb/pages/shipping-returns</span></div></span></a></p><p><strong>Signal 5 — the return and international policies already name the abuse categories.</strong> Makeup By Mario’s shipping/returns page states that returns/exchanges may be refused for abuse, misuse, or bulk purchases; international return shipping/customs fees are customer responsibility; payment verification applies to all orders; forwarding-company deliveries are not protected for replacement/refund; Global-e acts as seller-on-record for global checkout; Klarna and major wallets/cards are accepted. <strong>Why it matters:</strong> the site already has operational controls that point to known abuse classes: bulk-purchase/reseller behavior, return/refund exceptions, forwarder risk, international checkout/payment verification, and BNPL/order-risk review. [inference]<a class="citechip hov" href="https://www.makeupbymario.com/en-gb/pages/shipping-returns" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.makeupbymario.com/en-gb/pages/shipping-returns</span></div></span></a></p><p><strong>Signal 6 — global/Sephora/social content is current, but not itself a fraud signal.</strong> A May 2026 WWD/Yahoo article described a Sephora content partnership, “Mario’s Beauty Booth,” with TikTok episodes scheduled from May 18 through June 8. Separate company LinkedIn updates also positioned the Ethereal Eyes relaunch as a major demand moment. <strong>Why it matters:</strong> the public growth engine is now social-first, global, and campaign-driven; that amplifies the importance of not over-frictioning legitimate buyers while protecting limited/promoted inventory. [inference]<a class="citechip hov" href="https://uk.finance.yahoo.com/news/makeup-mario-sephora-team-content-040100105.html" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://uk.finance.yahoo.com/news/makeup-mario-sephora-team-content-040100105.html</span></div></span></a> ; <a class="citechip hov" href="https://www.linkedin.com/company/makeupbymario" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.linkedin.com/company/makeupbymario</span></div></span></a></p><p>Bottom line: I did <strong>not</strong> find a clean, public, dated fraud incident naming Makeup By Mario in the last 1–3 months. The fresher why-now is operational: social commerce, TikTok affiliates, active sale/coupon surfaces, international checkout, and explicit policy-abuse language are all now visible around a brand already tagged with Forter + Signifyd.</p></div><div class="prose"><div class="prose-h" style="margin-top:0">Incumbent timing</div><p><strong>Given incumbent:</strong> Forter + Signifyd. I treated this as ground truth per the supplied prompt. I did not re-run broad incumbent discovery as if the account were new.</p><p><strong>Public corroboration visible in this pass:</strong> Panoramata lists “Signifyd for Shopify” and describes it as reviewing orders and telling the merchant whether to ship, with chargeback prevention. Clipara lists “Signifyd-Chargeback Protection,” Loop Returns &amp; Exchanges, Global-e, Klarna, Zendesk, Junip, and TikTok Pixel in the stack. StoreInspect’s April 2026 Shopify fraud-app study lists Makeup By Mario in beauty with Forter as the detected app.<a class="citechip hov" href="https://www.panoramata.co/marketing-strategy-brand/makeup-by-mario" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.panoramata.co/marketing-strategy-brand/makeup-by-mario</span></div></span></a> ; <a class="citechip hov" href="https://www.getclipara.com/tools/brands/makeup-by-mario" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.getclipara.com/tools/brands/makeup-by-mario</span></div></span></a> ; <a class="citechip hov" href="https://storeinspect.com/blog/best-shopify-fraud-prevention-apps" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://storeinspect.com/blog/best-shopify-fraud-prevention-apps</span></div></span></a></p><p><strong>Timing evidence:</strong> no public renewal, migration, contract end, RFP, fraud role, chargeback complaint, or vendor-switch announcement was found for Forter or Signifyd. The strongest timing evidence is indirect: current social-commerce hiring, first TikTok affiliate event, active July discounting/coupon activity, Global-e/international checkout, and policy language around abuse/bulk purchases. [inference]<a class="citechip hov" href="https://www.linkedin.com/jobs/view/social-commerce-coordinator-at-makeup-by-mario-4435859177" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.linkedin.com/jobs/view/social-commerce-coordinator-at-makeup-by-mario-4435859177</span></div></span></a> ; <a class="citechip hov" href="https://www.linkedin.com/posts/deissyvilla_and-thats-a-wrap-on-the-first-of-many-activity-7472747266962014208-m8wN" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.linkedin.com/posts/deissyvilla_and-thats-a-wrap-on-the-first-of-many-activity-7472747266962014208-m8wN</span></div></span></a> ; <a class="citechip hov" href="https://www.couponbirds.com/codes/makeupbymario.com" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.couponbirds.com/codes/makeupbymario.com</span></div></span></a> ; <a class="citechip hov" href="https://www.makeupbymario.com/en-gb/pages/shipping-returns" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.makeupbymario.com/en-gb/pages/shipping-returns</span></div></span></a></p><p><strong>Displacement interpretation:</strong> the sales play should not say “your current vendor is failing.” The defensible version is: “You already appear to have serious payment/chargeback infrastructure; the current growth motion now introduces social-commerce, affiliate, promo, return, bulk-purchase, and CX-policy surfaces that may not be visible as one customer-level risk story.” [inference]</p><p><strong>Incumbent-adoption age clue:</strong> Signifyd has a 2021 public relationship-adjacent record naming Brielle Opsis at Makeup By Mario in Signifyd’s ecommerce-leader program. This is not proof of contract start date or current vendor ownership; it only shows a Signifyd-linked Makeup By Mario ecommerce/CX relationship existed publicly in 2021.<a class="citechip hov" href="https://www.businesswire.com/news/home/20210204005289/en/CORRECTING-and-REPLACING-The-30-Most-Influential-Leaders-in-Ecommerce-Announced-by-Signifyd" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.businesswire.com/news/home/20210204005289/en/CORRECTING-and-REPLACING-The-30-Most-Influential-Leaders-in-Ecommerce-Announced-by-Signifyd</span></div></span></a></p></div><div class="prose"><div class="prose-h" style="margin-top:0">Pitch reasoning</div><ul class="prose-ul"><li>FITTED PLAY: PLAY A — incumbent displacement. Forter + Signifyd are the standing wedge. The sharper “why now” is not a vendor renewal; it is that the brand’s operating surface has expanded into TikTok Shop, affiliate bundles, public discounting, Global-e/international checkout, and explicit policy-abuse controls.</li><li>BEST WEDGE CAPABILITY: post-purchase / policy-abuse / CX-risk breadth around returns, refunds, claims, coupon/account abuse, bulk-purchase behavior, and reseller-like patterns; payment approval-rate comparison is secondary unless seller uncovers false-decline pain in discovery.</li><li>LEAD PERSON + ANGLE: Deissy Villa Morocho for the warm hook, then route to Michael J. Hastings / Tony Gajewski for ownership. Deissy has the freshest own-voice signal: TikTok Affiliate Education Event + social-commerce growth + team expansion. Michael is the more likely ecommerce owner; Tony is the economic/control sponsor.</li><li>WHAT THIS PERSON LIKELY FEELS: social commerce is working and needs to scale without creating unmanaged operational exceptions. The pain is probably not “we have fraud”; it is “we have more creators, bundles, discounts, seeding, platform listings, and post-purchase edge cases than our old DTC-only controls were designed around.” [inference]</li><li>WHY-NOW HOOK: “Saw you’re scaling social commerce across TikTok/ShopMy/LTK and just ran the first TikTok Affiliate Education Event. When those programs move from campaign to channel, the hard part is connecting creator/affiliate behavior to checkout, returns, refunds, bulk-purchase rules, and CX decisions — especially when payment tools already exist.”</li><li>WHAT NOT TO SAY: do not claim confirmed Makeup By Mario fraud, do not claim Forter/Signifyd are failing, do not quote Wyllo claim-only metrics, and do not imply current Brielle Opsis ownership.</li><li>DISCOVERY QUESTIONS:</li></ul><ol class="prose-ol"><li>“Do affiliate/TikTok Shop orders get reviewed with the same customer-history context as DTC Shopify orders?”</li><li>“Can your team identify repeat customers across accounts, promo usage, returns, claims, and bulk purchase attempts?”</li><li>“Where do TikTok Shop / affiliate-bundle exceptions show up today — ecommerce, CX, finance, or not at all?”</li><li>“Are abuse, misuse, and bulk-purchase return refusals handled manually, rules-based, or with customer-level risk scoring?”</li></ol><p>{ &quot;company&quot;: &quot;Makeup By Mario&quot;, &quot;domain&quot;: &quot;makeupbymario.com&quot;, &quot;priority&quot;: &quot;P1&quot;, &quot;incumbent_given&quot;: [ &quot;Forter&quot;, &quot;Signifyd&quot; ], &quot;fitted_play&quot;: &quot;A_incumbent_displacement&quot;, &quot;play_confidence&quot;: &quot;high&quot;, &quot;why_now_strength&quot;: &quot;medium_high&quot;, &quot;why_now_type&quot;: [ &quot;social_commerce_expansion&quot;, &quot;affiliate_channel_buildout&quot;, &quot;promo_policy_abuse_surface&quot;, &quot;returns_bulk_purchase_policy_surface&quot;, &quot;international_checkout_surface&quot; ], &quot;no_evidence_found&quot;: [ &quot;current public fraud incident naming Makeup By Mario&quot;, &quot;Forter or Signifyd renewal window&quot;, &quot;public vendor-switch announcement&quot;, &quot;current chargeback spike&quot;, &quot;current fraud/risk role&quot; ], &quot;best_case_study_match&quot;: { &quot;customer_story&quot;: &quot;Credo Beauty&quot;, &quot;match_confidence&quot;: &quot;high&quot;, &quot;match_basis&quot;: [ &quot;beauty commerce&quot;, &quot;Shopify/Shopify Plus operating context&quot;, &quot;reseller/bulk-purchase exposure&quot;, &quot;return fraud / chargeback / CX workload analogue&quot;, &quot;customer-trust-sensitive brand&quot; ], &quot;source&quot;: &quot;embedded Wyllo customer-story database in supplied prompt; no public URL supplied in embedded source object&quot; }, &quot;lead_person&quot;: { &quot;name&quot;: &quot;Deissy Villa Morocho&quot;, &quot;role&quot;: &quot;social-commerce / social media lead signal&quot;, &quot;why&quot;: &quot;freshest own-voice signal around TikTok Affiliate Education Event, TikTok Shop, affiliate community, creator bundles, and team expansion&quot;, &quot;linkedin&quot;: &quot;<a class="citechip hov" href="https://www.linkedin.com/in/deissyvilla&quot" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.linkedin.com/in/deissyvilla&amp;quot</span></div></span></a>; }, &quot;economic_sponsor&quot;: { &quot;name&quot;: &quot;Tony Gajewski&quot;, &quot;role&quot;: &quot;CFO / COO&quot;, &quot;why&quot;: &quot;finance and operations owner for approval rate, chargeback exposure, returns/refunds, international checkout, and policy enforcement&quot; }, &quot;ecommerce_owner&quot;: { &quot;name&quot;: &quot;Michael J. Hastings&quot;, &quot;role&quot;: &quot;VP, Ecommerce&quot;, &quot;why&quot;: &quot;tagged in live TikTok affiliate event; likely owner for ecommerce/social commerce operating controls&quot; }, &quot;wedge_capability&quot;: &quot;post_purchase_policy_abuse_and_cx_risk_intelligence&quot;, &quot;outreach_hook&quot;: &quot;social commerce is scaling from campaign to channel; connect creator/affiliate behavior to checkout, promo/account rules, returns, refunds, bulk-purchase exceptions, and CX decisions while keeping legitimate customers moving&quot;, &quot;claim_discipline&quot;: { &quot;do_not_claim&quot;: [ &quot;confirmed current fraud attack&quot;, &quot;confirmed vendor failure&quot;, &quot;confirmed renewal timing&quot;, &quot;Wyllo quantified claim-only performance metrics&quot; ], &quot;safe_claim&quot;: &quot;public signals show expanded risk surface around social commerce, affiliates, discounts, returns, international checkout, and bulk-purchase policy controls&quot; } }</p></div></div><div class="tabpanel" id="etab-lookalike" style="display:none"><div class="prose"><div class="prose-h" style="margin-top:0">Lookalike case study</div><p><strong>Closest Wyllo customer story: Credo Beauty.</strong> story source: embedded Wyllo customer-story database in the supplied prompt, Credo Beauty Case Study. The embedded story object did not provide a public URL; per instruction, I did not research Wyllo.</p><p><strong>Why Credo is the closest match:</strong> Credo is the best operational analogue because the match is not just “beauty.” The useful overlap is premium beauty commerce, Shopify/Shopify Plus context, high-demand inventory, reseller/bulk-purchase behavior, return fraud, chargebacks, customer trust, and CX/manual-review burden. The embedded Credo story specifically names reseller abuse, return fraud, chargebacks, bulk-purchase thresholds, automated approval/denial, and freeing CX resources.</p><p><strong>Makeup By Mario fit:</strong> Makeup By Mario shows multiple Credo-like signals: prestige beauty, Shopify ecosystem, Signifyd/Forter incumbent evidence, public promotion/coupon surfaces, explicit one-account discount terms, explicit abuse/misuse/bulk-purchase return refusal, Loop Returns, Zendesk, Global-e, and active social commerce/affiliate bundle expansion.<a class="citechip hov" href="https://www.makeupbymario.com/en-gb/pages/shipping-returns" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.makeupbymario.com/en-gb/pages/shipping-returns</span></div></span></a> ; <a class="citechip hov" href="https://www.getclipara.com/tools/brands/makeup-by-mario" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.getclipara.com/tools/brands/makeup-by-mario</span></div></span></a> ; <a class="citechip hov" href="https://www.panoramata.co/marketing-strategy-brand/makeup-by-mario" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.panoramata.co/marketing-strategy-brand/makeup-by-mario</span></div></span></a> ; <a class="citechip hov" href="https://storeinspect.com/blog/best-shopify-fraud-prevention-apps" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://storeinspect.com/blog/best-shopify-fraud-prevention-apps</span></div></span></a> ; <a class="citechip hov" href="https://www.linkedin.com/jobs/view/social-commerce-coordinator-at-makeup-by-mario-4435859177" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.linkedin.com/jobs/view/social-commerce-coordinator-at-makeup-by-mario-4435859177</span></div></span></a> ; <a class="citechip hov" href="https://www.linkedin.com/posts/deissyvilla_and-thats-a-wrap-on-the-first-of-many-activity-7472747266962014208-m8wN" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.linkedin.com/posts/deissyvilla_and-thats-a-wrap-on-the-first-of-many-activity-7472747266962014208-m8wN</span></div></span></a></p><p><strong>Where the match is weaker:</strong> Credo’s story directly states reseller abuse and return fraud; I did <strong>not</strong> find an open current source saying Makeup By Mario is experiencing confirmed reseller abuse, confirmed return fraud, or confirmed chargeback pain right now. For Makeup By Mario, those remain exposed surfaces and policy clues, not proven incidents. [inference]</p><p><strong>Case-study use in outreach:</strong> use Credo as an internal proof analogue, not as a public claim in the opener. The external opener should lead with Makeup By Mario’s own current signals: TikTok affiliate education, social-commerce hiring, public promo/coupon circulation, and policy language around one-account discounts, bulk purchases, and return refusal.</p></div></div><div class="tabpanel" id="etab-committee" style="display:none"><div class="muted" style="margin:0 0 8px">Everyone the system would thread on this account. Direct contact on file for 6 of 6. Coordinated outreach copy lives in the play view.</div><div class="person-block"><div class="cmt-card"><img class="thumb" src="https://media.licdn.com/dms/image/v2/D4E03AQEB0CXsqGRXWA/profile-displayphoto-crop_800_800/B4EZ3VX4MLIcAI-/0/1777401304954?e=1786579200&amp;v=beta&amp;t=yqOP8m44XYlsRrJIBuulBR_W4cEHsVicfNsR89lU8m8" alt=""><div class="cmt-body"><div class="who"><a href="../people/tony-gajewski-94369912.html">Tony Gajewski</a> <span class="muted">— CFO/COO -Makeup by Mario</span> <span class="role">finance_sponsor / ops</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:tony@makeupbymario.com">tony@makeupbymario.com</a></span><span class="cl"><b>Phone</b>+1 312-493-4569</span><span class="cl"><b>LinkedIn</b><a href="https://www.linkedin.com/in/tony-gajewski-94369912" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div><div class="person-block"><div class="cmt-card"><span class="thumb-init">MH</span><div class="cmt-body"><div class="who"><a href="../people/michael-j-hastings-makeupbymario-com.html">Michael J. Hastings</a> <span class="muted">— VP, Ecommerce</span> <span class="role">ecomm</span></div><div class="kv" style="margin-top:3px"><span class="muted">responsible for: Owns checkout + approval rate; false declines hit their revenue</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:michael@makeupbymario.com">michael@makeupbymario.com</a></span><span class="cl"><b>Phone</b><span class="muted">&mdash;</span></span><span class="cl"><b>LinkedIn</b><span class="muted">&mdash;</span></span></div></div></div></div><div class="person-block"><div class="cmt-card"><span class="thumb-init">MH</span><div class="cmt-body"><div class="who"><a href="../people/mila-hooks-makeupbymario-com.html">Mila Hooks</a> <span class="muted">— Global Ecommerce Manager</span> <span class="role">ecomm / site operations</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:hooks@makeupbymario.com">hooks@makeupbymario.com</a></span><span class="cl"><b>Phone</b><span class="muted">&mdash;</span></span><span class="cl"><b>LinkedIn</b><span class="muted">&mdash;</span></span></div></div></div></div><div class="person-block"><div class="cmt-card"><img class="thumb" src="https://media.licdn.com/dms/image/v2/D4E03AQEXxseLZsfxtQ/profile-displayphoto-crop_800_800/B4EZzvDCBzJUAI-/0/1773537075621?e=1786579200&amp;v=beta&amp;t=v-_gvhrhQOxWj9L6YqDXhF6SJCy1nBS3_n3-aTcOP50" alt=""><div class="cmt-body"><div class="who"><a href="../people/oskar-chabrowski.html">Oskar Chabrowski</a> <span class="muted">— Chief Marketing Officer (CMO)</span> <span class="role">marketing / growth influencer</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:oskar@makeupbymario.com">oskar@makeupbymario.com</a></span><span class="cl"><b>Phone</b>+1 646-229-2464</span><span class="cl"><b>LinkedIn</b><a href="https://www.linkedin.com/in/oskar-chabrowski" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div><div class="person-block"><div class="cmt-card"><img class="thumb" src="https://media.licdn.com/dms/image/v2/D4E03AQHTVdmy53GiYw/profile-displayphoto-crop_800_800/B4EZ0txUwjGkAI-/0/1774589400620?e=1786579200&amp;v=beta&amp;t=rs1JmFkfmABIpa5cBoEAbNEn8q7EIb6-znClRx5yN-0" alt=""><div class="cmt-body"><div class="who"><a href="../people/deissyvilla.html">Deissy Villa Morocho</a> <span class="muted">— Director of Social Commerce at Makeup By Mario</span> <span class="role">social commerce / affiliate channel</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:deissyvilla@makeupbymario.com">deissyvilla@makeupbymario.com</a></span><span class="cl"><b>Phone</b>+1 914-502-8057</span><span class="cl"><b>LinkedIn</b><a href="https://www.linkedin.com/in/deissyvilla" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div><div class="person-block"><div class="cmt-card"><span class="thumb-init">BO</span><div class="cmt-body"><div class="who"><a href="../people/brielle-opsis-makeupbymario-com.html">Brielle Opsis</a> <span class="muted">— Director of Client Experience [historical 2021</span> <span class="role">cx_returns / historical Signifyd relationship signal</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:brielle@makeupbymario.com">brielle@makeupbymario.com</a></span><span class="cl"><b>Phone</b>+1 908-208-9709</span><span class="cl"><b>LinkedIn</b><span class="muted">&mdash;</span></span></div></div></div></div></div><div class="tabpanel" id="etab-play" style="display:none"><div class="section"><div class="kv"><b>Coordinated play</b> A multi-threaded outreach sequence across this account's buying committee.</div><div class="kv" style="margin-top:8px"><a class="play-btn" href="../play_view.html#makeupbymario.com">View coordinated play &rarr;</a> <span class="chip chip-ok" title="Fact-checked against its research bundle">&#10003; Verified</span></div></div></div></div></div><script>function showTab(btn,id){var c=btn.closest('.tabs');c.querySelectorAll('.tabpanel').forEach(function(p){p.style.display='none';});c.querySelectorAll('.tab').forEach(function(t){t.classList.remove('tab-active');});var el=document.getElementById(id);if(el)el.style.display='block';btn.classList.add('tab-active');}</script></div><div id="tooltip"></div><script>(function(){var tip=document.getElementById('tooltip');function show(e){var c=e.currentTarget.querySelector(".tt-content");if(!c)return;tip.innerHTML=c.innerHTML;tip.style.display='block';move(e);}function move(e){var pad=12,x=e.clientX+pad,y=e.clientY+pad,w=tip.offsetWidth,h=tip.offsetHeight;if(x+w>window.innerWidth-8)x=window.innerWidth-8-w;if(y+h>window.innerHeight-8)y=e.clientY-pad-h;if(x<8)x=8;if(y<8)y=8;tip.style.left=x+'px';tip.style.top=y+'px';}function hide(){tip.style.display='none';}document.querySelectorAll('[data-tip]').forEach(function(el){el.addEventListener('mouseenter',show);el.addEventListener('mousemove',move);el.addEventListener('mouseleave',hide);});})();</script>

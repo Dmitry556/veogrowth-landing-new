@@ -1,0 +1,340 @@
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Kylie Cosmetics — ENGAGE</title><style>
+/* ==========================================================================
+   Wyllo demo — internal ops / admin-panel design system.
+   One shared visual language across index / account / person / engage /
+   analytics / blocklist pages. Restraint over flair: muted palette, flat
+   surfaces, dense-but-legible data tables, consistent type + spacing scale.
+   Design tokens below; every class name is preserved for the templates.
+   ========================================================================== */
+:root {
+  /* neutrals */
+  --bg: #f4f6f8; --surface: #ffffff; --surface-2: #fafbfc;
+  --line: #e3e6ea; --line-strong: #d3d8de; --line-soft: #eceef1;
+  --ink: #1b2430; --ink-2: #4a5568; --muted: #6b7482; --faint: #98a1ac;
+  /* accent (links / active) */
+  --accent: #1a56c4; --accent-ink: #123e91; --accent-wash: #eef3fb; --accent-line: #c6dbf5;
+  /* semantic */
+  --green: #1a7f37; --green-wash: #eef7f0; --green-line: #b9dcc3;
+  --amber: #a9720a; --amber-wash: #fdf6e3; --amber-line: #e6cd8f;
+  --red: #b02a37; --red-wash: #fbeaec; --red-line: #e6b0b6;
+  /* header/head fills */
+  --head-fill: #eef1f4; --head-fill-hover: #e4e8ec;
+  /* type scale */
+  --fs-xs: 11px; --fs-sm: 12px; --fs-base: 13px; --fs-md: 14px; --fs-lg: 16px; --fs-xl: 19px;
+  /* spacing scale */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px; --s6: 28px;
+  --radius: 6px; --radius-sm: 4px;
+  --shadow: 0 1px 2px rgba(16,24,40,.05);
+}
+* { box-sizing: border-box; }
+body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  margin: 0; color: var(--ink); font-size: var(--fs-md); line-height: 1.5;
+  background: var(--bg); -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* top app bar — slim product chrome strip spanning every page. The wordmark is
+   structural chrome (a generic tool name), injected here so it rides above the
+   centered content column on all pages including the detail views that have no
+   section nav. Muted fill, hairline bottom border, left-aligned to the column. */
+body::before {
+  content: "GTM Console";
+  display: block; box-sizing: border-box;
+  font-size: var(--fs-sm); font-weight: 700; line-height: 1;
+  letter-spacing: .09em; text-transform: uppercase; color: var(--ink-2);
+  background: var(--head-fill); border-bottom: 1px solid var(--line-strong);
+  padding: 12px 0; padding-inline: max(var(--s4), calc((100% - 1040px) / 2 + var(--s4)));
+}
+
+.wrap { max-width: 1040px; margin: 0 auto; padding: var(--s5) var(--s4) var(--s6); }
+.wrap.wide { max-width: 1400px; }
+/* ENGAGE "why reach out / why not" — clamp to 2 lines so rows stay compact (full text on hover) */
+.whyreach-td { vertical-align: top; }
+.whyreach { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; max-width: 300px; line-height: 1.35; color: var(--muted); }
+h1 { font-size: var(--fs-xl); margin: 0 0 var(--s2); font-weight: 650;
+  letter-spacing: -.01em; color: var(--ink); }
+h2 { font-size: var(--fs-sm); text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
+  border-bottom: 1px solid var(--line); padding-bottom: var(--s1); margin: var(--s5) 0 var(--s3);
+  font-weight: 700; }
+
+/* funnel — monospace summary strip */
+.funnel { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: var(--fs-sm);
+  color: var(--ink-2); background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: var(--radius-sm); padding: var(--s2) var(--s3); margin-bottom: var(--s3); }
+
+/* data tables */
+.tblwrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--surface); box-shadow: var(--shadow); }
+table { border-collapse: collapse; width: 100%; font-size: var(--fs-base); background: var(--surface); }
+th, td { border-bottom: 1px solid var(--line-soft); padding: 9px 12px; text-align: left; vertical-align: middle; }
+th { position: sticky; top: 0; background: var(--head-fill); z-index: 1; font-size: var(--fs-xs);
+  font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-2);
+  border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
+tbody tr:last-child td { border-bottom: none; }
+/* subtle zebra banding for a machine-uniform rhythm (declared before :hover so
+   hover — equal specificity — still wins). */
+tbody tr:nth-child(even) td { background: var(--surface-2); }
+tbody tr:hover td, tr:hover td { background: var(--accent-wash); }
+/* IDENTIFY table column discipline: keep the atomic columns on one line so every
+   row is the same height; only Company (1) + Incumbent (6) may wrap when needed.
+   Headcount right-aligns with tabular figures so the digits stack. */
+#idtable td:nth-child(2), #idtable td:nth-child(3), #idtable td:nth-child(4),
+#idtable td:nth-child(5), #idtable td:nth-child(7), #idtable td:nth-child(8) { white-space: nowrap; }
+#idtable td:nth-child(3), #idtable th:nth-child(3) { text-align: right; font-variant-numeric: tabular-nums; }
+/* sortable column headers — spreadsheet/DB style */
+th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+th.sortable:hover { background: var(--head-fill-hover); color: var(--ink); }
+th.sortable .arrow { font-size: 9px; color: var(--accent); margin-left: 4px; }
+
+/* ICP badge — small circle, hi/mid/lo colour coding */
+.badge { display: inline-block; min-width: 28px; text-align: center; border-radius: 11px;
+  padding: 2px 8px; background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line-strong);
+  font-size: var(--fs-xs); font-weight: 700; font-variant-numeric: tabular-nums; cursor: help; }
+.b-hi { background: var(--green-wash); color: var(--green); border-color: var(--green-line); }
+.b-mid { background: var(--amber-wash); color: var(--amber); border-color: var(--amber-line); }
+.b-lo { background: var(--surface-2); color: var(--muted); border-color: var(--line-strong); }
+
+.muted { color: var(--muted); font-size: var(--fs-sm); }
+.pending { color: var(--faint); font-style: italic; }
+.ok { color: var(--green); }
+
+/* content cards */
+.section { border: 1px solid var(--line); background: var(--surface); border-radius: var(--radius);
+  padding: var(--s4) var(--s5); margin-bottom: var(--s3); box-shadow: var(--shadow); }
+.kv { margin: var(--s1) 0; }
+.kv b { color: var(--ink-2); font-weight: 600; display: inline-block; min-width: 140px; }
+
+/* two-column definition layout for the composed key-value cards (account Summary
+   tab, per-account ENGAGE header, person info card). The value is a run of
+   sibling inline nodes, so a flex/grid split would fragment it — instead the label
+   sits in a fixed left gutter (absolute) and the value flows as one wrapping
+   column. A long value (e.g. Priority "Work now — …") therefore wraps entirely
+   inside the value column and never collides with the label. */
+#tab-summary .kv, .wrap > .section .kv {
+  position: relative; padding-left: 158px; margin: var(--s2) 0; min-height: 1.4em; line-height: 1.5; }
+#tab-summary .kv b, .wrap > .section .kv b {
+  position: absolute; left: 0; top: 0; display: block; width: 142px; min-width: 0;
+  color: var(--muted); font-weight: 600; font-size: var(--fs-sm); text-transform: none; }
+ul.clean { margin: var(--s1) 0; padding-left: 18px; }
+ul.clean li { margin: var(--s1) 0; }
+.src { font-size: var(--fs-xs); }
+
+/* person avatars + thumbs */
+.avatar { width: 92px; height: 92px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line-strong); }
+.avatar-init { width: 92px; height: 92px; border-radius: 50%; background: #46618f; color: #fff;
+  display: inline-flex; align-items: center; justify-content: center; font-size: 34px; font-weight: 700; }
+.thumb { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; vertical-align: middle; margin-right: 7px; border: 1px solid var(--line-strong); }
+.thumb-init { width: 26px; height: 26px; border-radius: 50%; background: #46618f; color: #fff;
+  display: inline-flex; align-items: center; justify-content: center; font-size: var(--fs-xs); font-weight: 700;
+  vertical-align: middle; margin-right: 7px; }
+.phdr { display: flex; gap: var(--s4); align-items: center; margin-bottom: var(--s3); }
+
+/* role tag / pill */
+.role { display: inline-block; padding: 2px 8px; border: 1px solid var(--line-strong); border-radius: 10px;
+  font-size: var(--fs-xs); background: var(--surface-2); color: var(--ink-2); font-weight: 600;
+  letter-spacing: .02em; }
+
+/* experience / triggers — left-border rail */
+.exp { border-left: 3px solid var(--line-strong); padding-left: var(--s3); margin: var(--s3) 0; }
+.back { font-size: var(--fs-sm); margin-bottom: var(--s3); }
+.back a { font-weight: 600; }
+
+/* top nav bar */
+.nav { display: flex; gap: 2px; border-bottom: 1px solid var(--line-strong); margin-bottom: var(--s4);
+  padding-bottom: 0; }
+.navitem { display: inline-block; padding: 8px 14px; font-size: var(--fs-sm); font-weight: 600;
+  text-decoration: none; color: var(--muted); border: 1px solid transparent; border-bottom: none;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0; }
+.navitem:hover { background: var(--surface-2); color: var(--ink); text-decoration: none; }
+.navitem.nav-active { color: var(--ink); background: var(--surface); border-color: var(--line-strong);
+  margin-bottom: -1px; box-shadow: 0 -2px 0 var(--accent) inset; }
+.navitem.nav-off { color: var(--faint); cursor: default; }
+
+/* incumbent confidence indicator — tiny dot + label */
+.conf { font-size: 10px; margin-left: 5px; white-space: nowrap; cursor: help; font-weight: 600; }
+.conf-hi { color: var(--green); }
+.conf-lo { color: var(--amber); }
+
+/* suppression banner — MUST stay unmissable (red, high-contrast) */
+.suppressed { border: 1px solid var(--red-line); border-left: 4px solid var(--red);
+  background: var(--red-wash); color: #7a1620; border-radius: var(--radius);
+  padding: var(--s3) var(--s4); margin-bottom: var(--s3); font-weight: 700; }
+.suppressed .muted2 { display: block; font-weight: 400; color: #9a4048; margin-top: var(--s1); font-size: var(--fs-sm); }
+/* out-of-ICP / do-not-contact chip (stays in IDENTIFY, distinct from the NoFraud blocklist) */
+.dnc { display: inline-block; background: var(--red-wash); color: var(--red); border: 1px solid var(--red-line);
+  border-radius: var(--radius-sm); padding: 1px 6px; font-size: 10px; font-weight: 700; letter-spacing: .03em;
+  margin-left: 6px; vertical-align: middle; }
+/* out-of-ICP / do-not-contact banner — MUST stay unmissable (amber, high-contrast) */
+.dq-banner { border: 1px solid var(--amber-line); border-left: 4px solid var(--amber);
+  background: var(--amber-wash); color: #6f4a09; border-radius: var(--radius);
+  padding: var(--s3) var(--s4); margin: var(--s2) 0 var(--s3); font-weight: 700; }
+.dq-banner .muted2 { display: block; font-weight: 400; color: #8a6413; margin-top: var(--s1); font-size: var(--fs-sm); }
+
+/* account sub-tabs — same visual language as the top nav */
+.tabbar { display: flex; flex-wrap: wrap; gap: 2px; border-bottom: 1px solid var(--line-strong); margin: var(--s2) 0 0; }
+.tab { padding: 8px 14px; font-size: var(--fs-sm); font-weight: 600; color: var(--muted); background: transparent;
+  border: 1px solid transparent; border-bottom: none; border-radius: var(--radius-sm) var(--radius-sm) 0 0; cursor: pointer; }
+.tab:hover { background: var(--surface-2); color: var(--ink); }
+.tab.tab-active { color: var(--ink); background: var(--surface); border-color: var(--line-strong);
+  margin-bottom: -1px; box-shadow: 0 -2px 0 var(--accent) inset; }
+.tabpanels { border: 1px solid var(--line-strong); border-top: none; background: var(--surface);
+  border-radius: 0 0 var(--radius) var(--radius); padding: var(--s4); box-shadow: var(--shadow); }
+.tabpanel h2:first-child { margin-top: 0; }
+
+/* freeform prose rendered from the dossier markdown */
+.prose { font-size: var(--fs-md); line-height: 1.6; color: var(--ink); max-width: 82ch; }
+.prose p { margin: var(--s2) 0; }
+.prose .prose-h { font-size: var(--fs-md); font-weight: 700; margin: var(--s5) 0 var(--s2); color: var(--ink); }
+.prose ul.prose-ul, .prose ol.prose-ol { margin: var(--s2) 0; padding-left: 22px; }
+.prose ul.prose-ul li, .prose ol.prose-ol li { margin: var(--s2) 0; }
+.prose code { background: var(--line-soft); padding: 1px 5px; border-radius: 3px;
+  font-family: ui-monospace, monospace; font-size: var(--fs-sm); }
+.prose a { word-break: break-word; }
+.prose + .prose { border-top: 1px solid var(--line-soft); margin-top: var(--s4); padding-top: var(--s4); }
+.prose-note { color: var(--muted); font-size: var(--fs-sm); margin: 0 0 var(--s3); }
+
+/* priority letter + dot — P1 = work-now (green), P2 = amber, P3 = grey */
+.prio { cursor: help; white-space: nowrap; font-weight: 700; }
+.pdot { display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  margin-right: 6px; vertical-align: middle; background: var(--faint); }
+.prio-p1 .pdot { background: var(--green); }
+.prio-p2 .pdot { background: var(--amber); }
+.prio-p3 .pdot { background: var(--faint); }
+
+/* JS hover card (escapes table overflow — appended to <body>) */
+.hov { cursor: help; }
+#tooltip { position: fixed; z-index: 9999; display: none; max-width: 340px;
+  background: var(--surface); border: 1px solid var(--line-strong); border-radius: var(--radius);
+  box-shadow: 0 6px 24px rgba(16,24,40,.16); padding: var(--s3); font-size: var(--fs-sm);
+  color: var(--ink-2); line-height: 1.5; text-align: left; }
+.tt-h { font-weight: 700; margin-bottom: var(--s2); font-size: var(--fs-sm); color: var(--ink);
+  text-transform: uppercase; letter-spacing: .04em; }
+.tt-body { white-space: normal; color: var(--ink-2); }
+.tt-row { display: flex; justify-content: space-between; gap: var(--s3); margin: var(--s1) 0; }
+.tt-row + .tt-row { border-top: 1px solid var(--line-soft); padding-top: var(--s1); }
+.tt-pts { color: var(--green); font-weight: 700; white-space: nowrap; }
+.tt-note { color: var(--muted); }
+
+/* ENGAGE list groups + per-account play shell */
+.eng-lead { color: var(--ink-2); margin: -4px 0 var(--s4); font-size: var(--fs-base); }
+.eng-group { margin-bottom: var(--s5); }
+.eng-group h2 .cnt { color: var(--faint); font-weight: 700; }
+.campaign-tag { display: inline-block; padding: 2px 9px; border-radius: 11px; font-size: var(--fs-xs);
+  font-weight: 700; border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink-2); margin-right: 6px; }
+.camp-a { border-color: var(--green-line); color: var(--green); background: var(--green-wash); }
+.camp-b { border-color: var(--red-line); color: var(--red); background: var(--red-wash); }
+.preview-note { border: 1px solid var(--amber-line); border-left: 4px solid var(--amber);
+  background: var(--amber-wash); color: #6f4a09; border-radius: var(--radius); padding: var(--s2) var(--s3);
+  margin-bottom: var(--s3); font-size: var(--fs-sm); font-weight: 600; }
+.person-block { border: 1px solid var(--line); border-radius: var(--radius); padding: var(--s3) var(--s4);
+  margin: var(--s2) 0; background: var(--surface); box-shadow: var(--shadow); }
+.person-block .who { font-weight: 700; }
+.chip { display: inline-block; padding: 2px 8px; border: 1px solid var(--line-strong); border-radius: 11px;
+  font-size: var(--fs-xs); color: var(--muted); background: var(--surface-2); white-space: nowrap; }
+/* play verification-state chips — muted green (verified) / amber (pending),
+   same wash tokens as the b-hi/b-mid score badges. */
+.chip.chip-ok { color: var(--green); background: var(--green-wash); border-color: var(--green-line); }
+.chip.chip-pending { color: var(--amber); background: var(--amber-wash); border-color: var(--amber-line); }
+
+/* committee card (per-account ENGAGE) — photo + identity + contacts row */
+.cmt-card { display: flex; gap: var(--s3); align-items: flex-start; }
+.cmt-card .thumb { width: 42px; height: 42px; margin-right: 0; flex: 0 0 42px; }
+.cmt-card .thumb-init { width: 42px; height: 42px; margin-right: 0; flex: 0 0 42px; font-size: 16px; }
+.cmt-body { flex: 1 1 auto; min-width: 0; }
+.cmt-contacts { margin-top: var(--s2); display: flex; flex-wrap: wrap; gap: var(--s1) var(--s4); font-size: var(--fs-sm); }
+.cmt-contacts .cl { white-space: nowrap; }
+.cmt-contacts .cl b { color: var(--muted); font-weight: 700; margin-right: 5px; text-transform: uppercase;
+  font-size: 10px; letter-spacing: .04em; }
+.cmt-contacts a { color: var(--accent); text-decoration: none; }
+.cmt-contacts a:hover { text-decoration: underline; }
+
+/* "View play" link (ENGAGE table cell) + button (per-account ENGAGE page) —
+   opens the data-driven play_view.html at this account. */
+a.play-link { font-size: var(--fs-sm); font-weight: 700; color: var(--accent); text-decoration: none;
+  white-space: nowrap; }
+a.play-link:hover { text-decoration: underline; }
+a.play-btn { display: inline-block; padding: 7px 15px; border-radius: var(--radius-sm);
+  background: var(--accent); color: #fff; font-size: var(--fs-base); font-weight: 600;
+  text-decoration: none; }
+a.play-btn:hover { background: var(--accent-ink); text-decoration: none; }
+
+/* inline source citations (CHANGE 4) — the CLAIM text is the citation: a subtle
+   dotted underline; hovering reveals the source URL; clicking opens it in a NEW tab.
+   Two forms: .cite wraps a claim (underline + trailing mark); .citechip is a
+   compact superscript chip used inside prose. */
+.cite { text-decoration: none; border-bottom: 1px dotted var(--accent-line); cursor: help; color: inherit; }
+a.cite:hover { text-decoration: none; border-bottom-color: var(--accent); }
+.citemark { font-size: 10px; color: var(--accent); margin-left: 2px; vertical-align: super;
+  line-height: 0; text-decoration: none; }
+a.citechip { display: inline-block; font-size: 10px; color: var(--accent); text-decoration: none;
+  border: 1px solid var(--accent-line); background: var(--accent-wash); border-radius: var(--radius-sm); padding: 0 4px;
+  margin-left: 2px; vertical-align: super; line-height: 1.4; cursor: help; }
+a.citechip:hover { background: #e0ebfa; text-decoration: none; }
+/* ENGAGE lookalike placeholder cell */
+.lookalike { color: var(--faint); font-style: italic; }
+
+/* ANALYTICS — illustrative/sample framing. The banner MUST be unmistakable:
+   striped amber, bold, full-width, top of page. Nothing here is real. */
+.sample-banner { border: 2px solid var(--amber); border-radius: var(--radius);
+  background: repeating-linear-gradient(45deg,#fffdf3,#fffdf3 12px,#fdf3d8 12px,#fdf3d8 24px);
+  color: #6b5200; padding: var(--s3) var(--s4); margin-bottom: var(--s4); font-size: var(--fs-base); }
+.sample-banner .bhead { font-weight: 800; font-size: var(--fs-base); text-transform: uppercase;
+  letter-spacing: .05em; display: block; margin-bottom: var(--s1); color: #6b5200; }
+.sample-banner .bsub { font-weight: 400; color: #6b5200; }
+.sample-pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px;
+  font-weight: 800; text-transform: uppercase; letter-spacing: .04em; margin-left: 8px;
+  border: 1px solid var(--amber); background: #fffdf3; color: #6b5200; vertical-align: middle; }
+/* KPI strip */
+.kpis { display: flex; flex-wrap: wrap; gap: var(--s3); margin: 0 0 var(--s4); }
+.kpi { flex: 1 1 130px; min-width: 120px; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--surface); padding: var(--s3) var(--s4); box-shadow: var(--shadow); }
+.kpi .kn { font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
+.kpi .kl { font-size: var(--fs-xs); color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-top: 3px; }
+/* status chips */
+.st { display: inline-block; padding: 2px 9px; border-radius: 11px; font-size: var(--fs-xs);
+  font-weight: 700; border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink-2); white-space: nowrap; }
+.st-booked { border-color: var(--accent-line); color: var(--accent); background: var(--accent-wash); }
+.st-held { border-color: var(--green-line); color: var(--green); background: var(--green-wash); }
+.st-noshow { border-color: var(--red-line); color: var(--red); background: var(--red-wash); }
+/* source chips */
+.srcchip { display: inline-block; padding: 2px 9px; border-radius: 11px; font-size: var(--fs-xs);
+  border: 1px solid var(--line-strong); background: var(--surface-2); color: var(--ink-2); white-space: nowrap; }
+/* ---- meeting handoff brief (AE-facing) ----------------------------------
+   A single "handoff card" an AE is handed for a booked meeting: an identity
+   header, a labelled meta grid, then the briefing sections. Reuses the shared
+   tokens/chips only — no new palette, no accent stripes. */
+.hb-card { border: 1px solid var(--line-strong); background: var(--surface);
+  border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; margin-bottom: var(--s4); }
+/* identity header — account + attendee headline, status on the right */
+.hb-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between;
+  gap: var(--s3) var(--s5); padding: var(--s4) var(--s5); background: var(--surface-2);
+  border-bottom: 1px solid var(--line); }
+.hb-head .who .nm { font-size: var(--fs-lg); font-weight: 700; color: var(--ink); letter-spacing: -.01em; }
+.hb-head .who .ti { font-size: var(--fs-sm); color: var(--muted); margin-top: 2px; }
+.hb-head .who .ti a { color: var(--muted); }
+.hb-head .who .ti a:hover { color: var(--accent); }
+.hb-stat { display: flex; gap: var(--s2); align-items: center; flex-wrap: wrap; flex-shrink: 0; }
+/* meta grid — self-adjusting, labelled fields */
+.hb-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--s4) var(--s5); padding: var(--s4) var(--s5); }
+.hb-meta .f b { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--muted); font-weight: 700; margin-bottom: 3px; }
+.hb-meta .f .v { font-size: var(--fs-md); color: var(--ink); line-height: 1.4; }
+.hb-meta .f .v .sub { display: block; font-size: var(--fs-sm); color: var(--muted); margin-top: 1px; font-weight: 400; }
+.hb-meta .f .v a { color: var(--accent); }
+/* section rhythm — label + card, tighter than the default h2 */
+.hb-label { font-size: var(--fs-sm); text-transform: uppercase; letter-spacing: .06em; color: var(--muted);
+  font-weight: 700; margin: var(--s5) 0 var(--s2); }
+.hb-body { border: 1px solid var(--line); background: var(--surface); border-radius: var(--radius);
+  padding: var(--s3) var(--s4); box-shadow: var(--shadow); font-size: var(--fs-md); line-height: 1.6; color: var(--ink); }
+.hb-body.prose { max-width: 74ch; }
+/* the wedge / "your angle" — a tinted callout (full border, no accent stripe) */
+.hb-say { background: var(--accent-wash); border: 1px solid var(--accent-line); border-radius: var(--radius);
+  padding: var(--s3) var(--s4); font-size: var(--fs-md); line-height: 1.6; color: var(--accent-ink); max-width: 74ch; }
+.hb-say .say-k { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: .05em;
+  font-weight: 700; color: var(--accent); margin-bottom: var(--s1); }
+/* footer disclaimer echo */
+.hb-foot { color: var(--muted); font-size: var(--fs-sm); margin-top: var(--s4);
+  padding-top: var(--s3); border-top: 1px solid var(--line-soft); }
+</style><div class="wrap"><div class="back"><a href="../engage.html">&larr; Back to ENGAGE</a></div><h1>Kylie Cosmetics</h1><div class="section"><div class="kv"><b>Account</b> Kylie Cosmetics <span class="muted">kyliecosmetics.com</span> · <a href="../accounts/kyliecosmetics.com.html">full dossier</a></div><div class="kv"><b>Incumbent</b> Forter <span class="conf conf-hi" title="Detected in live checkout scripts (network requests) — highest confidence">&#9679; live</span></div><div class="kv"><b>Priority</b> <span class="prio prio-p1"><span class="pdot"></span>P1</span> <span class="muted">— Work now — Upcoming &#x27;Mood Stones&#x27; fragrance-trio launch on the DTC homepage (2026-07-30); Traffic increased from 432,506 visits in 2026-04 to 610,399 in 2026-06 (2026-06-01)</span></div></div><div class="tabs"><div class="tabbar"><button class="tab tab-active" onclick="showTab(this,'etab-whynow')">Why now</button><button class="tab" onclick="showTab(this,'etab-lookalike')">Lookalike case study</button><button class="tab" onclick="showTab(this,'etab-committee')">Buying committee (6)</button></div><div class="tabpanels"><div class="tabpanel" id="etab-whynow" style="display:block"><div class="section"><div class="kv"><b>Incumbent</b> Forter <span class="conf conf-hi" title="Detected in live checkout scripts (network requests) — highest confidence">&#9679; live</span></div></div><div class="prose"><div class="prose-h" style="margin-top:0">Why-now signals</div><p>| Signal | Date / freshness | Evidence | Why it matters now | Source | |---|---:|---|---|---| | Mood Stones fragrance launch is live on the homepage with a July 30 date and a notification CTA. | Observed/crawled 2026-07-23; event dated 2026-07-30. | Homepage states “coming july 30,” “mood stones,” and “the new fragrance trio from kylie jenner.” | Near-term launches compress traffic, promotion, checkout, inventory, customer-service, and fulfillment risk into a short window; this is the cleanest current “why now.” | <a class="citechip hov" href="https://kyliecosmetics.com/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/</span></div></span></a> | | Coty posted a Kylie Jenner Fragrance Global Marketing Junior Associate role. | Posted 2026-07-16. | Role supports Kylie Jenner Fragrance product development “from concept to launch,” with cross-functional work across Packaging, R&amp;D, Regulatory, Creative, launch timelines, trackers, and POs. | A new fragrance operating layer is being staffed at the same time the site is promoting a new fragrance trio; launch execution is visibly active. | <a class="citechip hov" href="https://careers.coty.com/job/New-York-Junior-Associate%2C-Fragrances-NY-10118/1402084933/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://careers.coty.com/job/New-York-Junior-Associate%2C-Fragrances-NY-10118/1402084933/</span></div></span></a> | | Coty posted a Skincare &amp; Kylie marketing role that explicitly includes e-commerce plans, product launches, activations, and promotional analysis. | Posted 2026-07-15; August 2026 start. | Role covers Kylie and Lancaster and includes retailer assets, product launches, e-commerce optimization recommendations, brand activations, promotional campaigns, and competitor/promotional analysis. | Kylie-related digital commerce and promo operations are not static; Coty is hiring around launch and e-commerce execution now. | <a class="citechip hov" href="https://careers.coty.com/job/Amsterdam-Marketing-Prestige-intern-Skincare-%26-Kylie-NH-1082VA/1404915233/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://careers.coty.com/job/Amsterdam-Marketing-Prestige-intern-Skincare-%26-Kylie-NH-1082VA/1404915233/</span></div></span></a> | | Public offers are active: free U.S. shipping over $40, 10% bundles, 15% SMS, Refer-a-Friend 20%, and custom engraving. | Offers page crawled 2026-07-23. | The offers page lists multiple concurrent incentives and lead-capture/referral mechanics. | Coupon/referral/SMS surfaces create legitimate growth levers but also policy-enforcement and repeated-discounting pressure, especially during a launch window. | <a class="citechip hov" href="https://kyliecosmetics.com/pages/offers" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/pages/offers</span></div></span></a> | | Coupon aggregators show current Kylie promo inventory. | CouponFollow page states status as of 2026-07-22; SimplyCodes page observed 2026-07-23. | CouponFollow lists 5 promo codes / 5 offers as of July 22, 2026; SimplyCodes lists 3 active coupons/offers as of July 23, 2026. | Public coupon circulation makes discount governance visible outside the owned site; it is a current, not hypothetical, promo-control surface. | <a class="citechip hov" href="https://couponfollow.com/site/kyliecosmetics.com" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://couponfollow.com/site/kyliecosmetics.com</span></div></span></a> ; <a class="citechip hov" href="https://simplycodes.com/store/kyliecosmetics.com" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://simplycodes.com/store/kyliecosmetics.com</span></div></span></a> | | Subscriptions remain live with 10% off, free shipping, early launch access, skip/cancel controls, and U.S.-only availability. | Subscription page crawled 2026-07-23. | Kylie subscriptions auto-replenish products, allow preference changes, and give subscribers 10% off, free shipping, and early access to new launches. | Subscription commerce adds recurring eligibility, promo, account, cancellation, gift-recipient, and launch-access workflows that are adjacent to abuse-control decisions. | <a class="citechip hov" href="https://kyliecosmetics.com/en-am/pages/subscriptions" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/en-am/pages/subscriptions</span></div></span></a> | | Return/refund policy is strict but still exposes claims workflows. | Terms effective 2021; crawled 2026-07-23. FAQ crawled 2026-07-23. | Terms say all sales are final/no returns, but damaged-product refunds may be requested within 48 hours and may require photos plus order confirmation; FAQ also references wrong-item claims within 48 hours. | “No returns” reduces standard return volume, but it concentrates post-purchase risk into damaged/incorrect/refused-delivery/reshipment/refund exception handling. | <a class="citechip hov" href="https://kyliecosmetics.com/en-sa/pages/terms-and-conditions" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/en-sa/pages/terms-and-conditions</span></div></span></a> ; <a class="citechip hov" href="https://kyliecosmetics.com/en-mx/pages/faq" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/en-mx/pages/faq</span></div></span></a> | | Terms explicitly allow order non-acceptance for resale, fraudulent appearance, or security-system flags, and prohibit purchase for resale. | Terms effective 2021; crawled 2026-07-23. | Kylie can reject orders that appear reseller/distributor-linked, fraudulent, or security-flagged, and purchase for resale is strictly prohibited. | This validates that reseller/order-risk enforcement is already a named business control, not an invented angle. | <a class="citechip hov" href="https://kyliecosmetics.com/en-sa/pages/terms-and-conditions" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/en-sa/pages/terms-and-conditions</span></div></span></a> | | Forter is still visible in public technology evidence, while Signifyd also appears in some public stack detections. | TechLens public profile says data 30+ days old; BuiltWith page last technology detection 2026-07-13; ecomm.design Forter page lists Kylie as using Forter. | TechLens lists Forter among Kylie technologies; ecomm.design’s Forter tool page lists Kylie Cosmetics; BuiltWith’s public profile shows Signifyd in the Payment section and Shopify Plus / Global-e in e-commerce. | The incumbent-displacement track is active, but there is no public adoption date, renewal window, RFP, or Forter case study found in this pass. | <a class="citechip hov" href="https://www.techlens.app/companies/kyliecosmetics" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.techlens.app/companies/kyliecosmetics</span></div></span></a> ; <a class="citechip hov" href="https://ecomm.design/tool/forter/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://ecomm.design/tool/forter/</span></div></span></a> ; <a class="citechip hov" href="https://builtwith.com/kyliecosmetics.com" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://builtwith.com/kyliecosmetics.com</span></div></span></a> |</p></div><div class="prose"><div class="prose-h" style="margin-top:0">Incumbent timing</div><p>Incumbent status: Forter remains the incumbent to treat as established because the supplied dossier labels Forter as the detected incumbent, TechLens lists Forter among Kylie technologies, and ecomm.design’s Forter directory lists Kylie Cosmetics as a site using Forter. Sources: supplied durable dossier; <a class="citechip hov" href="https://www.techlens.app/companies/kyliecosmetics" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://www.techlens.app/companies/kyliecosmetics</span></div></span></a> ; <a class="citechip hov" href="https://ecomm.design/tool/forter/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://ecomm.design/tool/forter/</span></div></span></a></p><p>Complication: BuiltWith’s current public page shows Signifyd in the Payment section and says the profile’s last technology detection was July 13, 2026; this is a single public technology-directory signal and does not override the given Forter incumbent assignment.<a class="citechip hov" href="https://builtwith.com/kyliecosmetics.com" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://builtwith.com/kyliecosmetics.com</span></div></span></a></p><p>Timing evidence found: no public Forter adoption announcement, case study, renewal date, RFP, migration notice, or fraud-vendor job was found in this pass. Search coverage included Forter, Riskified, Signifyd, “case study,” <code>kyliecosmetics.com</code>, Coty careers, chargeback, fraud, and DTC/ecommerce queries. Source status: no evidence found.</p><p>Actionable timing angle: this should not be pitched as “contract is up.” It should be pitched as: active Forter/legacy incumbent footprint plus a dated launch window, expanding fragrance program, public promo/subscription surfaces, and explicit resale/fraud order-control language.<a class="citechip hov" href="https://kyliecosmetics.com/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/</span></div></span></a> ; <a class="citechip hov" href="https://careers.coty.com/job/New-York-Junior-Associate%2C-Fragrances-NY-10118/1402084933/" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://careers.coty.com/job/New-York-Junior-Associate%2C-Fragrances-NY-10118/1402084933/</span></div></span></a> ; <a class="citechip hov" href="https://kyliecosmetics.com/pages/offers" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/pages/offers</span></div></span></a> ; <a class="citechip hov" href="https://kyliecosmetics.com/en-am/pages/subscriptions" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/en-am/pages/subscriptions</span></div></span></a> ; <a class="citechip hov" href="https://kyliecosmetics.com/en-sa/pages/terms-and-conditions" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/en-sa/pages/terms-and-conditions</span></div></span></a></p></div><div class="prose"><div class="prose-h" style="margin-top:0">Pitch reasoning</div><p>Selected play: PLAY A — incumbent displacement.</p><p>Why not lead with PLAY B: I found no opened evidence of a live fraud scheme, resale campaign, active abuse ring, or public incident naming Kylie Cosmetics in the last 1–3 months. The July 30 Mood Stones launch and public promo/subscription surfaces create exposure, but they do not prove active targeting.</p><p>Best wedge: “launch-safe approval and policy-abuse control across checkout, subscriptions, promos, and claims.” Forter is the given incumbent and appears in current/near-current public stack evidence, so the opening should be comparative without asserting renewal timing. The pitch should not say Wyllo is needed because Forter is failing. It should ask whether Forter is being evaluated only on checkout payment fraud while Kylie’s July fragrance launch and live offer/subscription mechanics create risk outside basic transaction screening.</p><p>Person hook:</p><ul class="prose-ul"><li>Anna: Kylie brand growth and category expansion are on her desk. Keep this strategic: protect the launch and brand experience without adding friction.</li><li>Nicolas: his public posts emphasize momentum, storytelling, Skin Tint, Glossy Lip Kits, scenting expansion, Ulta recognition, and 2026 building. Hook the Mood Stones launch and launch conversion.</li><li>Laurent: speak in leakage/control terms: prevent avoidable loss, reduce manual review/exception cost, and defend profitable growth without over-claiming ROI.</li><li>Jocelyn / Guadalupe: speak to owned-site execution: notification CTA, offer stack, subscriptions, checkout/account experience, launch readiness.</li><li>Susan: speak to exception handling: order flags, refund/reshipment decisions, wrong-item/damaged-item claims, refused delivery, and cross-brand ecommerce operations.</li></ul><p>What not to say:</p><ul class="prose-ul"><li>Do not say Kylie has a fraud incident.</li><li>Do not say the Forter contract is up.</li><li>Do not claim Wyllo guarantees a specific approval-rate or cost improvement.</li><li>Do not lead with “returns fraud” because the public policy is final-sale/no returns.</li><li>Do not imply the public coupon pages are abuse; they are evidence of live promotional surface area.</li></ul><p>Suggested outbound logic:</p><ol class="prose-ol"><li>Open with the dated July 30 Mood Stones launch and the public evidence that Kylie is staffing and operating around fragrance/category expansion.</li><li>Acknowledge the existing fraud stack rather than pretending they have no vendor.</li><li>Ask a comparative control question: whether the current setup covers launch order approvals plus promo/subscription/resale/claim-policy decisions, not just checkout fraud.</li><li>Offer a review/audit angle tied to the launch and public policy surfaces.</li></ol></div></div><div class="tabpanel" id="etab-lookalike" style="display:none"><div class="prose"><div class="prose-h" style="margin-top:0">Lookalike case study</div><p>Primary match: Credo Beauty. Operational similarity is stronger than category similarity alone: Credo is a beauty commerce story involving Shopify Plus, reseller abuse, return fraud, chargebacks, custom fraud rules, and CX workload. Kylie is also a beauty brand with Shopify/Shopify Plus evidence, high-demand launch mechanics, public promo/referral/SMS surfaces, subscriptions, reseller-prohibited terms, and order non-acceptance language for fraud/security/resale signals. Sources for Kylie side: <a class="citechip hov" href="https://builtwith.com/kyliecosmetics.com" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://builtwith.com/kyliecosmetics.com</span></div></span></a> ; <a class="citechip hov" href="https://kyliecosmetics.com/pages/offers" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/pages/offers</span></div></span></a> ; <a class="citechip hov" href="https://kyliecosmetics.com/en-am/pages/subscriptions" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/en-am/pages/subscriptions</span></div></span></a> ; <a class="citechip hov" href="https://kyliecosmetics.com/en-sa/pages/terms-and-conditions" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/en-sa/pages/terms-and-conditions</span></div></span></a> . Story source: embedded customer-story context in the supplied prompt, <code>source_section: Credo Beauty Case Study</code>; no public URL supplied in prompt and not independently re-researched per instruction.</p><p>What maps cleanly: custom rules, reseller/bulk-purchase governance, protecting inventory for real customers, reducing manual review burden, and preserving customer experience. Sources for Kylie side: <a class="citechip hov" href="https://kyliecosmetics.com/en-sa/pages/terms-and-conditions" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/en-sa/pages/terms-and-conditions</span></div></span></a> ; <a class="citechip hov" href="https://theorg.com/org/coty-inc/teams/ecommerce-and-marketing" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://theorg.com/org/coty-inc/teams/ecommerce-and-marketing</span></div></span></a> . Story source: embedded customer-story context in the supplied prompt, <code>source_section: Credo Beauty Case Study</code>; no public URL supplied.</p><p>What does not map cleanly: Credo’s story includes return fraud as a major driver, while Kylie’s current policy says no standard returns and concentrates exceptions around damaged/wrong-item/refused-delivery cases.<a class="citechip hov" href="https://kyliecosmetics.com/en-sa/pages/terms-and-conditions" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/en-sa/pages/terms-and-conditions</span></div></span></a> ; <a class="citechip hov" href="https://kyliecosmetics.com/en-mx/pages/faq" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/en-mx/pages/faq</span></div></span></a> . Story source: embedded customer-story context in the supplied prompt, <code>source_section: Credo Beauty Case Study</code>; no public URL supplied.</p><p>Secondary match: quip. Kylie’s subscription surface and launch-access benefits make quip directionally relevant for repeat-purchase/subscription and bad-actor/reseller controls, but quip is a weaker category match than Credo because it is oral care/refills rather than beauty retail/cosmetics. Sources for Kylie side: <a class="citechip hov" href="https://kyliecosmetics.com/en-am/pages/subscriptions" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/en-am/pages/subscriptions</span></div></span></a> ; <a class="citechip hov" href="https://kyliecosmetics.com/en-sa/pages/terms-and-conditions" target="_blank" rel="noopener" data-tip>&#8599;<span class="tt-content" style="display:none"><div class="tt-h">Source</div><div class="tt-row"><span class="tt-note" style="word-break:break-all">https://kyliecosmetics.com/en-sa/pages/terms-and-conditions</span></div></span></a> . Story source: embedded customer-story context in the supplied prompt, <code>source_section: Quip Case Study</code>; no public URL supplied.</p></div></div><div class="tabpanel" id="etab-committee" style="display:none"><div class="muted" style="margin:0 0 8px">Everyone the system would thread on this account. Direct contact on file for 3 of 6.</div><div class="person-block"><div class="cmt-card"><span class="thumb-init">AB</span><div class="cmt-body"><div class="who"><a href="../people/annavonbayern.html">Anna von Bayern</a> <span class="muted">— Chief Corporate Affairs Officer and CEO of Kylie Jenner&#x27;s Beauty Brands</span> <span class="role">ecomm</span></div><div class="kv" style="margin-top:3px"><span class="muted">responsible for: Owns checkout + approval rate; false declines hit their revenue</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><span class="muted">&mdash;</span></span><span class="cl"><b>Phone</b><span class="muted">&mdash;</span></span><span class="cl"><b>LinkedIn</b><a href="https://www.linkedin.com/in/annavonbayern/" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div><div class="person-block"><div class="cmt-card"><img class="thumb" src="https://media.licdn.com/dms/image/v2/C4D03AQF4r_-bvwulDQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1589569983943?e=1786579200&amp;v=beta&amp;t=ZWnDjlVdYhaIUMY2pJLcE6pYdus82MUlec7ewnv0Cug" alt=""><div class="cmt-body"><div class="who"><a href="../people/nicolas-tordjman-9841483.html">Nicolas Tordjman</a> <span class="muted">— General Manager I Kylie Cosmetics</span> <span class="role">ops</span></div><div class="kv" style="margin-top:3px"><span class="muted">responsible for: Owns rollout + the manual-review workload</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:nicolas_tordjman@cotyinc.com">nicolas_tordjman@cotyinc.com</a></span><span class="cl"><b>Phone</b>+1 212-389-7668</span><span class="cl"><b>LinkedIn</b><a href="https://www.linkedin.com/in/nicolas-tordjman-9841483" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div><div class="person-block"><div class="cmt-card"><img class="thumb" src="https://media.licdn.com/dms/image/v2/D4E03AQFNiO3mQ030pw/profile-displayphoto-crop_800_800/B4EZ5eRdMbJMAI-/0/1779698095771?e=1786579200&amp;v=beta&amp;t=W0KfhdPwDoYAIoRqcRkNp4bk_H2scFeyPhtxT72db1g" alt=""><div class="cmt-body"><div class="who"><a href="../people/laurentmercier.html">Laurent Mercier</a> <span class="muted">— Owner at Callicore Film</span> <span class="role">finance_sponsor</span></div><div class="kv" style="margin-top:3px"><span class="muted">responsible for: Owns chargeback cost + ROI case; approves fraud-tool budget</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><span class="muted">&mdash;</span></span><span class="cl"><b>Phone</b><span class="muted">&mdash;</span></span><span class="cl"><b>LinkedIn</b><a href="https://www.linkedin.com/in/laurentmercier/" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div><div class="person-block"><div class="cmt-card"><img class="thumb" src="https://media.licdn.com/dms/image/v2/C5603AQG2buNaZw6wJA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1525649158601?e=1786579200&amp;v=beta&amp;t=x8hoLQsriRthDGEJZl_ho0G2ksg9mYyrv_5ldReDonI" alt=""><div class="cmt-body"><div class="who"><a href="../people/jocelyn-smith-7937b0120.html">Jocelyn Smith</a> <span class="muted">— Director DTC Ecommerce at Kylie Cosmetics</span> <span class="role">ecomm</span></div><div class="kv" style="margin-top:3px"><span class="muted">responsible for: Owns checkout + approval rate; false declines hit their revenue</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:smith.j@pg.com">smith.j@pg.com</a></span><span class="cl"><b>Phone</b>+1 847-722-6403</span><span class="cl"><b>LinkedIn</b><a href="https://www.linkedin.com/in/jocelyn-smith-7937b0120/" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div><div class="person-block"><div class="cmt-card"><img class="thumb" src="https://media.licdn.com/dms/image/v2/C5603AQHfj35i9u-wsA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1646335617431?e=1786579200&amp;v=beta&amp;t=yjz8CVKPXTgVDYmq2XtDjvBHh6Eg5ZXtxuwwGlAPRcA" alt=""><div class="cmt-body"><div class="who"><a href="../people/guadalupe-gil-7a20b590.html">Guadalupe Gil</a> <span class="muted">— Manager DTC Ecommerce Site Experience</span> <span class="role">ecomm</span></div><div class="kv" style="margin-top:3px"><span class="muted">responsible for: Owns checkout + approval rate; false declines hit their revenue</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><a href="mailto:guadalupe_gil@cotyinc.com">guadalupe_gil@cotyinc.com</a></span><span class="cl"><b>Phone</b>+1 310-800-7484</span><span class="cl"><b>LinkedIn</b><a href="https://www.linkedin.com/in/guadalupe-gil-7a20b590" target="_blank" rel="noopener">View profile &rarr;</a></span></div></div></div></div><div class="person-block"><div class="cmt-card"><span class="thumb-init">SK</span><div class="cmt-body"><div class="who"><a href="../people/susan-k-kyliecosmetics-com.html">Susan K.</a> <span class="muted">— Senior Manager, Ecommerce Operations | Kylie &amp; SKKN By Kim</span> <span class="role">ops</span></div><div class="kv" style="margin-top:3px"><span class="muted">responsible for: Owns rollout + the manual-review workload</span></div><div class="cmt-contacts"><span class="cl"><b>Email</b><span class="muted">&mdash;</span></span><span class="cl"><b>Phone</b><span class="muted">&mdash;</span></span><span class="cl"><b>LinkedIn</b><span class="muted">&mdash;</span></span></div></div></div></div></div></div></div><script>function showTab(btn,id){var c=btn.closest('.tabs');c.querySelectorAll('.tabpanel').forEach(function(p){p.style.display='none';});c.querySelectorAll('.tab').forEach(function(t){t.classList.remove('tab-active');});var el=document.getElementById(id);if(el)el.style.display='block';btn.classList.add('tab-active');}</script></div><div id="tooltip"></div><script>(function(){var tip=document.getElementById('tooltip');function show(e){var c=e.currentTarget.querySelector(".tt-content");if(!c)return;tip.innerHTML=c.innerHTML;tip.style.display='block';move(e);}function move(e){var pad=12,x=e.clientX+pad,y=e.clientY+pad,w=tip.offsetWidth,h=tip.offsetHeight;if(x+w>window.innerWidth-8)x=window.innerWidth-8-w;if(y+h>window.innerHeight-8)y=e.clientY-pad-h;if(x<8)x=8;if(y<8)y=8;tip.style.left=x+'px';tip.style.top=y+'px';}function hide(){tip.style.display='none';}document.querySelectorAll('[data-tip]').forEach(function(el){el.addEventListener('mouseenter',show);el.addEventListener('mousemove',move);el.addEventListener('mouseleave',hide);});})();</script>
