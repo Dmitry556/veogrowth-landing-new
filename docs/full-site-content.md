@@ -110,7 +110,7 @@ Sections on page (top → bottom):
 
 **H1:** Net-new pipeline, *operated* end-to-end.
 
-**Subhead:** A managed system that learns your business, then puts meetings with companies your reps aren't working yet onto their calendars. Built for B2B sales leaders who've already been through an agency and an AI SDR and need the version of outbound that still works.
+**Subhead:** Controlled outbound intelligence system, with a team of world class operators managing & executing on it. Built for B2B sales leaders who've already been through an agency and an AI SDR and need the version of outbound that still works.
 
 **Primary CTA:** Book a call → (opens Calendly)
 
